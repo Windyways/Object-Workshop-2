@@ -42,11 +42,36 @@ namespace ObjectWorkshop.Misc
         public static void Initialize()
         {
             // --- CREWMATE ---
-            // -- CU --
-            roleStats.Add("Cadet", new RoleStats("Cadet", RoleColors.Crewmate));
+            // -- CI --
             roleStats.Add("Alarum", new RoleStats("Alarum", RoleColors.Crewmate));
 
+            // -- CK --
+            roleStats.Add("Duelist", new RoleStats("Duelist", RoleColors.Crewmate));
+
+            // -- CS --
+            roleStats.Add("Luminescence", new RoleStats("Luminescence", RoleColors.Crewmate));
+
+            // -- CU --
+            roleStats.Add("Cadet", new RoleStats("Cadet", RoleColors.Crewmate));
+            roleStats.Add("UFO", new RoleStats("UFO", RoleColors.Crewmate));
+
+            // --- NEUTRAL ---
+            // -- NC --
+            roleStats.Add("Shikari", new RoleStats("Shikari", RoleColors.Shikari));
+
+            // -- NE --
+            roleStats.Add("Enticer", new RoleStats("Enticer", RoleColors.Enticer));
+
+            // -- NP --
+            roleStats.Add("Pyre", new RoleStats("Pyre", RoleColors.Pyre));
+
             // --- INFILTRATOR ---
+            // -- ID --
+            roleStats.Add("Obstructor", new RoleStats("Obstructor", RoleColors.Infiltrator));
+
+            // -- IE --
+            roleStats.Add("Arachnid", new RoleStats("Arachnid", RoleColors.Infiltrator));
+
             // -- IU --
             roleStats.Add("Marauder", new RoleStats("Marauder", RoleColors.Infiltrator));
 

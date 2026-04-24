@@ -17,7 +17,7 @@ public sealed class InvisibleStatus : ConcealedModifier, IVisualAppearance
     {
         var playerColor = Color.clear;
 
-        return new VisualAppearance(Player.GetDefaultModifiedAppearance(), TownOfUsAppearances.Swooper)
+        return new VisualAppearance(Player.GetDefaultModifiedAppearance(), OWAppearances.Swooper)
         {
             HatId = string.Empty,
             SkinId = string.Empty,

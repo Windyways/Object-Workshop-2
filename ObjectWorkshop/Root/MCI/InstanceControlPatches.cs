@@ -305,23 +305,6 @@ public static class InstanceControlPatches
             ClearDayButtons(oldBot);
             ApplyDayButtons(newBot);
         }
-        else
-        {
-            // Alarum Patch
-            foreach (var clock in AlarmClock.AllClocks)
-            {
-                if (newBot != clock.Owner && !(newBot.Is(CalculatedFaction.Infiltrator) && OptionGroupSingleton<Alarum_Options>.Instance.InfiltSeeClock))
-                {
-                    clock.myRend.Hide();
-                    clock.aura.GetComponent<SpriteRenderer>().Hide();
-                }
-                else
-                {
-                    clock.myRend.Show();
-                    clock.aura.GetComponent<SpriteRenderer>().Show();
-                }
-            }
-        }
     }
 
     public static void ApplyDayButtons(PlayerControl player)

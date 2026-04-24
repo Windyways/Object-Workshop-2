@@ -45,6 +45,12 @@ public sealed class DeathHandlerModifier : BaseModifier
     public static Color GetColor(DeathReasonShow causeOfDeath)
     {
         if (causeOfDeath == DeathReasonShow.Ejected) return Color.magenta;
+        if (causeOfDeath == DeathReasonShow.Killed) return RoleColors.Infiltrator;
+        if (causeOfDeath == DeathReasonShow.Bitten) return RoleColors.Infiltrator;
+        if (causeOfDeath == DeathReasonShow.Executed) return RoleColors.Shikari;
+        if (causeOfDeath == DeathReasonShow.Devoured) return RoleColors.Enticer;
+        if (causeOfDeath == DeathReasonShow.Incinerated) return RoleColors.Pyre;
+
         return RoleColors.Crewmate;
     }
 

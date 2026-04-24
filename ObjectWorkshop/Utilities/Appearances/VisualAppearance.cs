@@ -4,12 +4,12 @@ namespace TownOfUs.Utilities.Appearances;
 
 public sealed class VisualAppearance : NetworkedPlayerInfo.PlayerOutfit
 {
-    public VisualAppearance(TownOfUsAppearances appearanceType)
+    public VisualAppearance(OWAppearances appearanceType)
     {
         AppearanceType = appearanceType;
     }
 
-    public VisualAppearance(NetworkedPlayerInfo.PlayerOutfit outfit, TownOfUsAppearances appearanceType)
+    public VisualAppearance(NetworkedPlayerInfo.PlayerOutfit outfit, OWAppearances appearanceType)
     {
         ColorId = outfit.ColorId;
         HatId = outfit.HatId;
@@ -21,7 +21,7 @@ public sealed class VisualAppearance : NetworkedPlayerInfo.PlayerOutfit
         AppearanceType = appearanceType;
     }
 
-    public VisualAppearance(VisualAppearance outfit, TownOfUsAppearances appearanceType)
+    public VisualAppearance(VisualAppearance outfit, OWAppearances appearanceType)
     {
         ColorId = outfit.ColorId;
         HatId = outfit.HatId;
@@ -55,5 +55,5 @@ public sealed class VisualAppearance : NetworkedPlayerInfo.PlayerOutfit
     public float Speed { get; set; } = 1f;
     public Vector3 Size { get; set; } = new(0.7f, 0.7f, 1f);
 
-    public TownOfUsAppearances AppearanceType { get; set; }
+    public OWAppearances AppearanceType { get; set; }
 }

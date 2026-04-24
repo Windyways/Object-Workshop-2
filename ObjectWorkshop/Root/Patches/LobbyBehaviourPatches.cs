@@ -28,8 +28,10 @@ public static class LobbyBehaviourPatches
         // --- MECHANICS ---
         DayNightMechanic.DayCount = 0;
         DayNightMechanic.NightCount = 1;
+        HuntMechanic.StopHunt();
 
         RolelistMechanic.InfiltratorCount = 0;
+        InfiltratorGameOver.SabotageWin = false;
 
         if (RoleReferences.PendingNotifications.Count != 0)
         {

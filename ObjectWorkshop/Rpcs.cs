@@ -4,6 +4,18 @@ public enum Rpcs : uint
 {
     // Roles
     RpcActivate,
+    RpcBarricade,
+    RpcSpin,
+    RpcInnerSpider,
+    RpcMark,
+    RpcResetWinChance,
+    RpcSharpen,
+    RpcDuel,
+    RpcDestination,
+    RpcAbduct,
+    RpcRadiate,
+    RpcPrepare,
+    RpcIgnite,
 
     // Mechanics
     RpcAddVote,
@@ -11,6 +23,7 @@ public enum Rpcs : uint
     // Other
     RpcAddDeathReason,
     RpcNotifyAll,
+    RpcPerformInteraction,
 
     // Chat
     RpcSendCustomChat,

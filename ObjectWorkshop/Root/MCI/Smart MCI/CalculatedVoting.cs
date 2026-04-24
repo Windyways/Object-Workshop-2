@@ -50,7 +50,9 @@ public static class CalculatedVoting
                 byte voted = 0;
                 if (player.Is(Faction.Infiltrator)) voted = InfiltratorVoting(player, __instance);
                 else if (player.Is(Faction.Crewmate)) voted = CrewmateVoting(player, __instance);
+                else if (player.Data.Role is Shikari shikari) voted = ShikariVoting(shikari, __instance);
                 else if (player.Is(Alignment.NeutralPredator)) voted = RandomVote(player, __instance, alivePlayers, alivePlayers.Count > GlobalSkipThreshold);
+                else if (player.Is(Alignment.NeutralEvil)) voted = RandomVote(player, __instance, alivePlayers, alivePlayers.Count > GlobalSkipThreshold);
 
                 if (voted == MeetingHud.Instance.SkipVoteButton.TargetPlayerId) AUS_AfterVoteEvent.RoleFunctionOnSkip(player);
                 else AUS_AfterVoteEvent.RoleFunctionOnVote(player, MiscUtils.PlayerById(voted));
@@ -137,6 +139,19 @@ public static class CalculatedVoting
         else lastInfiltratorVoteTarget = (SkipVote(player, __instance), true);
 
         return lastInfiltratorVoteTarget.Item1;
+    }
+
+    public static byte ShikariVoting(Shikari shikari, MeetingHud __instance)
+    {
+        var player = shikari.Player;
+        var allPlayers = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.HasDied()).ToList();
+        var validPlayers = PlayerControl.AllPlayerControls.ToArray().Where(x =>
+            !x.HasDied() && x != player && !shikari.MarkedPlayers.Contains(x)).ToList();
+        
+        if (validPlayers.Count > 0) return RandomVote(player, __instance, validPlayers, allPlayers.Count >= GlobalSkipThreshold);
+        else return SkipVote(player, __instance);
+
+        return declaredCrewmateTarget.Item1;
     }
 
     public static bool ChanceIsNull(int? num)

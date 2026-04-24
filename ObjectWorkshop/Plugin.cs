@@ -3,7 +3,6 @@ using BepInEx.Configuration;
 using BepInEx.Unity.IL2CPP;
 using Il2CppInterop.Runtime.Injection;
 using MiraAPI;
-using MiraAPI.PluginLoading;
 using Reactor;
 using Reactor.Localization;
 using Reactor.Networking;
@@ -24,7 +23,7 @@ namespace ObjectWorkshop;
 [ReactorModFlags(ModFlags.RequireOnAllClients)]
 public partial class OWPlugin : BasePlugin, IMiraPlugin
 {
-    public static string BetaVersion = "Build 5";
+    public static string BetaVersion = "Build 3";
 
     /// <summary>
     ///     Gets the specified Culture for string manipulations.
@@ -39,11 +38,12 @@ public partial class OWPlugin : BasePlugin, IMiraPlugin
     public static ConfigEntry<float> ButtonUIFactor { get; set; }
     public static ConfigEntry<bool> OffsetButtons { get; set; }
     public static ConfigEntry<int> RoleIconSpot { get; set; }
+    public static ConfigEntry<bool> ArachnophobiaMode { get; set; }
 
     /// <summary>
     ///     Determines if the current build is a dev build or not. This will change certain visuals as well as always grab news locally to be up to date.
     /// </summary>
-    public static bool IsDevBuild => true;
+    public static bool IsDevBuild => false;
     
     /// <inheritdoc />
     public string OptionsTitleText => "Object\nWorkshop 2";
@@ -86,6 +86,8 @@ public partial class OWPlugin : BasePlugin, IMiraPlugin
 
         RoleIconSpot = Config.Bind("LocalSettings", "IconPos", 0,
             "The position of Role Icons. 0 is next to the role name, 1 is next to the player name, 2 is to disable.");
+        ArachnophobiaMode = Config.Bind("LocalSettings", "ArachnophobiaMode", false,
+            "Enable Arachnophobia Mode. This replaces the Spider (from Arachnid) with a yellow circle.");
 
         Harmony.PatchAll();
 

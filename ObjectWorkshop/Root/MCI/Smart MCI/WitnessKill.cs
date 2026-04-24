@@ -64,6 +64,7 @@ public static class WitnessKill
 
     public static bool IgnoreKill(PlayerControl killer, PlayerControl witness)
     {
+        if (killer.IsSpider() || witness.HasModifier<DuelingModifier>() || killer.HasModifier<DuelingModifier>()) return true;
         if (killer.Is(Faction.Infiltrator) && witness.Is(Faction.Infiltrator)) return true;
         return false;
     }
@@ -72,10 +73,10 @@ public static class WitnessKill
     {
         // 1) distance
         float dist = Vector3.Distance(witness.transform.position, killPos);
-        float baseVision = GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod + 0.1f;
+        float baseVision = GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod * 2;
 
         // impostor bots maybe get impostor mod — you decide:
-        if (witness.Is(Faction.Infiltrator)) baseVision = GameOptionsManager.Instance.currentNormalGameOptions.ImpostorLightMod;
+        if (witness.Is(Faction.Infiltrator)) baseVision = GameOptionsManager.Instance.currentNormalGameOptions.ImpostorLightMod / 2;
         //else if (witness.Data.Role is ICustomAURole customRole && witness.Is(Faction.Neutral)) baseVision = customRole.visionValue;
 
         // scale vision by map lighting (lights sabotage etc.)
@@ -89,7 +90,42 @@ public static class WitnessKill
 
         if (PhysicsHelpers.AnyNonTriggersBetween(killer.GetTruePosition(), vector.normalized, magnitude, Constants.ShipAndObjectsMask))
             return false;
+        
+        if (killer.HasModifier<InvisibleTogglable>())
+            return false;
 
         return true;
+    }
+
+    public static void WitnessEvilDeed(PlayerControl player)
+    {
+        if (Debugger.IsDebuggerActive && Debugger.SmartBotsEnabled)
+        {
+            foreach (var witness in PlayerControl.AllPlayerControls)
+            {
+                if (!IgnoreKill(player, witness) && !player.IsRole<Shikari>() && BotCanSee(player, witness, player.transform.position))
+                {
+                    var modifier = witness.AddModifier<SeenKill>();
+                    if (modifier != null) modifier.killer = player;
+
+                    var modifier2 = player.AddModifier<SeenKill>();
+                    if (modifier2 != null) modifier2.killer = witness;
+                }
+            }
+        }
+    }
+
+    public static void WitnessGoodDeed(PlayerControl player)
+    {
+        if (Debugger.IsDebuggerActive && Debugger.SmartBotsEnabled)
+        {
+            foreach (var witness in PlayerControl.AllPlayerControls)
+            {
+                if (BotCanSee(player, witness, player.transform.position))
+                {
+                    player.AddModifier<Confirmed>(witness, ConfirmType.Instantly, player.Data.Role.NiceName);
+                }
+            }
+        }
     }
 }

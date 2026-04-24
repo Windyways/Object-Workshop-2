@@ -9,6 +9,8 @@ public enum Alignment
     CrewmateUtility,
 
     NeutralAssociative,
+    NeutralBenign,
+    NeutralCataclysmic,
     NeutralEvil,
     NeutralPredator,
 

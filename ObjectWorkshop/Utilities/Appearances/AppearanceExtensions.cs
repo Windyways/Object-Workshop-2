@@ -10,14 +10,14 @@ public static class AppearanceExtensions
         // swooper unswoop mid camo - needs testing
         
         // preventing glitch from morphing -> camo -> unmorph early sorta thing...
-        if (player.GetAppearanceType() == TownOfUsAppearances.Camouflage && !override_checks)
+        if (player.GetAppearanceType() == OWAppearances.Camouflage && !override_checks)
         {
             return;
         }
 
         if (fullReset)
         {
-            player.RawSetAppearance(new VisualAppearance(player.GetDefaultAppearance(), TownOfUsAppearances.Default)
+            player.RawSetAppearance(new VisualAppearance(player.GetDefaultAppearance(), OWAppearances.Default)
             {
                 Size = new Vector3(0.7f, 0.7f, 1f)
             });
@@ -43,9 +43,9 @@ public static class AppearanceExtensions
 
     public static void SetCamouflage(this PlayerControl player, bool toggle = true)
     {
-        if (toggle && player.GetAppearanceType() != TownOfUsAppearances.Camouflage)
+        if (toggle && player.GetAppearanceType() != OWAppearances.Camouflage)
         {
-            player.RawSetAppearance(new VisualAppearance(player.GetDefaultAppearance(), TownOfUsAppearances.Camouflage)
+            player.RawSetAppearance(new VisualAppearance(player.GetDefaultAppearance(), OWAppearances.Camouflage)
             {
                 ColorId = player.Data.DefaultOutfit.ColorId,
                 HatId = string.Empty,
@@ -167,9 +167,9 @@ public static class AppearanceExtensions
         }
     }
 
-    public static TownOfUsAppearances GetAppearanceType(this PlayerControl player)
+    public static OWAppearances GetAppearanceType(this PlayerControl player)
     {
-        return (TownOfUsAppearances)player.CurrentOutfitType;
+        return (OWAppearances)player.CurrentOutfitType;
     }
 
     public static VisualAppearance GetAppearance(this PlayerControl player)
@@ -202,12 +202,12 @@ public static class AppearanceExtensions
 
     public static VisualAppearance GetDefaultAppearance(this PlayerControl playerControl)
     {
-        return new VisualAppearance(playerControl.Data.DefaultOutfit, TownOfUsAppearances.Default);
+        return new VisualAppearance(playerControl.Data.DefaultOutfit, OWAppearances.Default);
     }
 
     public static VisualAppearance GetDefaultModifiedAppearance(this PlayerControl playerControl)
     {
-        var appearance = new VisualAppearance(playerControl.Data.DefaultOutfit, TownOfUsAppearances.Default);
+        var appearance = new VisualAppearance(playerControl.Data.DefaultOutfit, OWAppearances.Default);
 
         return appearance;
     }

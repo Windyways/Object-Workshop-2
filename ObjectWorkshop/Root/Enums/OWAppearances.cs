@@ -1,6 +1,6 @@
-﻿namespace TownOfUs.Utilities.Appearances;
+﻿namespace ObjectWorkshop.Enums;
 
-public enum TownOfUsAppearances : uint
+public enum OWAppearances : uint
 {
     // Vanilla
     Default,
@@ -14,5 +14,8 @@ public enum TownOfUsAppearances : uint
     Camouflage,
     Morph,
     PlayerNameOnly,
-    PlayerOnly
+    PlayerOnly,
+
+    // Object Workshop
+    Invisible
 }

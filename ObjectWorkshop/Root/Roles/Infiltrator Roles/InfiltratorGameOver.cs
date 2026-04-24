@@ -47,6 +47,7 @@ public sealed class InfiltratorGameOver : CustomGameOver
         //AUSAssets.PlaySound(AUSAssets.CovenWin_SFX);
     }
 
+    public static bool SabotageWin;
     public static bool AnyWon(GameOverReason gameOverReason)
     {
         foreach (var player in PlayerControl.AllPlayerControls)
@@ -59,6 +60,6 @@ public sealed class InfiltratorGameOver : CustomGameOver
     public static bool WinConditionMet()
     {
         var alivePlayers = PlayerControl.AllPlayerControls.ToArray().Count(x => !x.HasDied() && !x.Is(Faction.Infiltrator));
-        return alivePlayers == 0;
+        return alivePlayers == 0 || SabotageWin;
     }
 }

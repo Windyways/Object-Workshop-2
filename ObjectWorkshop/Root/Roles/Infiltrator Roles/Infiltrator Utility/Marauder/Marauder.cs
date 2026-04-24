@@ -1,5 +1,4 @@
-﻿using Il2CppInterop.Runtime.Attributes;
-using System.Text;
+﻿using System.Text;
 using UnityEngine;
 
 namespace ObjectWorkshop.Roles;
@@ -10,8 +9,8 @@ public sealed class Marauder(IntPtr cppPtr) : NeutralRole(cppPtr), ICustomAURole
     public string RoleDescription => "";
     public string RoleLongDescription => "";
     public Color RoleColor { get; set; } = RoleColors.Infiltrator;
-    public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
 
+    public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public Faction Faction { get; set; } = Faction.Infiltrator;
     public CalculatedFaction CalculatedFaction { get; set; } = CalculatedFaction.Infiltrator;
     public Alignment Alignment => Alignment.InfiltratorUtility;
@@ -46,7 +45,7 @@ public sealed class Marauder(IntPtr cppPtr) : NeutralRole(cppPtr), ICustomAURole
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities =>
     [
-        new("Attack ",
+        new("Attack",
             $"You can Attack a player during the round.\n" +
             $"You will kill your target.",
             OWAssets.KillSprite),

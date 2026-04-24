@@ -280,4 +280,32 @@ public static class CustomExtentions
     {
         return false;
     }
+
+    public static bool IsTargetable(this PlayerControl player)
+    {
+        return true;//!player.IsUnderground();
+    }
+
+    public static bool AbilityUsable(this PlayerControl player)
+    {
+        return
+            !player.HasModifier<DuelingModifier>()// &&
+            //!PeacockVisual.IsPlayerAnyParalyzed(player) &&
+            //!ZapBox.IsInAnyRange(player)
+            ;
+    }
+
+    public static void HideLR(this LineRenderer myRend)
+    {
+        myRend.startColor = new Color(0, 0, 0, 0);
+        myRend.endColor = new Color(0, 0, 0, 0);
+    }
+
+    public static void ShowLR(this LineRenderer myRend, Color startColor, Color endColor)
+    {
+        myRend.startColor = startColor;
+        myRend.endColor = endColor;
+    }
+
+    public static bool IsSpider(this PlayerControl player) => player.Data.Role is Arachnid arachnid && arachnid.isSpider;
 }

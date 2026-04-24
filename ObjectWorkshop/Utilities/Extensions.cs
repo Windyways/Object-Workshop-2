@@ -569,9 +569,9 @@ public static class Extensions
         color.a = 0.07f + velocity / player.MyPhysics.GhostSpeed * 0.13f;
         color.a = Mathf.Lerp(color.a, 0, distPercent);
 
-        if (player.GetAppearanceType() != TownOfUsAppearances.PlayerOnly)
+        if (player.GetAppearanceType() != OWAppearances.PlayerOnly)
         {
-            var fade = new VisualAppearance(player.GetDefaultModifiedAppearance(), TownOfUsAppearances.PlayerOnly)
+            var fade = new VisualAppearance(player.GetDefaultModifiedAppearance(), OWAppearances.PlayerOnly)
             {
                 HatId = string.Empty,
                 SkinId = string.Empty,

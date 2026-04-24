@@ -1,9 +1,7 @@
 ﻿using MiraAPI.GameEnd;
 using MiraAPI.Modifiers.Types;
-using Reactor.Utilities.Extensions;
 using TownOfUs.Events;
 using TownOfUs.GameOver;
-using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
 
 namespace ObjectWorkshop.Patches;
@@ -22,12 +20,6 @@ public static class LogicGameFlowPatches
             return true;
         }
 
-        return false;
-    }
-
-    public static bool CheckEndGameViaTimeLimit(LogicGameFlowNormal instance)
-    {
-        
         return false;
     }
 
@@ -108,9 +100,10 @@ public static class LogicGameFlowPatches
             var lifeSuppSystemType = ShipStatus.Instance.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
             if (lifeSuppSystemType is { Countdown: < 0f })
             {
-                __instance.EndGameForSabotage();
                 lifeSuppSystemType.Countdown = 10000f;
+                InfiltratorGameOver.SabotageWin = true;
 
+                //__instance.EndGameForSabotage();
                 return false;
             }
         }
@@ -126,17 +119,13 @@ public static class LogicGameFlowPatches
             var criticalSabotage = sabo;
             if (criticalSabotage != null && criticalSabotage.Countdown < 0f)
             {
-                __instance.EndGameForSabotage();
+                //__instance.EndGameForSabotage();
                 criticalSabotage.ClearSabotage();
+                InfiltratorGameOver.SabotageWin = true;
             }
         }
 
         if (CheckEndGameViaTasks(__instance))
-        {
-            return false;
-        }
-
-        if (CheckEndGameViaTimeLimit(__instance))
         {
             return false;
         }
@@ -165,7 +154,8 @@ public static class LogicGameFlowPatches
 
         var aliveNP = PlayerControl.AllPlayerControls.ToArray().Count(x => x.Is(Alignment.NeutralPredator) && !x.HasDied());
         var aliveInfiltrator = PlayerControl.AllPlayerControls.ToArray().Count(x => x.Is(Faction.Infiltrator) && !x.HasDied());
-        if (aliveInfiltrator > 0 || aliveNP > 0)
+        var anyNC = PlayerControl.AllPlayerControls.ToArray().Any(x => x.Data.Role is Shikari shikari && shikari.ExecutionPhase() && !x.HasDied());
+        if (aliveInfiltrator > 0 || aliveNP > 0 || anyNC)
             return false;
 
         // Causes the game to draw in extreme scenarios

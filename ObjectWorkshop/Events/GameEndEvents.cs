@@ -1,12 +1,7 @@
-using MiraAPI.Events;
-using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.GameEnd;
 using MiraAPI.Roles;
-using Reactor.Utilities.Extensions;
 using TownOfUs.GameOver;
-using TownOfUs.Modules;
 using TownOfUs.Patches;
-using TownOfUs.Roles;
 
 namespace TownOfUs.Events;
 

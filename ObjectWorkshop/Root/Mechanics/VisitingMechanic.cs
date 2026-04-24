@@ -1,3 +1,4 @@
+using ObjectWorkshop.Roles;
 using Reactor.Networking.Rpc;
 
 namespace ObjectWorkshop.Mechanics;
@@ -32,8 +33,7 @@ public static class VisitingMechanic
         if (blockVisit < 100)
         {
             // Doesn't affect visit.
-            //if (isVisiting && player.IsAnInformer() && target.HasModifier<BlightInfected>()) blockVisit += target.GetModifiers<BlightInfected>().Sum(x => x.PerformInteraction(player));
-            
+            if (isVisiting && isAttacking && target.HasModifier<Shielded>()) blockVisit += target.GetModifiers<Shielded>().Sum(x => x.PerformInteraction(player, target));
         }
 
         if (blockVisit > 0)
@@ -78,6 +78,33 @@ public static class VisitingMechanic
         {
             if (role is Marauder) CustomButtonSingleton<Marauder_Attack>.Instance.ResetCooldownAndOrEffect();
             if (role is Alarum) CustomButtonSingleton<Alarum_Activate>.Instance.ResetCooldownAndOrEffect();
+            if (role is Obstructor)
+            {
+                if (Button == 1) CustomButtonSingleton<Obstructor_Attack>.Instance.ResetCooldownAndOrEffect();
+                if (Button == 2) CustomButtonSingleton<Obstructor_Barricade>.Instance.ResetCooldownAndOrEffect();
+            }
+            if (role is Arachnid)
+            {
+                if (Button == 1 && !Webs.IsInWebs(target)) CustomButtonSingleton<Arachnid_Bite>.Instance.ResetCooldownAndOrEffect();
+                if (Button == 2 || Button == 3)
+                {
+                    CustomButtonSingleton<Arachnid_Spin>.Instance.ResetCooldownAndOrEffect();
+                    CustomButtonSingleton<Arachnid_InnerSpiderInfiltrator>.Instance.ResetCooldownAndOrEffect();
+                }
+            }
+            if (role is Duelist)
+            {
+                if (Button == 1) CustomButtonSingleton<Duelist_Sharpen>.Instance.ResetCooldownAndOrEffect();
+                if (Button == 2) CustomButtonSingleton<Duelist_Duel>.Instance.ResetCooldownAndOrEffect();
+            }
+            if (role is UFO)
+            {
+                if (Button == 1) CustomButtonSingleton<UFO_Destination>.Instance.ResetCooldownAndOrEffect();
+                // if (Button == 2) CustomButtonSingleton<UFO_Abduct>.Instance.ResetCooldownAndOrEffect(); - This is handled in UFO.cs
+            }
+            if (role is Luminescence) CustomButtonSingleton<Luminescence_Radiate>.Instance.ResetCooldownAndOrEffect();
+            if (role is Enticer) CustomButtonSingleton<Enticer_Prepare>.Instance.ResetCooldownAndOrEffect();
+            if (role is Pyre) CustomButtonSingleton<Pyre_Ignite>.Instance.ResetCooldownAndOrEffect();
         }
     }
 }

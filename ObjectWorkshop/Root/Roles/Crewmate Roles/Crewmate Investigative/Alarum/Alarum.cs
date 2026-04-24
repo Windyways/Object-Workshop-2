@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 using Color = UnityEngine.Color;
 
 namespace ObjectWorkshop.Roles;
@@ -73,11 +72,7 @@ public sealed class Alarum(IntPtr cppPtr)
             return;
         }
 
-        if ((PlayerControl.LocalPlayer.Is(CalculatedFaction.Infiltrator) && OptionGroupSingleton<Alarum_Options>.Instance.InfiltSeeClock) || 
-            PlayerControl.LocalPlayer == player)
-        {
-            AlarmClock.Begin(player);
-        }
+        AlarmClock.Begin(player);
     }
 
     public void Function(PlayerControl target, int Button)
@@ -116,5 +111,5 @@ public sealed class Alarum_Options : AbstractOptionGroup<Alarum>
     public float MaxAlarmsAtOnce { get; set; } = 3f;
 
     [ModdedToggleOption("<color=#ff5050>Infiltrators</color> Can See Alarms")]
-    public bool InfiltSeeClock { get; set; } = false;
+    public bool InfiltSeeClock { get; set; } = true;
 }

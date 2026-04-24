@@ -12,6 +12,7 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
     public SpriteRenderer myRend;
     public bool emitWaves;
     public GameObject aura;
+    public Color bubbleColor;
 
     public static List<AlarmClock> AllClocks = new List<AlarmClock>();
 
@@ -19,6 +20,7 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
     {
         //Lockdown.AvailableObjects.Add(gameObject);
 
+        bubbleColor = new Color32(179, 255, 255, 85);
         myRend = gameObject.GetComponent<SpriteRenderer>();
         
         // Bounce down. ty WanderingPix!
@@ -30,6 +32,8 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
 
     private void Update()
     {
+        UpdateColor();
+
         if (!emitWaves) // This is being called ONCE!
         {
             var inRange = new List<(PlayerControl, bool)>();
@@ -45,7 +49,7 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
                 var sr = aura.GetComponent<SpriteRenderer>();
                 if (player.Is(CalculatedFaction.Infiltrator))
                 {
-                    sr.color = new Color32(255, 80, 80, 85);
+                    bubbleColor = new Color32(255, 80, 80, 85);
                     emitWaves = true;
                     Coroutines.Start(EmitSoundWaves(transform, 1f));
 
@@ -79,30 +83,51 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
         }
     }
 
+    private bool Visibility() =>
+            (PlayerControl.LocalPlayer == Owner) ||
+            PlayerControl.LocalPlayer.HasDied() ||
+            (PlayerControl.LocalPlayer.Is(CalculatedFaction.Infiltrator) && OptionGroupSingleton<Alarum_Options>.Instance.InfiltSeeClock);
+    private void UpdateColor()
+    {
+        if (Visibility())
+        {
+            myRend.Show();
+            aura.GetComponent<SpriteRenderer>().color = bubbleColor;
+        }
+        else
+        {
+            myRend.Hide();
+            aura.GetComponent<SpriteRenderer>().Hide();
+        }
+    }
+
     public IEnumerator EmitSoundWaves(Transform origin, float interval = 1f) // Created by Chat GPT.
     {
         while (true)
         {
-            // Create wave object
-            var waveObj = new GameObject("AlarmWave");
-            var lr = waveObj.AddComponent<LineRenderer>();
+            if (Visibility())
+            {
+                // Create wave object
+                var waveObj = new GameObject("AlarmWave");
+                var lr = waveObj.AddComponent<LineRenderer>();
 
-            // Configure line renderer
-            lr.useWorldSpace = false;
-            lr.loop = true;
-            lr.positionCount = 64; // circle points
-            lr.startWidth = 0.05f;
-            lr.endWidth = 0.05f;
-            lr.material = new Material(Shader.Find("Sprites/Default"));
-            lr.startColor = lr.endColor = Color.white;
+                // Configure line renderer
+                lr.useWorldSpace = false;
+                lr.loop = true;
+                lr.positionCount = 64; // circle points
+                lr.startWidth = 0.05f;
+                lr.endWidth = 0.05f;
+                lr.material = new Material(Shader.Find("Sprites/Default"));
+                lr.startColor = lr.endColor = Color.white;
 
-            if (this.IsDestroyedOrNull())
-                yield break;
-                
-            waveObj.transform.position = origin.position;
+                if (this.IsDestroyedOrNull())
+                    yield break;
 
-            // Start the wave animation
-            Coroutines.Start(AnimateWave(lr, OptionGroupSingleton<Alarum_Options>.Instance.Radius, 0.7f));
+                waveObj.transform.position = origin.position;
+
+                // Start the wave animation
+                Coroutines.Start(AnimateWave(lr, OptionGroupSingleton<Alarum_Options>.Instance.Radius, 0.7f));
+            }
 
             yield return new WaitForSeconds(interval);
         }
@@ -150,11 +175,11 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
     public static void Begin(PlayerControl player)
     {
         var bubble = new GameObject("AlarumBubble");
-        bubble.AddSpriteRenderer(OWAssets.Bubble.LoadAsset(), 0, 100, player.transform.position, new Color32(179, 255, 255, 85), Vector3.one);
+        bubble.AddSpriteRenderer(OWAssets.Bubble.LoadAsset(), 0, 100, player.transform.position, Color.clear, Vector3.one);
         bubble.transform.localScale = Vector3.one * OptionGroupSingleton<Alarum_Options>.Instance.Radius * 2f;
 
         var clockObj = new GameObject("AlarmClock");
-        clockObj.AddSpriteRenderer(OWAssets.Alarum_AlarmClock.LoadAsset(), 10, 0, player.transform.position, ObjectExtentions.fullColor(), Vector3.one);
+        clockObj.AddSpriteRenderer(OWAssets.Alarum_AlarmClock.LoadAsset(), 10, 0, player.transform.position, ObjectExtentions.noColor(), Vector3.one);
 
         var clock = clockObj.AddComponent<AlarmClock>();
         clock.Owner = player;
@@ -190,7 +215,6 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
     {
         foreach (var clock in AllClocks)
         {
-            Destroy(clock.aura);
             Destroy(clock.gameObject);
         }
     }

@@ -27,13 +27,13 @@ public static class RolelistMechanic
             if (bucket is RoleListOption.RandomCrewmate) AssignCrewmateRole(rolesAssigned, Alignment.None, bucket);
 
             //if (bucket is RoleListOption.na) AssignNeutralRole(rolesAssigned, Alignment.NeutralBenign);
-            //if (bucket is RoleListOption.NeutralConscriptive) AssignNeutralRole(rolesAssigned, Alignment.NeutralConscriptive);
+            if (bucket is RoleListOption.NeutralCataclysmic) AssignNeutralRole(rolesAssigned, Alignment.NeutralCataclysmic);
             //if (bucket is RoleListOption.NeutralEvil) AssignNeutralRole(rolesAssigned, Alignment.NeutralEvil);
             //if (bucket is RoleListOption.NeutralKilling) AssignNeutralRole(rolesAssigned, Alignment.NeutralKilling);
             //if (bucket is RoleListOption.RandomNeutral) AssignNeutralRole(rolesAssigned, Alignment.None, bucket);
 
-            //if (bucket is RoleListOption.InfiltratorDeception) AssignInfiltratorRole(rolesAssigned, Alignment.InfiltratorDeception);
-            //if (bucket is RoleListOption.InfiltratorGovernment) AssignInfiltratorRole(rolesAssigned, Alignment.InfiltratorGovernment);
+            if (bucket is RoleListOption.InfiltratorDisruption) AssignInfiltratorRole(rolesAssigned, Alignment.InfiltratorDisruption);
+            if (bucket is RoleListOption.InfiltratorEvacuative) AssignInfiltratorRole(rolesAssigned, Alignment.InfiltratorEvacuative);
             //if (bucket is RoleListOption.InfiltratorKilling) AssignInfiltratorRole(rolesAssigned, Alignment.InfiltratorKilling);
             if (bucket is RoleListOption.InfiltratorUtility) AssignInfiltratorRole(rolesAssigned, Alignment.InfiltratorUtility);
             if (bucket is RoleListOption.RandomInfiltrator) AssignInfiltratorRole(rolesAssigned, Alignment.None, bucket);

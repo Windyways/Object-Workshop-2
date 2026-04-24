@@ -21,13 +21,30 @@ public static class OWAssets
 
     // --- Objects ---
     public static LoadableAsset<Sprite> Alarum_AlarmClock { get; } = new LoadableResourceAsset($"{Object}.Alarum_AlarmClock.png");
+    public static LoadableAsset<Sprite> Obstructor_Barricade { get; } = new LoadableResourceAsset($"{Object}.Obstructor_Barricade.png");
+    public static LoadableAsset<Sprite> Arachnid_Spider { get; } = new LoadableResourceAsset($"{Object}.Arachnid_Spider.png");
+    public static LoadableAsset<Sprite> Arachnid_Web { get; } = new LoadableResourceAsset($"{Object}.Arachnid_Web.png");
+    public static LoadableAsset<Sprite> Arachnid_SpiderCensored { get; } = new LoadableResourceAsset($"{Object}.Arachnid_SpiderCensored.png");
+    public static LoadableAsset<Sprite> Shikari_Mark { get; } = new LoadableResourceAsset($"{Object}.Shikari_Mark.png");
+    public static LoadableAsset<Sprite> Duelist_Sword { get; } = new LoadableResourceAsset($"{Object}.Duelist_Sword.png");
+    public static LoadableAsset<Sprite> UFO_Moon { get; } = new LoadableResourceAsset($"{Object}.UFO_Moon.png");
+    public static LoadableAsset<Sprite> Luminescence_Lightbulb { get; } = new LoadableResourceAsset($"{Object}.Luminescence_Lightbulb.png");
+    public static LoadableAsset<Sprite> Pyre_FireSprite { get; } = new LoadableResourceAsset($"{Object}.Pyre_FireSprite.png");
 
     // --- Abilities ---
     public static LoadableAsset<Sprite> MeetingKillSprite { get; } = new LoadableResourceAsset($"{Abilities}.MeetingKillButton.png");
     public static LoadableAsset<Sprite> KillSprite { get; } = TouAssets.KillSprite;
 
+    // --- AUDIO ---
+    public static LoadableAsset<AudioClip> DuelBegin_SFX { get; } = new LoadableAudioResourceAsset($"{Audio}.DuelBegin_SFX.wav");
+    public static LoadableAsset<AudioClip> Duelist_Sharpen_SFX { get; } = new LoadableAudioResourceAsset($"{Audio}.Duelist_Sharpen_SFX.wav");
+    public static LoadableAsset<AudioClip> DuelKill_SFX { get; } = new LoadableAudioResourceAsset($"{Audio}.DuelKill_SFX.wav");
+    public static LoadableAsset<AudioClip> Abduct_SFX { get; } = new LoadableAudioResourceAsset($"{Audio}.Abduct_SFX.wav");
+    public static LoadableAsset<AudioClip> Build_SFX { get; } = new LoadableAudioResourceAsset($"{Audio}.Build_SFX.wav");
+
     // --- Other ---
     public static LoadableAsset<Sprite> Bubble { get; } = new LoadableResourceAsset($"{Object}.Bubble.png");
+    public static LoadableAsset<Sprite> FillerCircle { get; } = new LoadableResourceAsset($"{Object}.FillerCircle.png");
 
     // --- Role Cards ---
 

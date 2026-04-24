@@ -20,4 +20,6 @@ public abstract class NeutralRole(IntPtr cppPtr) : RoleBehaviour(cppPtr)
     {
         // remove default task hint
     }
+
+    public virtual float Vision() => GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod;
 }

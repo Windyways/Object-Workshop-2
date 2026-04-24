@@ -19,6 +19,8 @@ public static class TextColorizer
         { "Support", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
         { "Utility", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
         { "Associative", () => $"#91bbff" },
+        { "Benign", () => $"#c6db3c" },
+        { "Cataclysmic", () => $"#bd19b7" },
         { "Evil", () => $"#d34a72" },
         { "Predator", () => $"#3562ac" },
         { "Disruption", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
@@ -31,6 +33,25 @@ public static class TextColorizer
         // --- Marauder ---
         { "Marauder", () => $"#{RoleColors.Crewmate.ToHtmlStringRGBA()}" },
         { "Attack", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Alarum ---
+        { "Alarum", () => $"#{RoleColors.Crewmate.ToHtmlStringRGBA()}" },
+        { "Activate", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Obstructor ---
+        { "Obstructor", () => $"#{RoleColors.Infiltrator.ToHtmlStringRGBA()}" },
+        { "Barricade", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Arachnid ---
+        { "Arachnid", () => $"#{RoleColors.Infiltrator.ToHtmlStringRGBA()}" },
+        { "Spin", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Inner Spider", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Inner Infiltrator", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Shikari ---
+        { "Shikari", () => $"#{RoleColors.Shikari.ToHtmlStringRGBA()}" },
+        { "Mark", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Execute", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
     };
 
     // Build a single regex that matches any keyword. Longer keys are listed first to prefer them when overlapping.

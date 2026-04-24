@@ -9,6 +9,6 @@ public static class DiscordStatus
     [HarmonyPrefix]
     public static void Prefix([HarmonyArgument(0)] Activity activity)
     {
-        activity.Details += $" - Among Usville v{OWPlugin.Version}" + (OWPlugin.IsDevBuild ? " (DEV)" : string.Empty);
+        activity.Details += $" - Object Workshop 2 v{OWPlugin.Version}" + (OWPlugin.IsDevBuild ? $" (DEV Build {OWPlugin.BetaVersion})" : string.Empty);
     }
 }

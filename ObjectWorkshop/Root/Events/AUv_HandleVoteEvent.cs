@@ -1,6 +1,4 @@
-﻿using ObjectWorkshop.Roles;
-
-namespace ObjectWorkshop.Events;
+﻿namespace ObjectWorkshop.Events;
 
 public static class AUv_HandleVoteEvent
 {

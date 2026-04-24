@@ -91,6 +91,13 @@ public static class LocalSettings
                 return OWPlugin.RoleIconSpot.Value <= 0;
             },
             DefaultValue = OWPlugin.RoleIconSpot.Value <= 0
+        },
+        new()
+        {
+            Title = "Arachnophobia Mode",
+            ObjName = "ArachnophobiaMode",
+            OnClick = () => { return OWPlugin.ArachnophobiaMode.Value = !OWPlugin.ArachnophobiaMode.Value; },
+            DefaultValue = OWPlugin.ArachnophobiaMode.Value
         }
     ];
 

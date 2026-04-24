@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Il2CppInterop.Runtime.Attributes;
 using UnityEngine;
 
 namespace ObjectWorkshop.Roles;

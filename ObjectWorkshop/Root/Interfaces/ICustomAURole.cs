@@ -43,6 +43,8 @@ public interface ICustomAURole : ICustomRole
             if (Alignment == Alignment.CrewmateUtility) return TouRoleGroups.CU;
 
             if (Alignment == Alignment.NeutralAssociative) return TouRoleGroups.NA;
+            if (Alignment == Alignment.NeutralBenign) return TouRoleGroups.NB;
+            if (Alignment == Alignment.NeutralCataclysmic) return TouRoleGroups.NC;
             if (Alignment == Alignment.NeutralEvil) return TouRoleGroups.NE;
             if (Alignment == Alignment.NeutralPredator) return TouRoleGroups.NP;
 

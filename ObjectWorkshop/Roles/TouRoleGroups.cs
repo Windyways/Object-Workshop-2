@@ -9,6 +9,8 @@ public static class TouRoleGroups
     public static RoleOptionsGroup CU { get; } = new("Crewmate Utility Roles", RoleColors.Crewmate);
 
     public static RoleOptionsGroup NA { get; } = new("Neutral Associative Roles", RoleColors.Neutral);
+    public static RoleOptionsGroup NB { get; } = new("Neutral Benign Roles", RoleColors.Neutral);
+    public static RoleOptionsGroup NC { get; } = new("Neutral Cataclysmic Roles", RoleColors.Neutral);
     public static RoleOptionsGroup NE { get; } = new("Neutral Evil Roles", RoleColors.Neutral);
     public static RoleOptionsGroup NP { get; } = new("Neutral Predator Roles", RoleColors.Neutral);
 

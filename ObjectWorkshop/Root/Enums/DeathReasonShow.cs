@@ -16,4 +16,5 @@ public enum DeathReasonShow
     Bitten, // Schistocerca Locusts, Arachnid
     Submerged, // Claylim
     Skewered, // Weapon Master
+    Executed, // Shakari
 }

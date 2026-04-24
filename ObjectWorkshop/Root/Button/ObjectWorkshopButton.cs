@@ -131,19 +131,16 @@ public abstract class ObjectWorkshopButton : CustomActionButton
     public override bool CanUse()
     {
         if (PlayerControl.LocalPlayer == null)
-        {
             return false;
-        }
         
         if (PlayerControl.LocalPlayer.HasDied() && !UsableInDeath)
-        {
             return false;
-        }
 
         if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
-        {
             return false;
-        }
+
+        if (!PlayerControl.LocalPlayer.AbilityUsable())
+            return false;
 
         return base.CanUse();
     }
@@ -161,11 +158,8 @@ public abstract class ObjectWorkshopButton : CustomActionButton
 
     public override void ClickHandler()
     {
-        if (!CanClick() || 
-            PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
-        {
+        if (!CanClick())
             return;
-        }
 
         if (LimitedUses)
         {
@@ -180,8 +174,6 @@ public abstract class ObjectWorkshopButton : CustomActionButton
                     Button.usesRemainingSprite.color = TextOutlineColor;
                 }
             }
-
-            
         }
 
         OnClick();
