@@ -12,7 +12,7 @@ public class Suspicion(PlayerControl f, string s, int sus) : BaseModifier
     public string Source => s;
     public PlayerControl Finder => f;
     public int VotedChance => sus;
-    public static Suspicion GetRandom(List<PlayerControl> exclude = null)
+    public static Suspicion GetRandom(List<PlayerControl>? exclude = null)
     {
         var modifiers = new List<Suspicion>();
         if (exclude != null)

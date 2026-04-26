@@ -152,7 +152,7 @@ public sealed class Duelist_Duel : ObjectWorkshopRoleButton<Duelist, PlayerContr
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
-        if (playerControl.IsRole<Duelist>())
+        if (playerControl == Player)
         {
             Button?.usesRemainingText.gameObject.SetActive(true);
             Button?.usesRemainingSprite.gameObject.SetActive(true);

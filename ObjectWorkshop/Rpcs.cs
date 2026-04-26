@@ -16,6 +16,21 @@ public enum Rpcs : uint
     RpcRadiate,
     RpcPrepare,
     RpcIgnite,
+    RpcFire,
+    RpcAim,
+    RpcMoveCrosshair,
+    RpcDestroyCrosshair,
+    RpcSpawnBook,
+    RpcNotifyBC,
+    RpcDeclare,
+    RpcBloom,
+
+    // Oasis
+    RpcSanctify,
+    RpcStartSandstorm,
+    RpcStopSandstorm,
+    RpcSanctifyNotif,
+    RpcSandstormMissNotif,
 
     // Mechanics
     RpcAddVote,

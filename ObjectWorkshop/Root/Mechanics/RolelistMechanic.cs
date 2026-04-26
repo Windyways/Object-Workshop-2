@@ -20,21 +20,22 @@ public static class RolelistMechanic
         foreach (var bucket in buckets.OrderBy(x => x is RoleListOption.Any))
         {
             if (bucket is RoleListOption.CrewmateInvestigative) AssignCrewmateRole(rolesAssigned, Alignment.CrewmateInvestigative);
-            //if (bucket is RoleListOption.CrewmateKilling) AssignCrewmateRole(rolesAssigned, Alignment.CrewmateKilling);
+            if (bucket is RoleListOption.CrewmateKilling) AssignCrewmateRole(rolesAssigned, Alignment.CrewmateKilling);
             //if (bucket is RoleListOption.CrewmateProtective) AssignCrewmateRole(rolesAssigned, Alignment.CrewmateProtective);
-            //if (bucket is RoleListOption.CrewmateSupport) AssignCrewmateRole(rolesAssigned, Alignment.CrewmateSupport);
+            if (bucket is RoleListOption.CrewmateSupport) AssignCrewmateRole(rolesAssigned, Alignment.CrewmateSupport);
             if (bucket is RoleListOption.CrewmateUtility) AssignCrewmateRole(rolesAssigned, Alignment.CrewmateUtility);
             if (bucket is RoleListOption.RandomCrewmate) AssignCrewmateRole(rolesAssigned, Alignment.None, bucket);
 
-            //if (bucket is RoleListOption.na) AssignNeutralRole(rolesAssigned, Alignment.NeutralBenign);
+            if (bucket is RoleListOption.NeutralAssociative) AssignNeutralRole(rolesAssigned, Alignment.NeutralAssociative);
+            if (bucket is RoleListOption.NeutralBenign) AssignNeutralRole(rolesAssigned, Alignment.NeutralBenign);
             if (bucket is RoleListOption.NeutralCataclysmic) AssignNeutralRole(rolesAssigned, Alignment.NeutralCataclysmic);
-            //if (bucket is RoleListOption.NeutralEvil) AssignNeutralRole(rolesAssigned, Alignment.NeutralEvil);
-            //if (bucket is RoleListOption.NeutralKilling) AssignNeutralRole(rolesAssigned, Alignment.NeutralKilling);
-            //if (bucket is RoleListOption.RandomNeutral) AssignNeutralRole(rolesAssigned, Alignment.None, bucket);
+            if (bucket is RoleListOption.NeutralEvil) AssignNeutralRole(rolesAssigned, Alignment.NeutralEvil);
+            if (bucket is RoleListOption.NeutralPredator) AssignNeutralRole(rolesAssigned, Alignment.NeutralPredator);
+            if (bucket is RoleListOption.RandomNeutral) AssignNeutralRole(rolesAssigned, Alignment.None, bucket);
 
             if (bucket is RoleListOption.InfiltratorDisruption) AssignInfiltratorRole(rolesAssigned, Alignment.InfiltratorDisruption);
             if (bucket is RoleListOption.InfiltratorEvacuative) AssignInfiltratorRole(rolesAssigned, Alignment.InfiltratorEvacuative);
-            //if (bucket is RoleListOption.InfiltratorKilling) AssignInfiltratorRole(rolesAssigned, Alignment.InfiltratorKilling);
+            if (bucket is RoleListOption.InfiltratorKilling) AssignInfiltratorRole(rolesAssigned, Alignment.InfiltratorKilling);
             if (bucket is RoleListOption.InfiltratorUtility) AssignInfiltratorRole(rolesAssigned, Alignment.InfiltratorUtility);
             if (bucket is RoleListOption.RandomInfiltrator) AssignInfiltratorRole(rolesAssigned, Alignment.None, bucket);
 
@@ -117,7 +118,7 @@ public static class RolelistMechanic
         var allRoles = MiscUtils.AllRoles.Where(x => x is ICustomAURole customRole && x is not ISpawnChange &&
             customRole.Alignment == alignment).ToList();
 
-        //if (bucket == RoleListOption.RandomNeutral) allRoles = MiscUtils.AllRoles.Where(x => x is ICustomAURole customRole && x is not ISpawnChange && customRole.IsNeutral()).ToList();
+        if (bucket == RoleListOption.RandomNeutral) allRoles = MiscUtils.AllRoles.Where(x => x is ICustomAURole customRole && x is not ISpawnChange && customRole.IsNeutral()).ToList();
         
         allRoles.AddRange(allRoles.AddDuplicateRolesToPool());
         var rolesAssignable = allRoles.ToList();

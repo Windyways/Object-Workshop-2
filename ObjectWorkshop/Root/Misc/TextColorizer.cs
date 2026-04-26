@@ -52,6 +52,58 @@ public static class TextColorizer
         { "Shikari", () => $"#{RoleColors.Shikari.ToHtmlStringRGBA()}" },
         { "Mark", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
         { "Execute", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- UFO ---
+        { "UFO", () => $"#{RoleColors.Crewmate.ToHtmlStringRGBA()}" },
+        { "Abduct", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" }, { "Abducted", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Destination", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Abduct Immune", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Luminescence ---
+        { "Luminescence", () => $"#{RoleColors.Crewmate.ToHtmlStringRGBA()}" },
+        { "Radiate", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Auto Radiate", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Brightness Meter", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Duelist ---
+        { "Duelist", () => $"#{RoleColors.Crewmate.ToHtmlStringRGBA()}" },
+        { "Sharpen", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Duel", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Aimsman ---
+        { "Aimsman", () => $"#{RoleColors.Infiltrator.ToHtmlStringRGBA()}" },
+        { "Fire", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Aim", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Claylamity ---
+        { "Claylamity", () => $"#{RoleColors.Claylamity.ToHtmlStringRGBA()}" },
+        { "SUbMerGE", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Metamorphosis", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Book Collector ---
+        { "Book Collector", () => $"#{RoleColors.BookCollector.ToHtmlStringRGBA()}" },
+        { "Read", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Guess", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Enticer ---
+        { "Enticer", () => $"#{RoleColors.Enticer.ToHtmlStringRGBA()}" },
+        { "Prepare", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Devour", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Pyre ---
+        { "Pyre", () => $"#{RoleColors.Pyre.ToHtmlStringRGBA()}" },
+        { "Ignite", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Peacock ---
+        { "Peacock", () => $"#{RoleColors.Peacock.ToHtmlStringRGBA()}" },
+        { "Bloom", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Declare", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Associate", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Oasis ---
+        { "Oasis", () => $"#{RoleColors.Crewmate.ToHtmlStringRGBA()}" },
+        { "Sanctify", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Sandstorm", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
     };
 
     // Build a single regex that matches any keyword. Longer keys are listed first to prefer them when overlapping.

@@ -6,7 +6,6 @@ namespace ObjectWorkshop.Objects;
 [RegisterInIl2Cpp]
 public class Barricade(IntPtr ptr) : MonoBehaviour(ptr)
 {
-    public byte id;
     public float radius = 0.75f;
     public PlayerControl Owner;
     public SpriteRenderer myRend;
@@ -17,7 +16,6 @@ public class Barricade(IntPtr ptr) : MonoBehaviour(ptr)
         DestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Bounce(gameObject.transform, 0.7f, 0.45f));
 
         myRend = gameObject.GetComponent<SpriteRenderer>();
-        id = GetAvailableId();
 
         AllBarricades.Add(this);
         DestroyMoonOnPlace();
@@ -84,7 +82,7 @@ public class Barricade(IntPtr ptr) : MonoBehaviour(ptr)
         }
 
         GameObject gameObject = new GameObject("Barricade");
-        gameObject.AddSpriteRenderer(OWAssets.Obstructor_Barricade.LoadAsset(), 0, 100, player.transform.position, ObjectExtentions.noColor(), Vector3.one);
+        gameObject.AddSpriteRenderer(OWAssets.Obstructor_Barricade.LoadAsset(), 0, 100, player.GetAdjustedPosition(), ObjectExtentions.noColor(), Vector3.one);
         gameObject.AddPolygonCollider2D(false,
         [
                 new Vector2(-0.5f, -0.85f),
@@ -102,16 +100,6 @@ public class Barricade(IntPtr ptr) : MonoBehaviour(ptr)
         return barricade;
     }
 
-    public static byte GetAvailableId()
-    {
-        byte id = 0;
-        while (AllBarricades.Any(x => x.id == id))
-        {
-            id++;
-        }
-        return id;
-    }
-
     public static void DestroyGameObject(Barricade barricade)
     {
         if (barricade != null)
@@ -123,10 +111,14 @@ public class Barricade(IntPtr ptr) : MonoBehaviour(ptr)
 
     public static void DestroyAll()
     {
-        foreach (Barricade barricades in AllBarricades)
+        foreach (Barricade barricade in AllBarricades.ToArray())
         {
-            Destroy(barricades.gameObject);
+            if (barricade != null)
+            {
+                Destroy(barricade.gameObject);
+            }
         }
+
         AllBarricades.Clear();
     }
 

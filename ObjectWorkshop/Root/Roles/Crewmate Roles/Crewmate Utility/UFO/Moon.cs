@@ -29,7 +29,7 @@ public class Moon(IntPtr ptr) : MonoBehaviour(ptr)
 
         if ((target.Data.Role is Enticer enticer && enticer.Player.inVent) || /*target.IsUnderground() || */target.HasModifier<DuelingModifier>())
         {
-            player.Notify(UFO.Info(target), NotifyMode.InstantlyAndMeeting);
+            player.Notify(UFO_Feedback.AbductImmune(target), NotifyMode.InstantlyAndMeeting);
             yield break;
         } // Abduct immune because these may cause issues...
         /*else if (target.Data.Role is Totemist totemist && totemist.isWatching)
@@ -39,12 +39,12 @@ public class Moon(IntPtr ptr) : MonoBehaviour(ptr)
             LightSource light = target.lightSource;
             light.transform.SetParent(target.transform);
             light.transform.localPosition = target.Collider.offset;
-        }
+        }*/
         else if (target.Data.Role is Aimsman aimsman && aimsman.isAiming)
         {
             Aimsman.RpcAim(target);
         }
-        else if (target.Data.Role is Culverin culverin && culverin.isAiming)
+        /*else if (target.Data.Role is Culverin culverin && culverin.isAiming)
         {
             var cannonballBase = CannonballBase.GetObjectByPlayer(target);
 
@@ -69,7 +69,9 @@ public class Moon(IntPtr ptr) : MonoBehaviour(ptr)
 
         yield return Coroutines.Start(AnimateBeam());
 
-        // Teleport target to Moon position, or dead body if dead
+        if (target.AmOwner()) target.Notify(UFO_Feedback.Abducted(), NotifyMode.InstantlyAndMeeting);
+
+        // Teleport target to Moon position, or dead body if dead.
         if (target.HasDied())
         {
             var targetBody = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == target.PlayerId);
@@ -184,7 +186,7 @@ public class Moon(IntPtr ptr) : MonoBehaviour(ptr)
         WitnessKill.WitnessGoodDeed(player);
 
         var obj = new GameObject("Moon");
-        obj.AddSpriteRenderer(OWAssets.UFO_Moon.LoadAsset(), 10, 0, player.transform.position, ObjectExtentions.noColor(), Vector3.one);
+        obj.AddSpriteRenderer(OWAssets.UFO_Moon.LoadAsset(), 10, 0, player.GetAdjustedPosition(), ObjectExtentions.noColor(), Vector3.one);
 
         var moon = obj.AddComponent<Moon>();
         moon.Owner = player;
@@ -210,7 +212,7 @@ public class Moon(IntPtr ptr) : MonoBehaviour(ptr)
 
     public static List<Moon> AllMoons = new List<Moon>();
 
-    public static Moon GetMoon()
+    public static Moon? GetMoon()
     {
         if (AllMoons.Count == 0) return null;
         return AllMoons[0];

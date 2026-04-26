@@ -56,7 +56,7 @@ public class SpiderVisual(IntPtr ptr) : MonoBehaviour(ptr)
         gameObject.transform.SetParent(player.transform);
         gameObject.AddSpriteRenderer(
             OWPlugin.ArachnophobiaMode.Value ? OWAssets.Arachnid_SpiderCensored.LoadAsset() : OWAssets.Arachnid_Spider.LoadAsset(), 
-            0, 100, player.transform.position, ObjectExtentions.noColor(), Vector3.one);
+            0, 100, player.GetAdjustedPosition(), ObjectExtentions.noColor(), Vector3.one);
 
         SpiderVisual spiderVisual = gameObject.AddComponent<SpiderVisual>();
         spiderVisual.Owner = player;

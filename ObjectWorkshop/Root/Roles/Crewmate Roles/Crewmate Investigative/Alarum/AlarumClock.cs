@@ -7,7 +7,6 @@ namespace ObjectWorkshop.Objects;
 [RegisterInIl2Cpp]
 public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
 {
-    public byte id;
     public PlayerControl Owner;
     public SpriteRenderer myRend;
     public bool emitWaves;
@@ -25,9 +24,12 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
         
         // Bounce down. ty WanderingPix!
         DestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Bounce(transform, 0.7f, 0.45f));
-
-        id = GetAvailableId();
         AllClocks.Add(this);
+    }
+
+    private void OnDestroy()
+    {
+        AllClocks.Remove(this);
     }
 
     private void Update()
@@ -46,7 +48,6 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
                 if (dist > OptionGroupSingleton<Alarum_Options>.Instance.Radius)
                     continue;
 
-                var sr = aura.GetComponent<SpriteRenderer>();
                 if (player.Is(CalculatedFaction.Infiltrator))
                 {
                     bubbleColor = new Color32(255, 80, 80, 85);
@@ -72,9 +73,9 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
                         {
                             player.AddModifier<Suspicion>(Owner, Owner.Data.Role.NiceName, 35);
                         }
-                        else if (!player.HasModifier<Confirmed>() && !player.HasModifier<Suspicion>())
+                        else if (!player.HasModifier<SoftCleared>() && !player.HasModifier<Suspicion>())
                         {
-                            if (!isSusp) player.AddModifier<Confirmed>(Owner, ConfirmType.Instantly, Owner.Data.Role.NiceName);
+                            if (!isSusp) player.AddModifier<SoftCleared>();
                             else if (isSusp) player.AddModifier<Suspicion>(Owner, Owner.Data.Role.NiceName, 95);
                         }
                     }
@@ -175,12 +176,11 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
     public static void Begin(PlayerControl player)
     {
         var bubble = new GameObject("AlarumBubble");
-        bubble.AddSpriteRenderer(OWAssets.Bubble.LoadAsset(), 0, 100, player.transform.position, Color.clear, Vector3.one);
+        bubble.AddSpriteRenderer(OWAssets.Bubble.LoadAsset(), 0, 100, player.GetAdjustedPosition(), Color.clear, Vector3.one);
         bubble.transform.localScale = Vector3.one * OptionGroupSingleton<Alarum_Options>.Instance.Radius * 2f;
 
         var clockObj = new GameObject("AlarmClock");
-        clockObj.AddSpriteRenderer(OWAssets.Alarum_AlarmClock.LoadAsset(), 10, 0, player.transform.position, ObjectExtentions.noColor(), Vector3.one);
-
+        clockObj.AddSpriteRenderer(OWAssets.Alarum_AlarmClock.LoadAsset(), 10, 0, player.GetAdjustedPosition(), ObjectExtentions.noColor(), Vector3.one);
         var clock = clockObj.AddComponent<AlarmClock>();
         clock.Owner = player;
         clock.aura = bubble;
@@ -189,26 +189,6 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
 
         bubble.AddOWObject();
         clockObj.AddOWObject();
-    }
-
-    public static byte GetAvailableId()
-    {
-        byte id = 0;
-        while (AllClocks.Any(x => x.id == id))
-        {
-            id++;
-        }
-        return id;
-    }
-
-    public static void DestroyGameObject(AlarmClock alarmClock)
-    {
-        if (alarmClock == null)
-            return;
-
-        AllClocks.Remove(alarmClock);
-        Destroy(alarmClock.aura);
-        Destroy(alarmClock.gameObject);
     }
 
     public static void DestroyAll()
@@ -222,12 +202,5 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
     public static void CleanUp()
     {
         DestroyAll();
-        AllClocks.Clear();
-    }
-
-    public static IEnumerable<AlarmClock> GetAll()
-    {
-        // Return all currently active AlarmClocks.
-        return AllClocks;
     }
 }

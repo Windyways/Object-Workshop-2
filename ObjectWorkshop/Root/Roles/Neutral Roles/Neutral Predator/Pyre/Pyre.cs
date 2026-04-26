@@ -16,7 +16,7 @@ public sealed class Pyre(IntPtr cppPtr)
     public CalculatedFaction CalculatedFaction { get; set; } = CalculatedFaction.Neutral;
     public Alignment Alignment => Alignment.NeutralPredator;
 
-    public string RevealText => "is a master at spreading fire. ";
+    public string RevealText => "is a master at spreading fire.";
     public string Description => $"Ignite players on fire and have them spread it to nearby players.";
     public string Intro => "You are an unknown welder that enjoys using their profession for violence.";
     public string VictoryCondition => $"Burn everyone in flames, well just all that opposes you. You will win with other Pyres.";
@@ -53,6 +53,17 @@ public sealed class Pyre(IntPtr cppPtr)
             "After a certain amount of time, your target will die. Any players the target gets too close to will get caught on fire immediately.",
             OWAssets.KillSprite)
     ];
+
+    public string GetPassives()
+    {
+        return "- You have a Shield to protect you from the first attack you receive. The Shield is removed upon Igniting a player.";
+    }
+
+    public override void Initialize(PlayerControl player)
+    {
+        RoleBehaviourStubs.Initialize(this, player);
+        if (player.AmOwner() && OptionGroupSingleton<Pyre_Options>.Instance.EnableShield) player.RpcAddModifier<Shielded>();
+    }
 
     [MethodRpc((uint)Rpcs.RpcIgnite)]
     public static void RpcIgnite(PlayerControl player, PlayerControl target)
@@ -100,7 +111,11 @@ public sealed class Pyre(IntPtr cppPtr)
 
     public void Function(PlayerControl target, int Button)
     {
-        if (Button == 1) ignitedPlayer = target;
+        if (Button == 1)
+        {
+            ignitedPlayer = target;
+            Player.RpcRemoveModifier<Shielded>();
+        }
     }
 
     public PlayerControl ignitedPlayer;
@@ -148,4 +163,7 @@ public sealed class Pyre_Options : AbstractOptionGroup<Pyre>
 
     [ModdedToggleOption("<color=#ff3771>Pyre</color> Can Vent")]
     public bool CanVent { get; set; } = true;
+
+    [ModdedToggleOption("Enable <color=#ff3771>Pyre</color> <color=#0000ff>Shield</color>")]
+    public bool EnableShield { get; set; } = true;
 }

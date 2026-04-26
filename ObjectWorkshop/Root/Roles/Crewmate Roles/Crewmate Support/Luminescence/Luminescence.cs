@@ -60,6 +60,11 @@ public sealed class Luminescence(IntPtr cppPtr)
             OWAssets.KillSprite),
     ];
 
+    public void Role_OnRoundStart()
+    {
+        Brightness = 100;
+    }
+
     public void Role_OnMeetingStart()
     {
         Lightbulb.CleanUp();
@@ -80,7 +85,7 @@ public sealed class Luminescence(IntPtr cppPtr)
         }
 
         var luminescence = player.GetRole<Luminescence>();
-        Lightbulb.Begin(luminescence.Player);
+        Lightbulb.Begin(player);
     }
 
     public void Function(PlayerControl target, int Button)
@@ -100,40 +105,9 @@ public sealed class Luminescence_Radiate : ObjectWorkshopRoleButton<Luminescence
     public override LoadableAsset<Sprite> Sprite => OWAssets.KillSprite;
     public override float EffectDuration => OptionGroupSingleton<Luminescence_Options>.Instance.Duration;
     public override int MaxUses => (int)OptionGroupSingleton<Luminescence_Options>.Instance.MaxShatters;
+    public override bool DecreaseCharge => false;
 
     protected override void OnClick() => VisitingMechanic.CheckVisit(Player, Player, 1, false, false);
-    public override void ClickHandler()
-    {
-        if (!CanClick())
-            return;
-
-        if (LimitedUses)
-        {
-            //UsesLeft--;
-            Button?.SetUsesRemaining(UsesLeft);
-
-            if (TextOutlineColor != Color.clear)
-            {
-                SetTextOutline(TextOutlineColor);
-                if (Button != null)
-                {
-                    Button.usesRemainingSprite.color = TextOutlineColor;
-                }
-            }
-        }
-
-        OnClick();
-
-        if (HasEffect)
-        {
-            EffectActive = true;
-            Timer = EffectDuration;
-        }
-        else
-        {
-            Timer = Cooldown;
-        }
-    }
 }
 
 public sealed class Luminescence_AutoRadiate : ObjectWorkshopRoleButton<Luminescence>

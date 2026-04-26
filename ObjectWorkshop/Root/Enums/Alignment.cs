@@ -16,7 +16,7 @@ public enum Alignment
 
     InfiltratorDisruption,
     InfiltratorEvacuative,
-    InfiltratorMilitant,
+    InfiltratorKilling,
     InfiltratorUtility,
 
     None,

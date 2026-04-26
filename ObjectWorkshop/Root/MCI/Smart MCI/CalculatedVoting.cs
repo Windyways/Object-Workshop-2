@@ -43,16 +43,28 @@ public static class CalculatedVoting
 
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
+            var validPlayersCrewmate = PlayerControl.AllPlayerControls.ToArray().Where(x =>
+                !x.HasDied() && x != player && !x.HasModifier<TI>(x => !x.Player.HasModifier<Suspicion>()) &&
+                !(x.TryGetModifier<Confirmed>(out var confirmed) && confirmed.IsConfirmed()) && !x.HasModifier<SoftCleared>() &&
+                !(x.Is(Faction.Crewmate) && x.HasModifier<GlobalReveal>()) &&
+                !(x.Data.Role is Peacock peacock && peacock.Player.GetAssociate() == player)).ToList();
+
+            var validPlayersInfiltrator = PlayerControl.AllPlayerControls.ToArray().Where(x =>
+                !x.HasDied() && !x.Is(Faction.Infiltrator) &&
+                !(x.Data.Role is Peacock peacock && peacock.Player.GetAssociate() == player)).ToList();
+
             if (!player.HasDied())
             {
                 var alivePlayers = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.HasDied() && x != player).ToList();
 
                 byte voted = 0;
-                if (player.Is(Faction.Infiltrator)) voted = InfiltratorVoting(player, __instance);
-                else if (player.Is(Faction.Crewmate)) voted = CrewmateVoting(player, __instance);
+                if (player.Is(Faction.Infiltrator)) voted = InfiltratorVoting(player, __instance, validPlayersInfiltrator);
+                else if (player.Is(Faction.Crewmate)) voted = CrewmateVoting(player, __instance, validPlayersCrewmate);
                 else if (player.Data.Role is Shikari shikari) voted = ShikariVoting(shikari, __instance);
+                else if (player.Data.Role is Peacock peacock) voted = PeacockVoting(peacock, __instance);
                 else if (player.Is(Alignment.NeutralPredator)) voted = RandomVote(player, __instance, alivePlayers, alivePlayers.Count > GlobalSkipThreshold);
                 else if (player.Is(Alignment.NeutralEvil)) voted = RandomVote(player, __instance, alivePlayers, alivePlayers.Count > GlobalSkipThreshold);
+                else if (player.Is(Alignment.NeutralBenign)) voted = RandomVote(player, __instance, alivePlayers, alivePlayers.Count > GlobalSkipThreshold);
 
                 if (voted == MeetingHud.Instance.SkipVoteButton.TargetPlayerId) AUS_AfterVoteEvent.RoleFunctionOnSkip(player);
                 else AUS_AfterVoteEvent.RoleFunctionOnVote(player, MiscUtils.PlayerById(voted));
@@ -67,13 +79,9 @@ public static class CalculatedVoting
     /// Abstain otherwise.
     /// </summary>
     public static (byte, bool) declaredCrewmateTarget = (byte.MinValue, false);
-    public static byte CrewmateVoting(PlayerControl player, MeetingHud __instance)
+    public static byte CrewmateVoting(PlayerControl player, MeetingHud __instance, List<PlayerControl> validPlayers)
     {
         var allPlayers = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.HasDied()).ToList();
-        var validPlayers = PlayerControl.AllPlayerControls.ToArray().Where(x =>
-            !x.HasDied() && x != player && !x.HasModifier<TI>(x => !x.Player.HasModifier<Suspicion>()) && 
-            !(x.TryGetModifier<Confirmed>(out var confirmed) && confirmed.IsConfirmed()) && !x.HasModifier<SoftCleared>() && 
-            !(x.Is(Faction.Crewmate) && x.HasModifier<GlobalReveal>())).ToList();
 
         var seenKill = SeenKill.GetAll();
         var confirmedEvil = ConfirmedEvil.GetAll();
@@ -113,11 +121,9 @@ public static class CalculatedVoting
     /// Abstain otherwise.
     /// </summary>
     public static (byte, bool) lastInfiltratorVoteTarget = (byte.MinValue, false);
-    public static byte InfiltratorVoting(PlayerControl player, MeetingHud __instance)
+    public static byte InfiltratorVoting(PlayerControl player, MeetingHud __instance, List<PlayerControl> validPlayers)
     {
         var allPlayers = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.HasDied()).ToList();
-        var validPlayers = PlayerControl.AllPlayerControls.ToArray().Where(x =>
-            !x.HasDied() && !x.Is(Faction.Infiltrator)).ToList();
 
         var seenKill = SeenKill.GetAll();
 
@@ -150,8 +156,22 @@ public static class CalculatedVoting
         
         if (validPlayers.Count > 0) return RandomVote(player, __instance, validPlayers, allPlayers.Count >= GlobalSkipThreshold);
         else return SkipVote(player, __instance);
+    }
 
-        return declaredCrewmateTarget.Item1;
+    public static byte PeacockVoting(Peacock peacock, MeetingHud __instance)
+    {
+        var player = peacock.Player;
+        var validPlayersCrewmate = PlayerControl.AllPlayerControls.ToArray().Where(x =>
+            !x.HasDied() && x != player && !x.HasModifier<TI>(x => !x.Player.HasModifier<Suspicion>()) &&
+            !(x.TryGetModifier<Confirmed>(out var confirmed) && confirmed.IsConfirmed()) && !x.HasModifier<SoftCleared>() &&
+            !(x.Is(Faction.Crewmate) && x.HasModifier<GlobalReveal>()) && player.GetAssociate() != x).ToList();
+        var validPlayersInfiltrator = PlayerControl.AllPlayerControls.ToArray().Where(x =>
+            !x.HasDied() && !x.Is(Faction.Infiltrator) && player.GetAssociate() != x).ToList();
+        var validPlayersNeutral = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.HasDied() && x != player && player.GetAssociate() != x).ToList();
+
+        if (player.GetAssociate().Is(Faction.Crewmate)) return CrewmateVoting(player, __instance, validPlayersCrewmate);
+        else if (player.GetAssociate().Is(Faction.Infiltrator)) return InfiltratorVoting(player, __instance, validPlayersInfiltrator);
+        else return RandomVote(player, __instance, validPlayersNeutral, PlayerControl.AllPlayerControls.Count >= GlobalSkipThreshold);
     }
 
     public static bool ChanceIsNull(int? num)

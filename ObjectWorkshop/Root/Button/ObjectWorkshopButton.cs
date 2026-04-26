@@ -22,6 +22,8 @@ public abstract class ObjectWorkshopButton : CustomActionButton
     public virtual bool UsableInDeath => false;
     public virtual bool ShouldPauseInVent => true;
 
+    public virtual bool DecreaseCharge => true;
+
     private PassiveButton PassiveComp { get; set; }
 
     public virtual int ConsoleBind()
@@ -163,7 +165,7 @@ public abstract class ObjectWorkshopButton : CustomActionButton
 
         if (LimitedUses)
         {
-            UsesLeft--;
+            if (DecreaseCharge) UsesLeft--;
             Button?.SetUsesRemaining(UsesLeft);
             
             if (TextOutlineColor != Color.clear)
@@ -209,6 +211,7 @@ public abstract class ObjectWorkshopTargetButton<T> : CustomActionButton<T> wher
     private PassiveButton PassiveComp { get; set; }
 
 
+    public virtual bool DecreaseCharge => true;
     public virtual int ConsoleBind()
     {
         var bind = -1;
@@ -354,7 +357,7 @@ public abstract class ObjectWorkshopTargetButton<T> : CustomActionButton<T> wher
         {
             if (LimitedUses)
             {
-                UsesLeft--;
+                if (DecreaseCharge) UsesLeft--;
                 Button?.SetUsesRemaining(UsesLeft);
                 
                 if (TextOutlineColor != Color.clear)

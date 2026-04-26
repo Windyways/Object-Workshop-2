@@ -105,12 +105,15 @@ public class Webs(IntPtr ptr) : MonoBehaviour(ptr)
 
     public static bool IsInWebs(PlayerControl player)
     {
+        if (player.HasDied()) return false;
+
         foreach (var web in AllWebs)
         {
             float range = player.IsSpider() ? 1.1f : 0.7f;
             float dist = Vector2.Distance(player.GetTruePosition(), web.transform.position);
             if (dist < range) return true;
         }
+
         return false;
     }
 

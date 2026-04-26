@@ -12,11 +12,11 @@ public static class PlayerSpeedPatch
         {
             __result *= 0f;
         }
-        else if (pc.Data.Role is Aimsman aimsman && aimsman.isAiming)
+        else */if (pc.Data.Role is Aimsman aimsman && aimsman.isAiming)
         {
             __result *= 0f;
         }
-        else if (pc.Data.Role is GiftWeaver giftWeaver && giftWeaver.isBuilding)
+        /*else if (pc.Data.Role is GiftWeaver giftWeaver && giftWeaver.isBuilding)
         {
             __result *= 0f;
         }
@@ -27,21 +27,20 @@ public static class PlayerSpeedPatch
         else if (pc.IsUnderground())
         {
             __result *= OptionGroupSingleton<Excavator_Options>.Instance.Speed;
-        }
+        }*/
         else if (PeacockVisual.IsPlayerAnyParalyzed(pc))
         {
             __result *= 0f;
         }
-        else if (pc.IsRole<UndeadReaper>() && UndeadReaper.ReapersAlive())
+        /*else if (pc.IsRole<UndeadReaper>() && UndeadReaper.ReapersAlive())
         {
             __result *= OptionGroupSingleton<UndeadReaper_Options>.Instance.Speed;
-        }
-        else if (pc.HasModifier<SubmergedModifier>())
+        }*/
+        else if (pc.HasModifier<Submerged>())
         {
             __result *= OptionGroupSingleton<Claylamity_Options>.Instance.Speed;
         }
-        else */
-        if (Webs.IsInWebs(pc) && pc.IsSpider())
+        else if (Webs.IsInWebs(pc) && pc.IsSpider())
         {
             __result *= OptionGroupSingleton<Arachnid_Options>.Instance.Speed;
         }

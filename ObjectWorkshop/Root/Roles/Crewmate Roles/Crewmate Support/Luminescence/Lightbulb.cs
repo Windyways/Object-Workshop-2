@@ -63,11 +63,11 @@ public class Lightbulb(IntPtr ptr) : MonoBehaviour(ptr)
         WitnessKill.WitnessGoodDeed(player);
 
         var bubble = new GameObject("LightbulbAura");
-        bubble.AddSpriteRenderer(OWAssets.Bubble.LoadAsset(), 0, 100, player.transform.position, ObjectExtentions.noColor(), Vector3.one);
+        bubble.AddSpriteRenderer(OWAssets.Bubble.LoadAsset(), 0, 100, player.GetAdjustedPosition(), ObjectExtentions.noColor(), Vector3.one);
         bubble.transform.localScale = Vector3.one * OptionGroupSingleton<Luminescence_Options>.Instance.Radius * 2f;
 
         var gameObject = new GameObject("Lightbulb");
-        gameObject.AddSpriteRenderer(OWAssets.Luminescence_Lightbulb.LoadAsset(), 0, 0, player.transform.position, ObjectExtentions.noColor(), Vector3.one);
+        gameObject.AddSpriteRenderer(OWAssets.Luminescence_Lightbulb.LoadAsset(), 0, 0, player.GetAdjustedPosition(), ObjectExtentions.noColor(), Vector3.one);
         var lightbulb = gameObject.AddComponent<Lightbulb>();
         lightbulb.Owner = player;
         lightbulb.aura = bubble;
@@ -80,13 +80,13 @@ public class Lightbulb(IntPtr ptr) : MonoBehaviour(ptr)
 
     public static void DestroyAll()
     {
-        List<Lightbulb> current = AllLightbulbs;
-        foreach (var clock in current) // need a new list so it doesnt throw an error for editing a list while in a loop.
+        foreach (var clock in AllLightbulbs) 
         {
-            AllLightbulbs.Remove(clock);
             Destroy(clock.aura);
             Destroy(clock.gameObject);
         }
+
+        AllLightbulbs.Clear();
     }
 
     public static IEnumerable<Lightbulb> GetAll()
@@ -109,7 +109,6 @@ public class Lightbulb(IntPtr ptr) : MonoBehaviour(ptr)
 
         return false;
     }
-
 
     public static void CleanUp()
     {

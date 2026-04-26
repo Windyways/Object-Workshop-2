@@ -67,13 +67,8 @@ public sealed class Enticer(IntPtr cppPtr)
         }
 
         var enticer = player.GetRole<Enticer>();
-        enticer.isPrepared = !enticer.isPrepared;
 
         if (enticer.isPrepared)
-        {
-            if (player.AmOwner()) HookCircle.Begin(player);
-        }
-        else
         {
             var hookCircle = HookCircle.GetObjectByOwner(player);
             Object.Destroy(hookCircle.gameObject);
@@ -81,6 +76,12 @@ public sealed class Enticer(IntPtr cppPtr)
             var hook = EnticerHook.GetObjectByOwner(player);
             if (hook != null) hook.Destroy();
         }
+        else
+        {
+            if (player.AmOwner()) HookCircle.Begin(player);
+        }
+
+        enticer.isPrepared = !enticer.isPrepared;
     }
 
     public bool WinConditionMet()
@@ -141,6 +142,8 @@ public sealed class Enticer(IntPtr cppPtr)
 
             var hook = EnticerHook.GetObjectByOwner(Player);
             if (hook != null) hook.Destroy();
+
+            isPrepared = false;
         }
     }
 
@@ -160,6 +163,30 @@ public sealed class Enticer_Prepare : ObjectWorkshopRoleButton<Enticer>
     public override Color TextOutlineColor => RoleColors.Enticer;
     public override float Cooldown => 1f;
     public override LoadableAsset<Sprite> Sprite => OWAssets.KillSprite;
+    public override bool ShouldPauseInVent => false;
+
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        if (KeybindIcon != null) KeybindIcon.transform.localPosition = new Vector3(0.4f, 0.45f, -9f);
+    }
+
+    protected override void FixedUpdate(PlayerControl playerControl)
+    {
+        if (playerControl == Player)
+        {
+            Button?.usesRemainingText.gameObject.SetActive(true);
+            Button?.usesRemainingSprite.gameObject.SetActive(true);
+            Button!.usesRemainingText.text = Role.DevourCount + "/" + (int)OptionGroupSingleton<Enticer_Options>.Instance.Required;
+
+            if (Button != null)
+            {
+                Button.usesRemainingSprite.gameObject.transform.localPosition = new Vector3(0.4f, -0.1f, -0.1f);
+            }
+        }
+
+        base.FixedUpdate(playerControl);
+    }
 
     protected override void OnClick() => VisitingMechanic.CheckVisit(Player, Player, 1, false, false);
     public override bool CanUse()

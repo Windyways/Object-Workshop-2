@@ -16,6 +16,6 @@ public static class TouRoleGroups
 
     public static RoleOptionsGroup ID { get; } = new("Infiltrator Disruption Roles", RoleColors.Infiltrator);
     public static RoleOptionsGroup IE { get; } = new("Infiltrator Evacuative Roles", RoleColors.Infiltrator);
-    public static RoleOptionsGroup IM { get; } = new("Infiltrator Militant Roles", RoleColors.Infiltrator);
+    public static RoleOptionsGroup IK { get; } = new("Infiltrator Killing Roles", RoleColors.Infiltrator);
     public static RoleOptionsGroup IU { get; } = new("Infiltrator Utility Roles", RoleColors.Infiltrator);
 }

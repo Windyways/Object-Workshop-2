@@ -6,22 +6,22 @@ public sealed class RoleOptions : AbstractOptionGroup
     public static readonly string[] OptionStrings =
     [
         "<color=#b3ffff>Crewmate</color> <color=#4a86e8>Investigative</color>",
-        //"<color=#b3ffff>Crewmate</color> <color=#4a86e8>Killing</color>",
+        "<color=#b3ffff>Crewmate</color> <color=#4a86e8>Killing</color>",
         //"<color=#b3ffff>Crewmate</color> <color=#4a86e8>Protective</color>",
-        //"<color=#b3ffff>Crewmate</color> <color=#4a86e8>Support</color>",
+        "<color=#b3ffff>Crewmate</color> <color=#4a86e8>Support</color>",
         "<color=#b3ffff>Crewmate</color> <color=#4a86e8>Utility</color>",
         "<color=#4a86e8>Random</color> <color=#b3ffff>Crewmate</color>",
 
-        //"<color=#a9a9a9>Neutral</color> <color=#91bbff>Associative</color>",
-        //"<color=#a9a9a9>Neutral</color> <color=#c6db3c>Benign</color>",
+        "<color=#a9a9a9>Neutral</color> <color=#91bbff>Associative</color>",
+        "<color=#a9a9a9>Neutral</color> <color=#c6db3c>Benign</color>",
         "<color=#a9a9a9>Neutral</color> <color=#bd19b7>Cataclysmic</color>",
-        //"<color=#a9a9a9>Neutral</color> <color=#d34a72>Evil</color>",
-        //"<color=#a9a9a9>Neutral</color> <color=#3562ac>Predator</color>",
-        //"<color=#4a86e8>Random</color> <color=#a9a9a9>Neutral</color>",
+        "<color=#a9a9a9>Neutral</color> <color=#d34a72>Evil</color>",
+        "<color=#a9a9a9>Neutral</color> <color=#3562ac>Predator</color>",
+        "<color=#4a86e8>Random</color> <color=#a9a9a9>Neutral</color>",
 
         "<color=#ff5050>Infiltrator</color> <color=#4a86e8>Disruption</color>",
         "<color=#ff5050>Infiltrator</color> <color=#4a86e8>Evacuative</color>",
-        //"<color=#ff5050>Infiltrator</color> <color=#4a86e8>Militant</color>",
+        "<color=#ff5050>Infiltrator</color> <color=#4a86e8>Killing</color>",
         "<color=#ff5050>Infiltrator</color> <color=#4a86e8>Utility</color>",
         "<color=#4a86e8>Random</color> <color=#ff5050>Infiltrator</color>",
 
@@ -126,22 +126,22 @@ public sealed class RoleOptions : AbstractOptionGroup
 public enum RoleListOption
 {
     CrewmateInvestigative,
-    //CrewmateKilling,
+    CrewmateKilling,
     //CrewmateProtective,
-    //CrewmateSupport,
+    CrewmateSupport,
     CrewmateUtility,
     RandomCrewmate,
 
-    //NeutralAssociative,
-    //NeutralBenign,
+    NeutralAssociative,
+    NeutralBenign,
     NeutralCataclysmic,
-    //NeutralEvil,
-    //NeutralPredator,
-    //RandomNeutral,
+    NeutralEvil,
+    NeutralPredator,
+    RandomNeutral,
 
     InfiltratorDisruption,
     InfiltratorEvacuative,
-    //InfiltratorMilitant,
+    InfiltratorKilling,
     InfiltratorUtility,
     RandomInfiltrator,
 

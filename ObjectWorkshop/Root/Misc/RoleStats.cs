@@ -48,6 +48,9 @@ namespace ObjectWorkshop.Misc
             // -- CK --
             roleStats.Add("Duelist", new RoleStats("Duelist", RoleColors.Crewmate));
 
+            // -- CP --
+            roleStats.Add("Oasis", new RoleStats("Oasis", RoleColors.Crewmate));
+
             // -- CS --
             roleStats.Add("Luminescence", new RoleStats("Luminescence", RoleColors.Crewmate));
 
@@ -56,6 +59,12 @@ namespace ObjectWorkshop.Misc
             roleStats.Add("UFO", new RoleStats("UFO", RoleColors.Crewmate));
 
             // --- NEUTRAL ---
+            // -- NA --
+            roleStats.Add("Peacock", new RoleStats("Peacock", RoleColors.Peacock));
+
+            // -- NB --
+            roleStats.Add("Book Collector", new RoleStats("Book Collector", RoleColors.BookCollector));
+
             // -- NC --
             roleStats.Add("Shikari", new RoleStats("Shikari", RoleColors.Shikari));
 
@@ -72,8 +81,12 @@ namespace ObjectWorkshop.Misc
             // -- IE --
             roleStats.Add("Arachnid", new RoleStats("Arachnid", RoleColors.Infiltrator));
 
+            // -- IK --
+            roleStats.Add("Aimsman", new RoleStats("Aimsman", RoleColors.Infiltrator));
+
             // -- IU --
             roleStats.Add("Marauder", new RoleStats("Marauder", RoleColors.Infiltrator));
+            roleStats.Add("Claylamity", new RoleStats("Claylamity", RoleColors.Claylamity));
 
             LoadRoleStats(filePath);
         }

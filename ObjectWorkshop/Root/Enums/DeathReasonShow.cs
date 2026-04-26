@@ -17,4 +17,5 @@ public enum DeathReasonShow
     Submerged, // Claylim
     Skewered, // Weapon Master
     Executed, // Shakari
+    ExitedInVictory, // Book Collector
 }

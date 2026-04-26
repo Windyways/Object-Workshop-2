@@ -95,11 +95,6 @@ public sealed class UFO(IntPtr cppPtr)
         Moon.CleanUp();
     }
 
-    public static string Info(PlayerControl target)
-    {
-        return $"You tried to Abduct {target.Name()}, but they were immune!";
-    }
-
     public void Function(PlayerControl target, int Button)
     {
         if (Button == 1) RpcDestination(Player);
@@ -186,8 +181,6 @@ public sealed class UFO_Abduct : ObjectWorkshopRoleButton<UFO>
                     Button.usesRemainingSprite.color = TextOutlineColor;
                 }
             }
-
-
         }
 
         OnClick();
@@ -200,6 +193,20 @@ public sealed class UFO_Abduct : ObjectWorkshopRoleButton<UFO>
         return base.CanUse() && !Moon.GetMoon().isAbductOccuring;
     }
 }
+
+public static class UFO_Feedback
+{
+    public static string AbductImmune(PlayerControl target)
+    {
+        return $"You tried to Abduct {target.Name()}, but they were immune!".ApplyKeywords();
+    }
+
+    public static string Abducted()
+    {
+        return $"You have been Abducted by a UFO!".ApplyKeywords();
+    }
+}
+
 public sealed class UFO_Options : AbstractOptionGroup<UFO>
 {
     public override string GroupName => "UFO";

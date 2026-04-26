@@ -6,7 +6,6 @@ namespace ObjectWorkshop.Objects;
 [RegisterInIl2Cpp]
 public class Marked(IntPtr ptr) : MonoBehaviour(ptr)
 {
-    public byte id;
     public PlayerControl Owner;
     public SpriteRenderer myRend;
 
@@ -14,8 +13,6 @@ public class Marked(IntPtr ptr) : MonoBehaviour(ptr)
     public void Start()
     {
         myRend = gameObject.GetComponent<SpriteRenderer>();
-
-        id = GetAvailableId();
         AllMarks.Add(this);
 
         Coroutines.Start(SpinRoutine());
@@ -71,16 +68,6 @@ public class Marked(IntPtr ptr) : MonoBehaviour(ptr)
 
         var mark = obj.AddComponent<Marked>();
         mark.Owner = player;
-    }
-
-    public static byte GetAvailableId()
-    {
-        byte id = 0;
-        while (AllMarks.Any(x => x.id == id))
-        {
-            id++;
-        }
-        return id;
     }
 
     public static void DestroyAll()

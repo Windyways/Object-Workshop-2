@@ -16,6 +16,11 @@ public static class HudManagerPatches
 {
     public static bool LocalVisibilityFlag(PlayerControl localPlayer, PlayerControl player)
     {
+        foreach (var revealed in ModifierUtils.GetActiveModifiers<RoleLearn>())
+        {
+            if (!localPlayer.Is(Faction.None) && revealed.Player == player && revealed.Visitor == localPlayer) return true;
+        }
+
         return
             // Infiltrator
             (localPlayer.Is(Faction.Infiltrator) && player.Is(Faction.Infiltrator)) ||
@@ -24,7 +29,6 @@ public static class HudManagerPatches
             (!localPlayer.Is(Faction.None) && player.HasDied() && OptionGroupSingleton<OWOptions>.Instance.AliveSeeDead) ||
 
             (!localPlayer.Is(Faction.None) && player.HasModifier<GlobalReveal>()) ||
-            (!localPlayer.Is(Faction.None) && player.TryGetModifier<RoleLearn>(out var revealed2) && revealed2.Visitor == PlayerControl.LocalPlayer) ||
             (localPlayer == player)
             ;
     }

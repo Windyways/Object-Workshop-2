@@ -23,7 +23,7 @@ public class SeenKill : BaseModifier
         else if (Player.HasModifier<TI>()) voteChance += 20;
     }
 
-    public static SeenKill GetAll(List<PlayerControl> exclude = null)
+    public static SeenKill? GetAll(List<PlayerControl>? exclude = null)
     {
         var modifiers = new List<SeenKill>();
         if (exclude != null)

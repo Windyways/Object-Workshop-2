@@ -4,6 +4,24 @@ namespace ObjectWorkshop.Misc;
 
 public static class Feedback
 {
+    public static string RevealRole(PlayerControl revealer, PlayerControl player)
+    {
+        if (player.Data.Role is ICustomAURole customRole)
+        {
+            if (player.HasDied()) customRole = player.GetICustomAURoleWhenAlive();
+
+            string text = player.GetDefaultAppearance().PlayerName + " ";
+            string roleName = customRole.RoleName;
+            Color roleColor = customRole.RoleColor;
+            string endText = $" They must be a <color=#" + roleColor.ToHtmlStringRGBA() + $"><b>{roleName}</b>!";
+
+            text += customRole.RevealText;
+            return text + endText;
+        }
+
+        return "";
+    }
+
     public static void Notify(this PlayerControl player, string feedback, NotifyMode type, Color color = new(), Sprite? sprite = null, NetworkedPlayerInfo? basePlayer = null)
     {
         if (player.AmOwner())

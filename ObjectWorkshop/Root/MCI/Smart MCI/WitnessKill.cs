@@ -64,12 +64,13 @@ public static class WitnessKill
 
     public static bool IgnoreKill(PlayerControl killer, PlayerControl witness)
     {
+        if (killer.IsRole<Duelist>()) return true; // this duel stuff is PMO.
         if (killer.IsSpider() || witness.HasModifier<DuelingModifier>() || killer.HasModifier<DuelingModifier>()) return true;
         if (killer.Is(Faction.Infiltrator) && witness.Is(Faction.Infiltrator)) return true;
         return false;
     }
 
-    public static bool BotCanSee(PlayerControl killer, PlayerControl witness, Vector3 killPos)
+    public static bool BotCanSee(PlayerControl killer, PlayerControl witness, Vector3 killPos, bool ignoreInvis = false)
     {
         // 1) distance
         float dist = Vector3.Distance(witness.transform.position, killPos);
@@ -91,7 +92,7 @@ public static class WitnessKill
         if (PhysicsHelpers.AnyNonTriggersBetween(killer.GetTruePosition(), vector.normalized, magnitude, Constants.ShipAndObjectsMask))
             return false;
         
-        if (killer.HasModifier<InvisibleTogglable>())
+        if (killer.HasModifier<InvisibleTogglable>() && !ignoreInvis)
             return false;
 
         return true;

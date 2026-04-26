@@ -74,8 +74,8 @@ public sealed class Arachnid(IntPtr cppPtr)
             return;
         }
         
-        var pos = player.transform.position;
-        if (target != null) pos = target.transform.position;
+        var pos = player.GetAdjustedPosition();
+        if (target != null) pos = target.GetAdjustedPosition();
         Webs.Begin(player, pos);
     }
 
@@ -188,7 +188,6 @@ public sealed class Arachnid_Bite : ObjectWorkshopRoleButton<Arachnid, PlayerCon
     }
 
     protected override void OnClick() => VisitingMechanic.CheckVisit(Player, Target, 1, true, true);
-
     public override bool CanUse()
     {
         return base.CanUse() && Role.isSpider;

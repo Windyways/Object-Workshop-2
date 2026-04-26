@@ -120,7 +120,11 @@ public sealed class Shikari(IntPtr cppPtr) : NeutralRole(cppPtr), ICustomAURole,
 
     public void Role_OnDeath(PlayerControl? player)
     {
-        if (ExecutionPhase() && !HuntMechanic.Enabled) TriggerExe();
+        if (ExecutionPhase())
+        {
+            if (!HuntMechanic.Enabled) TriggerExe();
+            if (player == Player) HuntMechanic.StopHunt();
+        }
     }
 
     public void Role_OnRoundStart()
@@ -138,10 +142,13 @@ public sealed class Shikari(IntPtr cppPtr) : NeutralRole(cppPtr), ICustomAURole,
         HuntMechanic.roleHunt = this;
         HuntMechanic.BeginHunt();
 
-        foreach (var players in MarkedPlayers.ToArray().Where(x => !x.HasDied()))
+        if (Player.AmOwner())
         {
-            Color color = Color.white;
-            players.AddModifier<TrackerArrowTargetModifier>(Player, color, 0.1f);
+            foreach (var players in MarkedPlayers.ToArray().Where(x => !x.HasDied()))
+            {
+                Color color = Color.white;
+                players.AddModifier<TrackerArrowTargetModifier>(Player, color, 0.1f);
+            }
         }
     }
 
@@ -187,6 +194,7 @@ public sealed class Shikari_Mark : ObjectWorkshopRoleButton<Shikari>
     public override Color TextOutlineColor => RoleColors.Shikari;
     public override float Cooldown => OptionGroupSingleton<Shikari_Options>.Instance.Cooldown;
     public override LoadableAsset<Sprite> Sprite => OWAssets.KillSprite;
+    public override ButtonLocation Location => ButtonLocation.BottomLeft;
 
     protected override void OnClick() => VisitingMechanic.CheckVisit(Player, Player, 1, true, true);
 
@@ -208,6 +216,7 @@ public sealed class Shikari_Execute : ObjectWorkshopRoleButton<Shikari>
     public override Color TextOutlineColor => RoleColors.Shikari;
     public override float Cooldown => 0.1f;
     public override LoadableAsset<Sprite> Sprite => OWAssets.KillSprite;
+    public override ButtonLocation Location => ButtonLocation.BottomLeft;
 
     protected override void OnClick() => VisitingMechanic.CheckVisit(Player, Player, 2, true, true);
 
@@ -222,44 +231,6 @@ public sealed class Shikari_Execute : ObjectWorkshopRoleButton<Shikari>
     }
 }
 
-[HarmonyPatch]
-public static class Shikari_ClickPlayer
-{
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.OnClick))]
-    [HarmonyPrefix]
-    public static void GhostRoleClickPatch(PlayerControl __instance)
-    {
-        if (MeetingHud.Instance)
-            return;
-
-        if (PlayerControl.LocalPlayer.HasDied() || __instance.HasDied())
-            return;
-
-        if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null)
-            return;
-
-        if (__instance.IsHost())
-        {
-            var host = MiscUtils.PlayerById(GameData.Instance.GetHost().PlayerId);
-            var nearHost = !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.GetTruePosition(), host.GetTruePosition(), Constants.ShipAndObjectsMask, false);
-            if (PlayerControl.LocalPlayer.Data.Role is Shikari shikari2 && nearHost && host != shikari2.Player)
-            {
-                if (shikari2.ExecutionPhase()) shikari2.Execute(host);
-                else if (CustomButtonSingleton<Shikari_Mark>.Instance.Timer <= 0 && !shikari2.MarkedPlayers.Contains(host)) shikari2.Mark(host);
-            }
-
-            return;
-        }
-
-        var nearPlayer = !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.GetTruePosition(), __instance.GetTruePosition(), Constants.ShipAndObjectsMask, false);
-        if (PlayerControl.LocalPlayer.Data.Role is Shikari shikari && nearPlayer && __instance != shikari.Player)
-        {
-            if (shikari.ExecutionPhase()) shikari.Execute(__instance);
-            else if (CustomButtonSingleton<Shikari_Mark>.Instance.Timer <= 0 && !shikari.MarkedPlayers.Contains(__instance)) shikari.Mark(__instance);
-        }
-    }
-}
-
 public sealed class Shikari_Options : AbstractOptionGroup<Shikari>
 {
     public override string GroupName => "Shikari";
@@ -270,6 +241,6 @@ public sealed class Shikari_Options : AbstractOptionGroup<Shikari>
     [ModdedToggleOption("<color=#52d65a>Shikari</color> Can Vent")]
     public bool CanVent { get; set; } = false;
 
-    [ModdedToggleOption("Enable <color=#52d65a>Shikari</color> Shield")]
+    [ModdedToggleOption("Enable <color=#52d65a>Shikari</color> <color=#0000ff>Shield</color>")]
     public bool EnableShield { get; set; } = true;
 }

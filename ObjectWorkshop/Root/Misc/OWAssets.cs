@@ -9,6 +9,7 @@ public static class OWAssets
     private const string Other = "TownOfUs.Resources.Root.Sprites.Other";
     private const string Audio = "TownOfUs.Resources.Root.Audio";
     private const string Object = "TownOfUs.Resources.Root.Sprites.Objects";
+    private const string CounterPath = "TownOfUs.Resources.AbilityCounters";
 
 
     public static void PlaySound(LoadableAsset<AudioClip> clip, float vol = 1f)
@@ -30,10 +31,20 @@ public static class OWAssets
     public static LoadableAsset<Sprite> UFO_Moon { get; } = new LoadableResourceAsset($"{Object}.UFO_Moon.png");
     public static LoadableAsset<Sprite> Luminescence_Lightbulb { get; } = new LoadableResourceAsset($"{Object}.Luminescence_Lightbulb.png");
     public static LoadableAsset<Sprite> Pyre_FireSprite { get; } = new LoadableResourceAsset($"{Object}.Pyre_FireSprite.png");
+    public static LoadableAsset<Sprite> Aimsman_Crosshair { get; } = new LoadableResourceAsset($"{Object}.Aimsman_Crosshair.png");
+    public static LoadableAsset<Sprite> BookCollector_Book { get; } = new LoadableResourceAsset($"{Object}.BookCollector_Book.png");
+    public static LoadableAsset<Sprite> Peacock_Feather { get; } = new LoadableResourceAsset($"{Object}.Peacock_Feather.png");
+    public static LoadableAsset<Sprite> BookCollector_BookScrap { get; } = new LoadableResourceAsset($"{Object}.BookCollector_BookScrap.png");
+    public static LoadableAsset<Sprite> Oasis_SandParticle1 { get; } = new LoadableResourceAsset($"{Object}.Oasis_SandParticle1.png");
+    public static LoadableAsset<Sprite> Oasis_SandParticle2 { get; } = new LoadableResourceAsset($"{Object}.Oasis_SandParticle2.png");
+    public static LoadableAsset<Sprite> Oasis_SandOverlay { get; } = new LoadableResourceAsset($"{Object}.Oasis_SandOverlay.png");
 
     // --- Abilities ---
     public static LoadableAsset<Sprite> MeetingKillSprite { get; } = new LoadableResourceAsset($"{Abilities}.MeetingKillButton.png");
     public static LoadableAsset<Sprite> KillSprite { get; } = TouAssets.KillSprite;
+    public static LoadableAsset<Sprite> BookCollector_Guess { get; } = new LoadableResourceAsset($"{Abilities}.BookCollector_Guess.png");
+    public static LoadableAsset<Sprite> AbilityCounterBookSprite { get; } =
+        new LoadableResourceAsset($"{CounterPath}.Book.png");
 
     // --- AUDIO ---
     public static LoadableAsset<AudioClip> DuelBegin_SFX { get; } = new LoadableAudioResourceAsset($"{Audio}.DuelBegin_SFX.wav");

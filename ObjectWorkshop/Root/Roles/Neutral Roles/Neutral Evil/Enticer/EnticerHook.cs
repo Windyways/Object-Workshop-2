@@ -10,8 +10,8 @@ public class EnticerHook(IntPtr ptr) : MonoBehaviour(ptr)
 
     public LineRenderer lineRenderer;
     public GameObject hookLine;
-    public PlayerControl currentTarget;
-    public GameObject currentTargetGameObject;
+    public PlayerControl? currentTarget;
+    public GameObject? currentTargetGameObject;
 
     private static float devourRange = 0.5f;
     public float DevourVision;
@@ -184,9 +184,9 @@ public class EnticerHook(IntPtr ptr) : MonoBehaviour(ptr)
 
         float closest = OptionGroupSingleton<Enticer_Options>.Instance.Radius;
         PlayerControl? closestPlayer = null;
-        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (player != Owner && !player.HasDied() /*&& !player.IsSpecterInvisible() && !player.IsUnderground()*/)
+            if (player != Owner && !player.HasDied() && !Owner.AnyCollidersBetween(player) /*&& !player.IsSpecterInvisible() && !player.IsUnderground()*/)
             {
                 float dist = Vector2.Distance(player.transform.position, Owner.transform.position);
                 if (dist < closest)
@@ -216,7 +216,7 @@ public class EnticerHook(IntPtr ptr) : MonoBehaviour(ptr)
         }
         else
         {
-            if (currentTarget.IsSpider()/* || currentTarget.IsPeacock()*/) pullSpeed *= 1.5f; // Pull in 50% faster.
+            if (currentTarget.IsSpider() || currentTarget.IsPeacock()) pullSpeed *= 1.5f; // Pull in 50% faster.
             //if (currentTarget.IsGiant()) pullSpeed /= 2; // Pull in at half speed.
 
             Vector3 ventPos3 = Owner.transform.position;
@@ -231,7 +231,7 @@ public class EnticerHook(IntPtr ptr) : MonoBehaviour(ptr)
         if (!MeetingHud.Instance && Owner.Data.Role is Enticer enticer)
         {
             Owner.RpcCustomMurder(target, createDeadBody: false, teleportMurderer: false);
-            VisitingMechanic.RpcAddDeathReason(target, (int)DeathReasonShow.Devoured);
+            if (Owner.AmOwner()) VisitingMechanic.RpcAddDeathReason(target, (int)DeathReasonShow.Devoured);
 
             enticer.DevourCount++; // Might need an rpc here, but probably not.
             Destroy();
@@ -257,12 +257,13 @@ public class EnticerHook(IntPtr ptr) : MonoBehaviour(ptr)
         }
     }
 
-    public static EnticerHook GetObjectByOwner(PlayerControl player)
+    public static EnticerHook? GetObjectByOwner(PlayerControl player)
     {
         foreach (var hook in AllHooks)
         {
             if (hook.Owner == player) return hook;
         }
+
         return null;
     }
 

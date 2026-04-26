@@ -20,7 +20,8 @@ public sealed class MeetingMenu : IDisposable
         Color? activeColor = null!,
         Color? disabledColor = null!,
         Color? hoverColor = null!,
-        Vector3? position = null!)
+        Vector3? position = null!,
+        Vector3? scale = null!)
     {
         Owner = owner;
         Click = onClick ?? throw new ArgumentException("onClick should exist");
@@ -32,6 +33,7 @@ public sealed class MeetingMenu : IDisposable
         HoverColor = hoverColor ?? Color.red;
         Type = abilityType;
         Position = position ?? new Vector3(-0.95f, 0.03f, -3f);
+        Scale = scale ?? new Vector3(0.7f, 0.7f, 1f);
 
         Instances.Add(this);
     }
@@ -48,6 +50,7 @@ public sealed class MeetingMenu : IDisposable
     private Color HoverColor { get; }
     public MeetingAbilityType Type { get; }
     public Vector3 Position { get; set; }
+    public Vector3 Scale { get; set; }
     public Dictionary<byte, bool> Actives { get; } = [];
     public Dictionary<byte, GameObject> Buttons { get; } = [];
     private Dictionary<byte, SpriteRenderer> ButtonSprites { get; } = [];
@@ -96,6 +99,7 @@ public sealed class MeetingMenu : IDisposable
             voteArea.transform);
         targetBox.name = $"MeetingButton{Owner.NiceName.Replace(" ", "")}{voteArea.TargetPlayerId}";
         targetBox.transform.localPosition = Position;
+        targetBox.transform.localScale = Scale;
         var renderer = targetBox.GetComponent<SpriteRenderer>();
         renderer.sprite = (Type == MeetingAbilityType.Toggle ? DisabledSprite : ActiveSprite).LoadAsset();
         var button = targetBox.GetComponent<PassiveButton>();

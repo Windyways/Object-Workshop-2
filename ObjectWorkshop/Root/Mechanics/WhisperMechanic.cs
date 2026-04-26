@@ -12,7 +12,7 @@ public static class WhisperPatches
                 // if (player.IsBlackmailed() && player.AmOwner) chatText = ""; - test for Banshee maybe.
                 if (chatText.Contains("/w " + player.Data.PlayerName))
                 {
-                    if (player.HasDied() || sourcePlayer.HasDied())
+                    if (player.HasDied() || sourcePlayer.HasDied() || sourcePlayer.IsRole<Peacock>())
                     {
                         break;
                     }

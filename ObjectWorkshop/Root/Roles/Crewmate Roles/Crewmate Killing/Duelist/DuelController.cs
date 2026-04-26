@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Color = UnityEngine.Color;
+using Random = UnityEngine.Random;
 
 namespace ObjectWorkshop.Objects;
 
@@ -55,17 +56,12 @@ public class DuelController(IntPtr ptr) : MonoBehaviour(ptr)
         yield return new WaitForSeconds(0.2f);
         if (target.HasDied() || player.HasDied())
         {
-            StopDuel(player, target, false);
-            yield break;
-        }
-        else if (target.HasDied())
-        {
             StopDuel(player, target, true);
             yield break;
         }
 
         // Ensure Miss Attacks are first!
-        /*foreach (var sandstorm in Sandstorm.AllSandstorms)
+        foreach (var sandstorm in Sandstorm.AllSandstorms)
         {
             var num = Random.Range(0, 100);
             if (num <= OptionGroupSingleton<Oasis_Options>.Instance.MissChance)
@@ -74,10 +70,10 @@ public class DuelController(IntPtr ptr) : MonoBehaviour(ptr)
                 StopDuel(player, target, false);
                 yield break;
             }
-        }*/
+        }
 
         // Check if the target is protected by an Oasis.
-        /*foreach (var sanctuary in Sanctuary.AllSanctuarys)
+        foreach (var sanctuary in Sanctuary.AllSanctuarys)
         {
             if (sanctuary.IsInRange(target))
             {
@@ -85,16 +81,19 @@ public class DuelController(IntPtr ptr) : MonoBehaviour(ptr)
                 StopDuel(player, target, false);
                 yield break;
             }
-        }*/
+        }
 
         if (!MeetingHud.Instance)
         {
             CreateSparkLines((player.transform.position + target.transform.position) / 2);
             if (player.AmOwner() || target.AmOwner()) OWAssets.PlaySound(OWAssets.DuelKill_SFX);
-            if (UnityEngine.Random.Range(0, 100) <= winChance && player.AmOwner())
+            if (UnityEngine.Random.Range(0, 100) <= winChance)
             {
-                player.RpcCustomMurder(target); // Duelist/Claylamity wins
-                VisitingMechanic.RpcAddDeathReason(target, (int)DeathReasonShow.Killed);
+                if (player.AmOwner())
+                {
+                    player.RpcCustomMurder(target); // Duelist/Claylamity wins
+                    VisitingMechanic.RpcAddDeathReason(target, (int)DeathReasonShow.Killed);
+                }
             }
             else if (target.AmOwner())
             {
@@ -136,25 +135,10 @@ public class DuelController(IntPtr ptr) : MonoBehaviour(ptr)
 
         if (player.Data.Role is Duelist duelist && !canceled)
         {
-            if (player.AmOwner())
-            {
-                var button = CustomButtonSingleton<Duelist_Duel>.Instance;
-                button.ResetCooldownAndOrEffect();
-            }
-
+            if (player.AmOwner()) CustomButtonSingleton<Duelist_Duel>.Instance.ResetCooldownAndOrEffect();
             Duelist.RpcResetWinChance(duelist.Player);
         }
-        /*else if (player.IsRole<Claylamity>())
-        {
-            if (!canceled)
-            {
-                if (player.AmOwner())
-                {
-                    var button = CustomButtonSingleton<Claylamity_Duel>.Instance;
-                    button.ResetCooldownAndOrEffect();
-                }
-            }
-        }*/
+        else if (player.Data.Role is Claylamity && !canceled && player.AmOwner()) CustomButtonSingleton<Claylamity_Duel>.Instance.ResetCooldownAndOrEffect();
 
         CleanupDuel();
     }
@@ -250,6 +234,9 @@ public class DuelController(IntPtr ptr) : MonoBehaviour(ptr)
         float time = 0f;
         while (time < duration)
         {
+            if (!OWPlugin.InGame())
+                break;
+
             float alpha = Mathf.Lerp(1f, 0f, time / duration);
             Color startColor = line.startColor;
             Color endColor = line.endColor;

@@ -1,5 +1,4 @@
-﻿using Il2CppInterop.Runtime.Attributes;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 using UnityEngine;
 
@@ -50,7 +49,7 @@ public interface ICustomAURole : ICustomRole
 
             if (Alignment == Alignment.InfiltratorDisruption) return TouRoleGroups.ID;
             if (Alignment == Alignment.InfiltratorEvacuative) return TouRoleGroups.IE;
-            if (Alignment == Alignment.InfiltratorMilitant) return TouRoleGroups.IM;
+            if (Alignment == Alignment.InfiltratorKilling) return TouRoleGroups.IK;
             if (Alignment == Alignment.InfiltratorUtility) return TouRoleGroups.IU;
 
             return Team switch
@@ -90,7 +89,7 @@ public interface ICustomAURole : ICustomRole
             $"{role.RoleColor.ToTextColor()}You are{prefix}<b> {role.RoleName}.</b></color>");
         stringB.AppendLine(CultureInfo.InvariantCulture, $"<size=60%>Alignment: <b>{alignment}</color></b></size>");
         stringB.Append("<size=70%>");
-        // stringB.AppendLine(CultureInfo.InvariantCulture, $"{role.RoleLongDescription}");
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"{role.RoleLongDescription}");
 
         return stringB;
     }
@@ -125,7 +124,6 @@ public interface ICustomAURole : ICustomRole
     void Function(PlayerControl target, int Button)
     {
     }
-
 
     void Role_OnMeetingStart()
     {

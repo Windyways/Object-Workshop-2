@@ -1,4 +1,3 @@
-using Reactor.Networking.Rpc;
 using UnityEngine;
 
 namespace ObjectWorkshop.Misc;
@@ -92,6 +91,7 @@ public static class CustomExtentions
         var playerRole = player.GetICustomAURoleWhenAlive();
         var targetRole = target.GetICustomAURoleWhenAlive();
 
+        if (playerRole == null || targetRole == null) return false;
         if (playerRole.Faction == targetRole.Faction) return true;
         return false;
     }
@@ -133,27 +133,18 @@ public static class CustomExtentions
         return role;
     }
 
-    public static ICustomAURole GetICustomAURoleWhenAlive(this PlayerControl player)
+    public static ICustomAURole? GetICustomAURoleWhenAlive(this PlayerControl player)
     {
-        ICustomAURole customRole = null;
+        ICustomAURole? customRole = null;
         //var role = RoleHistory.LastOrDefault(x => x.Key == player.PlayerId && !x.Value.IsDead);
         //return role.Value != null ? role.Value : null;
 
-        if (GameHistory.RoleWhenAlive.TryGetValue(player.PlayerId, out var role))
-        {
-            if (role is ICustomAURole c3) customRole = c3;
-        }
+        if (GameHistory.RoleWhenAlive.TryGetValue(player.PlayerId, out var role) && role is ICustomAURole c3) customRole = c3;
 
-        if (!player.Data.IsDead)
-        {
-            if (player.Data.Role is ICustomAURole c4) customRole = c4;
-        }
+        if (!player.Data.IsDead && player.Data.Role is ICustomAURole c4) customRole = c4;
 
         var role2 = player.Data.RoleWhenAlive;
-        if (role2.HasValue)
-        {
-            if (RoleManager.Instance.GetRole(role2.Value) is ICustomAURole c2) customRole = c2;
-        }
+        if (role2.HasValue && RoleManager.Instance.GetRole(role2.Value) is ICustomAURole c2) customRole = c2;
 
         if (player.Data.Role is ICustomAURole c) customRole = c;
         return customRole;
@@ -223,7 +214,7 @@ public static class CustomExtentions
         sr.color = new Color(1, 1, 1, 1);
     }
 
-    public static ShowRoleIcon GetIcon(this PlayerControl player)
+    public static ShowRoleIcon? GetIcon(this PlayerControl player)
     {
         foreach (var icon in ShowRoleIcon.AllRoleIcons)
         {
@@ -251,14 +242,44 @@ public static class CustomExtentions
         return RoleManager.Instance.GetRole((RoleTypes)ushortRole);
     }
 
-    public static RoleBehaviour GetRoleBehaviourFromRole<T>() where T : RoleBehaviour
+    public static RoleBehaviour? GetRoleBehaviourFromRole<T>() where T : RoleBehaviour
     {
-        var role = MiscUtils.AllRoles.Where(x => x is ICustomAURole && x is T).FirstOrDefault();
+        var role = MiscUtils.AllRoles.FirstOrDefault(x => x is ICustomAURole && x is T);
+        if (role == null) return null;
+
         var ushortRole = RoleId.Get(role.GetType());
         return RoleManager.Instance.GetRole((RoleTypes)ushortRole);
     }
 
-    public static Sprite GetRoleIcon(this PlayerControl player)
+    public static List<RoleBehaviour> GetRandomRolesBehaviourFromFaction(Faction faction)
+    {
+        var roles = MiscUtils.AllRoles.Where(x => x is ICustomAURole customRole && customRole.Faction == faction).ToArray();
+
+        var list = new List<RoleBehaviour>();
+        foreach (var role in roles)
+        {
+            var ushortRole = RoleId.Get(role.GetType());
+            list.Add(RoleManager.Instance.GetRole((RoleTypes)ushortRole));
+        }
+
+        return list;
+    }
+
+    public static List<RoleBehaviour> GetRandomRolesBehaviourFromAlignment(Alignment alignment)
+    {
+        var roles = MiscUtils.AllRoles.Where(x => x is ICustomAURole customRole && customRole.Alignment == alignment).ToArray();
+
+        var list = new List<RoleBehaviour>();
+        foreach (var role in roles)
+        {
+            var ushortRole = RoleId.Get(role.GetType());
+            list.Add(RoleManager.Instance.GetRole((RoleTypes)ushortRole));
+        }
+
+        return list;
+    }
+
+    public static Sprite? GetRoleIcon(this PlayerControl player)
     {
         if (player.Data.Role is ICustomAURole customRole)
         {
@@ -274,11 +295,6 @@ public static class CustomExtentions
     public static bool CanKill(this PlayerControl player, PlayerControl target)
     {
         return true;
-    }
-
-    public static bool IsProtected(this PlayerControl target, bool bypassBasicProtection = false)
-    {
-        return false;
     }
 
     public static bool IsTargetable(this PlayerControl player)
@@ -307,5 +323,132 @@ public static class CustomExtentions
         myRend.endColor = endColor;
     }
 
+    public static bool AnyCollidersBetween(this PlayerControl player, PlayerControl target)
+    {
+        var vector = target.GetTruePosition() - player.GetTruePosition();
+        var magnitude = vector.magnitude;
+
+        if (PhysicsHelpers.AnyNonTriggersBetween(player.GetTruePosition(), vector.normalized, magnitude, Constants.ShipAndObjectsMask))
+            return true;
+
+        return false;
+    }
+
+    public static string GetVowel(this string word)
+    {
+        var vowels = new[] { 'a', 'e', 'i', 'o', 'u' };
+        if (vowels.Any(vowel => word.StartsWith(vowel.ToString(), StringComparison.OrdinalIgnoreCase))) return "an";
+        return "a";
+    }
+
+
+    public static void GetAvailableRooms(this List<SystemTypes> list)
+    {
+        if (CheckMap.MapSelected == CurrentMap.Skeld)
+        {
+            list.Add(SystemTypes.Cafeteria);
+            list.Add(SystemTypes.Electrical);
+            list.Add(SystemTypes.LowerEngine);
+            list.Add(SystemTypes.Nav);
+            list.Add(SystemTypes.Reactor);
+            list.Add(SystemTypes.Shields);
+            list.Add(SystemTypes.Storage);
+            list.Add(SystemTypes.UpperEngine);
+            list.Add(SystemTypes.Weapons);
+            list.Add(SystemTypes.Admin);
+            list.Add(SystemTypes.Comms);
+            list.Add(SystemTypes.Security);
+            list.Add(SystemTypes.MedBay);
+            list.Add(SystemTypes.LifeSupp);
+        }
+        else if (CheckMap.MapSelected == CurrentMap.MiraHQ)
+        {
+            list.Add(SystemTypes.Launchpad);
+            list.Add(SystemTypes.Reactor);
+            list.Add(SystemTypes.Laboratory);
+            list.Add(SystemTypes.LockerRoom);
+            list.Add(SystemTypes.Comms);
+            list.Add(SystemTypes.MedBay);
+            list.Add(SystemTypes.Decontamination);
+            list.Add(SystemTypes.Office);
+            list.Add(SystemTypes.Greenhouse);
+            list.Add(SystemTypes.Admin);
+            list.Add(SystemTypes.Cafeteria);
+            list.Add(SystemTypes.Storage);
+            list.Add(SystemTypes.Balcony);
+        }
+        else if (CheckMap.MapSelected == CurrentMap.Polus)
+        {
+            list.Add(SystemTypes.Dropship);
+            list.Add(SystemTypes.Electrical);
+            list.Add(SystemTypes.Security);
+            list.Add(SystemTypes.LifeSupp);
+            list.Add(SystemTypes.BoilerRoom);
+            list.Add(SystemTypes.Weapons);
+            list.Add(SystemTypes.Comms);
+            list.Add(SystemTypes.Office);
+            list.Add(SystemTypes.Admin);
+            list.Add(SystemTypes.Laboratory);
+            list.Add(SystemTypes.Specimens);
+            list.Add(SystemTypes.Storage);
+        }
+        else if (CheckMap.MapSelected == CurrentMap.Airship)
+        {
+            list.Add(SystemTypes.Records);
+            list.Add(SystemTypes.GapRoom);
+            list.Add(SystemTypes.MeetingRoom);
+            list.Add(SystemTypes.Brig);
+            list.Add(SystemTypes.VaultRoom);
+            list.Add(SystemTypes.Engine);
+            list.Add(SystemTypes.Comms);
+            list.Add(SystemTypes.Cockpit);
+            list.Add(SystemTypes.Armory);
+            list.Add(SystemTypes.Kitchen);
+            list.Add(SystemTypes.ViewingDeck);
+            list.Add(SystemTypes.Security);
+            list.Add(SystemTypes.Electrical);
+            list.Add(SystemTypes.MedBay);
+            list.Add(SystemTypes.CargoBay);
+            list.Add(SystemTypes.Lounge);
+            list.Add(SystemTypes.Showers);
+            list.Add(SystemTypes.MainHall);
+        }
+        else if (CheckMap.MapSelected == CurrentMap.Fungle)
+        {
+            list.Add(SystemTypes.Cafeteria);
+            list.Add(SystemTypes.Kitchen);
+            list.Add(SystemTypes.Storage);
+            list.Add(SystemTypes.MeetingRoom);
+            list.Add(SystemTypes.Laboratory);
+            list.Add(SystemTypes.Greenhouse);
+            list.Add(SystemTypes.Reactor);
+            list.Add(SystemTypes.UpperEngine);
+            list.Add(SystemTypes.Comms);
+            list.Add(SystemTypes.MiningPit);
+            list.Add(SystemTypes.Lookout);
+            list.Add(SystemTypes.Dropship);
+        }
+    }
+
+    public static Vector2 GetAdjustedPosition(this PlayerControl player)
+    {
+        // assign dummy values so it doesnt error about returning unassigned variables
+        var tp1Position = player.GetTruePosition();
+        tp1Position = new Vector2(tp1Position.x, tp1Position.y + 0.3636f);
+        return tp1Position;
+    }
+
     public static bool IsSpider(this PlayerControl player) => player.Data.Role is Arachnid arachnid && arachnid.isSpider;
+    public static bool IsPeacock(this PlayerControl player) => player.Data.Role is Peacock peacock && peacock.isBloomed;
+    public static bool IsAssociate(this PlayerControl player, PlayerControl NA)
+    {
+        if (player.TryGetModifier<Associate>(out var associate))
+        {
+            return associate.Caster == NA;
+        }
+        return false;
+    }
+
+    public static bool HasAssociate(this PlayerControl player) =>  ModifierUtils.GetActiveModifiers<Associate>(x => x.Caster == player).Any();
+    public static PlayerControl GetAssociate(this PlayerControl player) => ModifierUtils.GetPlayersWithModifier<Associate>(x => x.Caster == player).FirstOrDefault();
 }
