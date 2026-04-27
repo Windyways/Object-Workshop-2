@@ -20,12 +20,12 @@ public sealed class Oasis(IntPtr cppPtr)
 
     public string RevealText => "is the protector of the desert.";
     public string Description => "Sanctify an area to protect those within. Conjure a Sandstorm to make evils miss their attacks.";
-    public string Intro => "You are a desert celebrity that provides protection to others.\r\n";
+    public string Intro => "You are a desert celebrity that provides protection to others.";
     public string VictoryCondition => "Dispose of all evil. You will win with other Crewmate members.";
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        // Icon = OWAssets.OasisRoleCard,
+        Icon = OWAssets.Oasis,
     };
 
     [HideFromIl2Cpp]

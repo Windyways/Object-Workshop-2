@@ -24,7 +24,7 @@ public sealed class Alarum(IntPtr cppPtr)
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-
+        Icon = OWAssets.Alarum,
     };
 
     [HideFromIl2Cpp]

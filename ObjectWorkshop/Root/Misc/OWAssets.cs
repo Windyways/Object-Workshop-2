@@ -58,6 +58,10 @@ public static class OWAssets
     public static LoadableAsset<Sprite> FillerCircle { get; } = new LoadableResourceAsset($"{Object}.FillerCircle.png");
 
     // --- Role Cards ---
+    public static LoadableAsset<Sprite> Alarum { get; } = new LoadableResourceAsset($"{RoleCard}.Alarum.png");
+    public static LoadableAsset<Sprite> Oasis { get; } = new LoadableResourceAsset($"{RoleCard}.Oasis.png");
+    public static LoadableAsset<Sprite> Luminescence { get; } = new LoadableResourceAsset($"{RoleCard}.Luminescence.png");
+    public static LoadableAsset<Sprite> BookCollector { get; } = new LoadableResourceAsset($"{RoleCard}.BookCollector.png");
 
     // OTHER
     public static string RoleIconPosName

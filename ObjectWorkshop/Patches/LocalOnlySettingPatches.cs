@@ -94,10 +94,10 @@ public static class LocalSettings
         },
         new()
         {
-            Title = "Arachnophobia Mode",
-            ObjName = "ArachnophobiaMode",
-            OnClick = () => { return OWPlugin.ArachnophobiaMode.Value = !OWPlugin.ArachnophobiaMode.Value; },
-            DefaultValue = OWPlugin.ArachnophobiaMode.Value
+            Title = "Hide AI Icons",
+            ObjName = "HideAIIcons",
+            OnClick = () => { return OWPlugin.HideAIIcons.Value = !OWPlugin.HideAIIcons.Value; },
+            DefaultValue = OWPlugin.HideAIIcons.Value
         }
     ];
 

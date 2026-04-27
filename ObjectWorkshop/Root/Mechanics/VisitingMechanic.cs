@@ -21,7 +21,7 @@ public static class VisitingMechanic
         foreach (var sandstorm in Sandstorm.AllSandstorms)
         {
             var num = Random.Range(0, 100);
-            if (num <= OptionGroupSingleton<Oasis_Options>.Instance.MissChance)
+            if (num <= OptionGroupSingleton<Oasis_Options>.Instance.MissChance && isAttacking && isVisiting)
             {
                 Oasis.RpcSandstormMissNotif(player, target, sandstorm.Owner);
                 blockVisit += 100;

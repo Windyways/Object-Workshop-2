@@ -31,7 +31,7 @@ public static class TextColorizer
         { "Cadet", () => $"#{RoleColors.Crewmate.ToHtmlStringRGBA()}" },
 
         // --- Marauder ---
-        { "Marauder", () => $"#{RoleColors.Crewmate.ToHtmlStringRGBA()}" },
+        { "Marauder", () => $"#{RoleColors.Infiltrator.ToHtmlStringRGBA()}" },
         { "Attack", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
 
         // --- Alarum ---

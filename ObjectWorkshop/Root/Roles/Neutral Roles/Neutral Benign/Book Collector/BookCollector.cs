@@ -29,7 +29,7 @@ public sealed class BookCollector(IntPtr cppPtr)
     public CustomRoleConfiguration Configuration => new(this)
     {
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
-        //Icon = OWAssets.BookCollectorRoleCard,
+        Icon = OWAssets.BookCollector,
     };
 
     [HideFromIl2Cpp]

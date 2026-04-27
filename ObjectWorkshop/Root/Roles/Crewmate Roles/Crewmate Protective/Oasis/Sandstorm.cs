@@ -81,7 +81,7 @@ public class Sandstorm(IntPtr ptr) : MonoBehaviour(ptr)
         overlay.transform.localScale = new Vector3(40f, 28f, 1f);
         overlay.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, -10f);
         var followCamera = overlay.AddComponent<FollowCamera>();
-        followCamera.Owner = Owner;
+        //followCamera.Owner = Owner;
     }
 
     public void Stop()

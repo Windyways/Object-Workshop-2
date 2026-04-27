@@ -210,20 +210,11 @@ public class PeacockVisual(IntPtr ptr) : MonoBehaviour(ptr)
 
         foreach (var obj in AllPeacockVisuals)
         {
-            if (obj != null && obj.ParalyzedPlayers.Contains(target))
+            if (obj != null && obj.ParalyzedPlayers.Contains(target) && !obj.Owner.HasDied())
                 return true;
         }
 
         return false;
-    }
-
-    public static void DestroyAll()
-    {
-        foreach (var clock in AllPeacockVisuals)
-        {
-            AllPeacockVisuals.Remove(clock);
-            Destroy(clock.gameObject);
-        }
     }
 
     public static PeacockVisual? GetObjectByOwner(PlayerControl player)

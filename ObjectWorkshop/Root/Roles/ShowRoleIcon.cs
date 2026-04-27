@@ -19,7 +19,7 @@ public class ShowRoleIcon(IntPtr ptr) : MonoBehaviour(ptr)
 
     private void Update()
     {
-        if (OWPlugin.RoleIconSpot.Value == 2 || Owner.HasDied() || Owner.inVent || Owner.HasModifier<InvisibleStatus>()) myRend.Hide();
+        if (OWPlugin.RoleIconSpot.Value == 2 || Owner.HasDied() || Owner.inVent || Owner.HasModifier<InvisibleStatus>() || Owner.HasModifier<Anonymous>()) myRend.Hide();
         else if (!Owner.HasDied() && (HudManagerPatches.LocalVisibilityFlag(PlayerControl.LocalPlayer, Owner) || Owner.AmOwner))
         {
             if (Owner.TryGetModifier<DeepfakeRole>(out var fakeRole) && fakeRole.foolingPlayer == PlayerControl.LocalPlayer)

@@ -159,8 +159,11 @@ public sealed class Peacock(IntPtr cppPtr)
             Player.RpcRemoveModifier<Anonymous>();
 
             var peacock = PeacockVisual.GetObjectByOwner(Player);
-            peacock.ForceMobilePlayers();
-            Destroy(peacock.gameObject);
+            if (peacock != null)
+            {
+                peacock.ForceMobilePlayers();
+                Destroy(peacock.gameObject);
+            }
         }
         else if (Associate == null)
         {

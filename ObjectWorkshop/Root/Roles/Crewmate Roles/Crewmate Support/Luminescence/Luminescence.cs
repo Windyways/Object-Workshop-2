@@ -24,7 +24,7 @@ public sealed class Luminescence(IntPtr cppPtr)
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-
+        Icon = OWAssets.Luminescence,
     };
 
     [HideFromIl2Cpp]
