@@ -13,6 +13,28 @@ namespace TownOfUs.Utilities;
 
 public static class MiscUtils
 {
+    public static void ChangeRoleObjectsPatch(PlayerControl player)
+    {
+        var alarmClocks = AlarmClock.GetAll().Where(x => x.Owner == player).ToList();
+        foreach (var alarmClock in alarmClocks) Object.Destroy(alarmClock.gameObject);
+
+        var sanctuaries = Sanctuary.GetAll().Where(x => x.Owner == player).ToList();
+        foreach (var sanctuary in sanctuaries) Object.Destroy(sanctuary.gameObject);
+
+        var sandstorms = Sandstorm.GetAll().Where(x => x.Owner == player).ToList();
+        foreach (var sandstorm in sandstorms) Oasis.RpcStopSandstorm(sandstorm.Owner);
+
+        //var crates = Crate.GetAll().Where(x => x.Owner == player).ToList();
+        //foreach (var crate in crates) Object.Destroy(crate.gameObject);
+
+        var barricades = Barricade.GetAll().Where(x => x.Owner == player).ToList();
+        foreach (var barricade in barricades) Object.Destroy(barricade.gameObject);
+
+        var nest = Nest.currentNest;
+        if (nest != null && player.GetTrueRole() is Settler) Object.Destroy(nest.gameObject);
+
+    }
+
     public static void EndGame(GameOverReason reason = GameOverReason.ImpostorsByVote, bool showAds = false)
     {
         GameManager.Instance.RpcEndGame(reason, showAds);

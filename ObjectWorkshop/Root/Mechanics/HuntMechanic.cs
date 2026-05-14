@@ -7,7 +7,7 @@ namespace ObjectWorkshop.Mechanics;
 [HarmonyPatch]
 public static class HuntMechanic
 {
-    public static ICustomAURole roleHunt;
+    public static List<RoleBehaviour> roleHunts = new List<RoleBehaviour>();
 
     public static GameObject HuntTimeObj;
     public static GameObject TimerSpriteObj;
@@ -70,27 +70,28 @@ public static class HuntMechanic
             }
         }
 
-        var ts = TimeSpan.FromSeconds(HuntTime);
+        //var ts = TimeSpan.FromSeconds(HuntTime);
 
         var timerText = HuntTimeObj.GetComponent<TextMeshPro>();
 
-        var colour = HuntTime switch
+        /*var colour = HuntTime switch
         {
             <= 10f => Color.red,
             <= 20f => Color.yellow,
             _ => Color.white
-        };
+        };*/
 
-        if (!MeetingHud.Instance && roleHunt != null)
+        if (!MeetingHud.Instance && roleHunts.Count > 0)
         {
             HuntTimeObj.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(-0.6f, 5.5f);
             HuntTimeObj.GetComponent<AspectPosition>().Alignment = AspectPosition.EdgeAlignments.Bottom;
 
             string text = "";
-            if (roleHunt is Shikari) text = "A Shikari is in Execution!";
+            if (roleHunts.Contains(CustomExtentions.GetRoleBehaviourFromRole<Shikari>())) text += $"{RoleColors.Shikari.ToTextColor()}A Shikari is in Execution!</color>\n";
+            if (roleHunts.Contains(CustomExtentions.GetRoleBehaviourFromRole<Gravekeeper>())) text += $"{RoleColors.Gravekeeper.ToTextColor()}Gravekeeper Season has begun!</color>\n";
 
             timerText.text =
-                $"<size=150%>{roleHunt.RoleColor.ToTextColor()}{text}</color></size>\n";// +
+                $"<size=150%>{text}</size>\n";// +
                 //$"<size=200%>{colour.ToTextColor()}Time:{colour.ToTextColor()}{ts.ToString(@"mm\:ss", OWPlugin.Culture)}</color></size>\n";
 
             TimerSpriteObj.transform.localPosition = new Vector3(-1f, -0.4f, 1f);
@@ -104,22 +105,30 @@ public static class HuntMechanic
             TimerSpriteObj.transform.localPosition = new Vector3(-1f, -0.25f, 1f);
         }
 
-        HuntTimeObj.SetActive(!ExileController.Instance && roleHunt != null);
+        HuntTimeObj.SetActive(!ExileController.Instance && roleHunts.Count > 0);
     }
 
-    public static void BeginHunt()
+    public static void BeginHunt(RoleBehaviour role)
     {
+        if (!roleHunts.Contains(role)) roleHunts.Add(role);
         if (Enabled)
             return;
 
         Enabled = true;
     }
 
-    public static void StopHunt()
+    public static void StopAllHunts()
     {
         Enabled = false;
         HuntTime = 0;
-        roleHunt = null;
+        roleHunts.Clear();
+    }
+
+    public static void StopHunt(RoleBehaviour role)
+    {
+        Enabled = false;
+        HuntTime = 0;
+        roleHunts.Remove(role);
     }
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
@@ -135,12 +144,13 @@ public static class HuntMechanic
     [RegisterEvent] // Stops Hunt if they die.
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (roleHunt != null)
+        if (roleHunts.Count > 0)
         {
             var target = @event.Target;
-            if (target.Data.Role is ICustomAURole customRole && customRole == roleHunt)
+            var role = target.Data.Role;
+            if (roleHunts.Contains(role))
             {
-                StopHunt();
+                StopHunt(role);
             }
         }
     }

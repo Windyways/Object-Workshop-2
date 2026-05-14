@@ -186,7 +186,8 @@ public class EnticerHook(IntPtr ptr) : MonoBehaviour(ptr)
         PlayerControl? closestPlayer = null;
         foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (player != Owner && !player.HasDied() && !Owner.AnyCollidersBetween(player) /*&& !player.IsSpecterInvisible() && !player.IsUnderground()*/)
+            if (player != Owner && !player.HasDied() && !Owner.AnyCollidersBetween(player) &&
+                player.IsTargetable() /*&& !player.IsSpecterInvisible() && !player.IsUnderground()*/)
             {
                 float dist = Vector2.Distance(player.transform.position, Owner.transform.position);
                 if (dist < closest)

@@ -6,7 +6,7 @@ public static class OWAssets
 {
     private const string RoleCard = "TownOfUs.Resources.Root.Sprites.RoleCards";
     private const string Abilities = "TownOfUs.Resources.Root.Sprites.Abilities";
-    private const string Other = "TownOfUs.Resources.Root.Sprites.Other";
+    private const string OtherPath = "TownOfUs.Resources.Root.Sprites.Other";
     private const string Audio = "TownOfUs.Resources.Root.Audio";
     private const string Object = "TownOfUs.Resources.Root.Sprites.Objects";
     private const string CounterPath = "TownOfUs.Resources.AbilityCounters";
@@ -38,13 +38,25 @@ public static class OWAssets
     public static LoadableAsset<Sprite> Oasis_SandParticle1 { get; } = new LoadableResourceAsset($"{Object}.Oasis_SandParticle1.png");
     public static LoadableAsset<Sprite> Oasis_SandParticle2 { get; } = new LoadableResourceAsset($"{Object}.Oasis_SandParticle2.png");
     public static LoadableAsset<Sprite> Oasis_SandOverlay { get; } = new LoadableResourceAsset($"{Object}.Oasis_SandOverlay.png");
+    public static LoadableAsset<Sprite> Settler_Egg { get; } = new LoadableResourceAsset($"{Object}.Settler_Egg.png");
+    public static LoadableAsset<Sprite> Settler_Nest { get; } = new LoadableResourceAsset($"{Object}.Settler_Nest.png");
+    public static LoadableAsset<Sprite> Ambiguator_SturdyEgg { get; } = new LoadableResourceAsset($"{Object}.Ambiguator_SturdyEgg.png");
+    public static LoadableAsset<Sprite> UndeadReaper_Visual { get; } = new LoadableResourceAsset($"{Object}.UndeadReaper_Visual.png");
+    public static LoadableAsset<Sprite> Gravekeeper_Spirit { get; } = new LoadableResourceAsset($"{Object}.Gravekeeper_Spirit.png");
+    public static LoadableAsset<Sprite> Gravekeeper_Tombstone { get; } = new LoadableResourceAsset($"{Object}.Gravekeeper_Tombstone.png");
+    public static LoadableAsset<Sprite> Totemist_Totem { get; } = new LoadableResourceAsset($"{Object}.Totemist_Totem.png");
+    public static LoadableAsset<Sprite> Bubblemaker_Bubble { get; } = Bubble; //new LoadableResourceAsset($"{Object}.Bubblemaker_Bubble.png");
+    public static LoadableAsset<Sprite> Culverin_Cannonball { get; } = new LoadableResourceAsset($"{Object}.Culverin_Cannonball.png");
+    public static LoadableAsset<Sprite> Culverin_FireDir { get; } = new LoadableResourceAsset($"{Object}.Culverin_FireDir.png");
 
     // --- Abilities ---
     public static LoadableAsset<Sprite> MeetingKillSprite { get; } = new LoadableResourceAsset($"{Abilities}.MeetingKillButton.png");
     public static LoadableAsset<Sprite> KillSprite { get; } = TouAssets.KillSprite;
+    public static LoadableAsset<Sprite> VentSprite { get; } = TouAssets.VentSprite;
+
     public static LoadableAsset<Sprite> BookCollector_Guess { get; } = new LoadableResourceAsset($"{Abilities}.BookCollector_Guess.png");
-    public static LoadableAsset<Sprite> AbilityCounterBookSprite { get; } =
-        new LoadableResourceAsset($"{CounterPath}.Book.png");
+    public static LoadableAsset<Sprite> AbilitySpriteGoldCounter { get; } =
+        new LoadableResourceAsset($"{OtherPath}.GoldCounter.png");
 
     // --- AUDIO ---
     public static LoadableAsset<AudioClip> DuelBegin_SFX { get; } = new LoadableAudioResourceAsset($"{Audio}.DuelBegin_SFX.wav");
@@ -62,6 +74,14 @@ public static class OWAssets
     public static LoadableAsset<Sprite> Oasis { get; } = new LoadableResourceAsset($"{RoleCard}.Oasis.png");
     public static LoadableAsset<Sprite> Luminescence { get; } = new LoadableResourceAsset($"{RoleCard}.Luminescence.png");
     public static LoadableAsset<Sprite> BookCollector { get; } = new LoadableResourceAsset($"{RoleCard}.BookCollector.png");
+    public static LoadableAsset<Sprite> UFO { get; } = new LoadableResourceAsset($"{RoleCard}.UFO.png");
+    public static LoadableAsset<Sprite> Settler { get; } = new LoadableResourceAsset($"{RoleCard}.Settler.png");
+    public static LoadableAsset<Sprite> Arachnid { get; } = new LoadableResourceAsset($"{RoleCard}.Arachnid.png");
+    public static LoadableAsset<Sprite> Ambiguator { get; } = new LoadableResourceAsset($"{RoleCard}.Ambiguator.png");
+    public static LoadableAsset<Sprite> Aimsman { get; } = new LoadableResourceAsset($"{RoleCard}.Aimsman.png");
+    public static LoadableAsset<Sprite> Peacock { get; } = new LoadableResourceAsset($"{RoleCard}.Peacock.png");
+    public static LoadableAsset<Sprite> Gravekeeper { get; } = new LoadableResourceAsset($"{RoleCard}.Gravekeeper.png");
+    public static LoadableAsset<Sprite> Reaper { get; } = new LoadableResourceAsset($"{RoleCard}.Reaper.png");
 
     // OTHER
     public static string RoleIconPosName

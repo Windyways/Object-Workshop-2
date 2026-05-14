@@ -1,5 +1,4 @@
 using System.Collections;
-using TownOfUs.Patches.Misc;
 using UnityEngine;
 
 namespace ObjectWorkshop.MCI.SmartMCI;
@@ -32,6 +31,10 @@ public static class SmartBookCollector
             .ThenByDescending(x => UnityEngine.Random.value)
             )
         {
+
+            if (bookCollector.GuessedPlayers.Count >= (int)OptionGroupSingleton<BookCollector_Options>.Instance.Required)
+                break;
+
             if (player.TryGetModifier<Confirmed>(out var confirmed))
             {
                 if (confirmed.Source == "UFO")

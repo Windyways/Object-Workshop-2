@@ -14,7 +14,7 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
     public Color bubbleColor;
 
     public static List<AlarmClock> AllClocks = new List<AlarmClock>();
-
+    public List<PlayerControl> PlayersInRange = new List<PlayerControl>(); // Used for MCI.
     public void Start()
     {
         //Lockdown.AvailableObjects.Add(gameObject);
@@ -62,10 +62,12 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
             // Smart MCI stuff.
             if (Debugger.IsDebuggerActive)
             {
-                foreach (var ir in inRange.ToArray())
+                foreach (var ir in inRange.Where(x => !PlayersInRange.Contains(x.Item1)))
                 {
                     var player = ir.Item1;
                     var isSusp = ir.Item2;
+
+                    PlayersInRange.Add(player);
                     if (WitnessKill.BotCanSee(player, Owner, player.transform.position) && player != Owner)
                     {
                         Owner.AddModifier<TI>();
@@ -73,7 +75,7 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
                         {
                             player.AddModifier<Suspicion>(Owner, Owner.Data.Role.NiceName, 35);
                         }
-                        else if (!player.HasModifier<SoftCleared>() && !player.HasModifier<Suspicion>())
+                        else 
                         {
                             if (!isSusp) player.AddModifier<SoftCleared>();
                             else if (isSusp) player.AddModifier<Suspicion>(Owner, Owner.Data.Role.NiceName, 95);
@@ -197,6 +199,12 @@ public class AlarmClock(IntPtr ptr) : MonoBehaviour(ptr)
         {
             Destroy(clock.gameObject);
         }
+    }
+
+
+    public static IEnumerable<AlarmClock> GetAll()
+    {
+        return AllClocks;
     }
 
     public static void CleanUp()

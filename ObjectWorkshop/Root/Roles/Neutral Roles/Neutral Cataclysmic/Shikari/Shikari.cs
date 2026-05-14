@@ -69,7 +69,7 @@ public sealed class Shikari(IntPtr cppPtr) : NeutralRole(cppPtr), ICustomAURole,
 
     public bool WinConditionMet()
     {
-        var alivePlayers = PlayerControl.AllPlayerControls.ToArray().Count(x => !x.HasDied());
+        var alivePlayers = PlayerControl.AllPlayerControls.ToArray().Count(x => !x.HasDied() && x.IsTargetable());
         if (Player.HasDied()) return false;
         return alivePlayers == 1;
     }
@@ -109,13 +109,13 @@ public sealed class Shikari(IntPtr cppPtr) : NeutralRole(cppPtr), ICustomAURole,
         }
 
         var shikari = player.GetRole<Shikari>();
-        shikari.MarkedPlayers.Add(target);
-        shikari.Clear(target);
+        shikari?.MarkedPlayers.Add(target);
+        shikari?.Clear(target);
 
         Marked.Begin(target);
 
         if (player.AmOwner) CustomButtonSingleton<Shikari_Mark>.Instance.ResetCooldownAndOrEffect();
-        if (shikari.ExecutionPhase()) shikari.TriggerExe();
+        if (shikari?.ExecutionPhase() == true) shikari.TriggerExe();
     }
 
     public void Role_OnDeath(PlayerControl? player)
@@ -123,11 +123,11 @@ public sealed class Shikari(IntPtr cppPtr) : NeutralRole(cppPtr), ICustomAURole,
         if (ExecutionPhase())
         {
             if (!HuntMechanic.Enabled) TriggerExe();
-            if (player == Player) HuntMechanic.StopHunt();
+            if (player == Player) HuntMechanic.StopHunt(this);
         }
     }
 
-    public void Role_OnRoundStart()
+    public void Role_OnRoundStart(bool intro)
     {
         if (ExecutionPhase() && !HuntMechanic.Enabled) TriggerExe();
     }
@@ -139,8 +139,7 @@ public sealed class Shikari(IntPtr cppPtr) : NeutralRole(cppPtr), ICustomAURole,
 
         Player.RpcRemoveModifier<Shielded>();
 
-        HuntMechanic.roleHunt = this;
-        HuntMechanic.BeginHunt();
+        HuntMechanic.BeginHunt(this);
 
         if (Player.AmOwner())
         {
@@ -196,6 +195,24 @@ public sealed class Shikari_Mark : ObjectWorkshopRoleButton<Shikari>
     public override LoadableAsset<Sprite> Sprite => OWAssets.KillSprite;
     public override ButtonLocation Location => ButtonLocation.BottomLeft;
 
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        if (KeybindIcon != null) KeybindIcon.transform.localPosition = new Vector3(0.4f, 0.45f, -9f);
+    }
+
+    protected override void FixedUpdate(PlayerControl playerControl)
+    {
+        if (playerControl == Player)
+        {
+            Button?.usesRemainingText.gameObject.SetActive(true);
+            Button?.usesRemainingSprite.gameObject.SetActive(true);
+            Button!.usesRemainingText.text = Role.MarkedPlayers.Count(x => !x.HasDied()) + "/" + PlayerControl.AllPlayerControls.ToArray().Count(x => !x.HasDied() && x != Player);
+        }
+
+        base.FixedUpdate(playerControl);
+    }
+
     protected override void OnClick() => VisitingMechanic.CheckVisit(Player, Player, 1, true, true);
 
     public override bool CanUse()
@@ -217,6 +234,24 @@ public sealed class Shikari_Execute : ObjectWorkshopRoleButton<Shikari>
     public override float Cooldown => 0.1f;
     public override LoadableAsset<Sprite> Sprite => OWAssets.KillSprite;
     public override ButtonLocation Location => ButtonLocation.BottomLeft;
+
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        if (KeybindIcon != null) KeybindIcon.transform.localPosition = new Vector3(0.4f, 0.45f, -9f);
+    }
+
+    protected override void FixedUpdate(PlayerControl playerControl)
+    {
+        if (playerControl == Player)
+        {
+            Button?.usesRemainingText.gameObject.SetActive(true);
+            Button?.usesRemainingSprite.gameObject.SetActive(true);
+            Button!.usesRemainingText.text = PlayerControl.AllPlayerControls.ToArray().Count(x => !x.HasDied() && x != Player) + "";
+        }
+
+        base.FixedUpdate(playerControl);
+    }
 
     protected override void OnClick() => VisitingMechanic.CheckVisit(Player, Player, 2, true, true);
 

@@ -10,7 +10,7 @@ public static class VisitingMechanic
         DeathHandlerModifier.UpdateDeathHandler(player, (DeathReasonShow)deathReasonShow, DeathHandlerOverride.SetFalse);
     }
 
-    public static void CheckVisit(PlayerControl player, PlayerControl target, int Button, bool isAttacking, bool isVisiting)
+    public static void CheckVisit(PlayerControl player, PlayerControl? target, int Button, bool isAttacking, bool isVisiting)
     {
         int blockVisit = 0;
 
@@ -146,6 +146,31 @@ public static class VisitingMechanic
             {
                 if (Button == 1) CustomButtonSingleton<Oasis_Sanctify>.Instance.ResetCooldownAndOrEffect();
                 if (Button == 2) CustomButtonSingleton<Oasis_Sandstorm>.Instance.ResetCooldownAndOrEffect();
+            }
+            if (role is Settler) CustomButtonSingleton<Settler_Lay>.Instance.ResetCooldownAndOrEffect();
+            if (role is Ambiguator)
+            {
+                if (Button == 1) CustomButtonSingleton<Ambiguator_Locate>.Instance.ResetCooldownAndOrEffect();
+                if (Button == 2) CustomButtonSingleton<Ambiguator_Determine>.Instance.ResetCooldownAndOrEffect();
+                if (Button == 3) CustomButtonSingleton<Ambiguator_Encapsulate>.Instance.ResetCooldownAndOrEffect();
+            }
+            if (role is Reaper)
+            {
+                if (Button == 1) CustomButtonSingleton<Reaper_Attack>.Instance.ResetCooldownAndOrEffect();
+                if (Button == 2) CustomButtonSingleton<Reaper_Catastrophe>.Instance.ResetCooldownAndOrEffect();
+            }
+            if (role is UndeadReaper) CustomButtonSingleton<UndeadReaper_Attack>.Instance.ResetCooldownAndOrEffect();
+            if (role is Gravekeeper) CustomButtonSingleton<Gravekeeper_Tombstone>.Instance.ResetCooldownAndOrEffect();
+            if (role is Totemist)
+            {
+                if (Button == 1) CustomButtonSingleton<Totemist_Install>.Instance.ResetCooldownAndOrEffect();
+                if (Button == 2) CustomButtonSingleton<Totemist_Watch>.Instance.ResetCooldownAndOrEffect();
+                if (Button == 3) CustomButtonSingleton<Totemist_Cycle>.Instance.ResetCooldownAndOrEffect();
+            }
+            if (role is Culverin)
+            {
+                if (Button == 1) CustomButtonSingleton<Culverin_Attack>.Instance.ResetCooldownAndOrEffect();
+                if (Button == 2) CustomButtonSingleton<Culverin_LoadAndShoot>.Instance.ResetCooldownAndOrEffect();
             }
         }
     }

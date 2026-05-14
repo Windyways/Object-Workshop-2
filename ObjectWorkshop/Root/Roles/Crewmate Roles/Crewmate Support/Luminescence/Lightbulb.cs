@@ -52,7 +52,7 @@ public class Lightbulb(IntPtr ptr) : MonoBehaviour(ptr)
     public bool IsInRange(PlayerControl target)
     {
         if (target == null || gameObject == null) return false;
-        if (target.HasDied() || target.inVent || target.IsSpider() /*|| target.IsPeacock() || target.IsUnderground()*/) return false;
+        if (target.HasDied() || target.inVent || !target.IsTargetable() /*|| target.IsUnderground()*/) return false;
 
         float dist = Vector2.Distance(gameObject.transform.position, target.transform.position);
         return dist <= OptionGroupSingleton<Luminescence_Options>.Instance.Radius;
@@ -89,14 +89,6 @@ public class Lightbulb(IntPtr ptr) : MonoBehaviour(ptr)
         AllLightbulbs.Clear();
     }
 
-    public static IEnumerable<Lightbulb> GetAll()
-    {
-        // Return all currently active lightbulbs
-        return AllLightbulbs;
-    }
-
-    // get all affecting player:
-    // var bulbsAffectingPlayer = Lightbulb.GetAll().Where(b => b.IsInRange(pc)).ToList();
     public static bool IsPlayerInAnyRange(PlayerControl target)
     {
         if (target == null) return false;

@@ -16,8 +16,7 @@ public class DuelController(IntPtr ptr) : MonoBehaviour(ptr)
 
     public void Start()
     {
-        player.RpcAddModifier<DuelingModifier>();
-        target.RpcAddModifier<DuelingModifier>();
+        DuelControllers.Add(this);
 
         Sword1.transform.SetParent(player.transform);
         Sword1.transform.localPosition = new Vector3(SwordLeftRight(1), 0.1f, 0f);
@@ -27,6 +26,11 @@ public class DuelController(IntPtr ptr) : MonoBehaviour(ptr)
 
         if (player.AmOwner() || target.AmOwner()) OWAssets.PlaySound(OWAssets.DuelBegin_SFX);
         Coroutines.Start(DuelSequence(player, target, WinChance));
+    }
+
+    private void OnDestroy()
+    {
+        DuelControllers.Remove(this);
     }
 
     public float SwordLeftRight(int sword)
@@ -41,8 +45,37 @@ public class DuelController(IntPtr ptr) : MonoBehaviour(ptr)
         return left ? 0.5f : -0.5f;
     }
 
+    private void OnDuel(PlayerControl Player)
+    {
+        if (Player.Data.Role is Totemist totemist && totemist.isWatching)
+        {
+            totemist.isWatching = false;
+
+            LightSource light = Player.lightSource;
+            light.transform.SetParent(Player.transform);
+            light.transform.localPosition = Player.Collider.offset;
+        }
+        else if (Player.Data.Role is Aimsman aimsman && aimsman.isAiming)
+        {
+            Aimsman.RpcAim(Player);
+        }
+        else if (Player.Data.Role is Culverin culverin && culverin.isAiming)
+        {
+            var cannonballBase = CannonballBase.GetObjectByPlayer(Player);
+
+            Destroy(cannonballBase.gameObject);
+            Destroy(cannonballBase.directionLine);
+        }
+        /*else if (Player.Data.Role is Specter specter && specter.isInvisible)
+        {
+            specter.isInvisible = false;
+            Player.RpcRemoveModifier<InvisibleTogglable>();
+        }*/
+    }
+
     public IEnumerator DuelSequence(PlayerControl player, PlayerControl target, float winChance) // Created by Chat GPT.
     {
+        OnDuel(target);
         player.Immobilize();
         target.Immobilize();
 
@@ -127,9 +160,6 @@ public class DuelController(IntPtr ptr) : MonoBehaviour(ptr)
 
     public void StopDuel(PlayerControl player, PlayerControl target, bool canceled)
     {
-        player.RpcRemoveModifier<DuelingModifier>();
-        target.RpcRemoveModifier<DuelingModifier>();
-
         player.Mobilize();
         target.Mobilize();
 
@@ -234,7 +264,7 @@ public class DuelController(IntPtr ptr) : MonoBehaviour(ptr)
         float time = 0f;
         while (time < duration)
         {
-            if (!OWPlugin.InGame())
+            if (!OWPlugin.InGame() || MeetingHud.Instance)
                 break;
 
             float alpha = Mathf.Lerp(1f, 0f, time / duration);
@@ -290,4 +320,16 @@ public class DuelController(IntPtr ptr) : MonoBehaviour(ptr)
         sr.flipY = true;
         return sword;
     }
+
+    public static bool IsDueling(PlayerControl player)
+    {
+        foreach (var controller in DuelControllers)
+        {
+            if (controller.target == player || controller.player == player) return true;
+        }
+
+        return false;
+    }
+
+    public static List<DuelController> DuelControllers = new List<DuelController>();
 }

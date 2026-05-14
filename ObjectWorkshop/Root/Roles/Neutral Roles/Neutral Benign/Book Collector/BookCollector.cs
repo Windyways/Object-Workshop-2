@@ -1,10 +1,6 @@
-﻿using MiraAPI.Events.Mira;
-using Rewired;
-using System.Text;
+﻿using System.Text;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 namespace ObjectWorkshop.Roles;
 
@@ -300,7 +296,7 @@ public sealed class BookCollector_Read : ObjectWorkshopRoleButton<BookCollector>
     public GameObject CreateChargesButton(GameObject button, Vector3 localPos)
     {
         var chargesIcon = UnityEngine.Object.Instantiate(HudManager.Instance.AbilityButton.usesRemainingSprite.gameObject, button.transform);
-        chargesIcon.GetComponent<SpriteRenderer>().sprite = OWAssets.AbilityCounterBookSprite.LoadAsset();
+        chargesIcon.GetComponent<SpriteRenderer>().sprite = TouAssets.AbilityCounterBasicSprite.LoadAsset();
         chargesIcon.GetComponent<SpriteRenderer>().color = TextOutlineColor;
 
         ChargesButtonText = chargesIcon.transform.GetComponentInChildren<TextMeshPro>();
@@ -318,8 +314,11 @@ public sealed class BookCollector_Read : ObjectWorkshopRoleButton<BookCollector>
             Button?.usesRemainingSprite.gameObject.SetActive(true);
             Button!.usesRemainingText.text = Role.Charges.ToString() + "";
 
-            ChargesButton.transform.localPosition = new Vector3(0.4f, -0.1f, -0.1f);
-            ChargesButtonText!.text = Role.GuessedPlayers.Count + "/" + (int)OptionGroupSingleton<BookCollector_Options>.Instance.Required; 
+            if (ChargesButton != null)
+            {
+                ChargesButton.transform.localPosition = new Vector3(0.4f, -0.1f, -0.1f);
+                ChargesButtonText!.text = Role.GuessedPlayers.Count + "/" + (int)OptionGroupSingleton<BookCollector_Options>.Instance.Required;
+            }
         }
 
         base.FixedUpdate(playerControl);

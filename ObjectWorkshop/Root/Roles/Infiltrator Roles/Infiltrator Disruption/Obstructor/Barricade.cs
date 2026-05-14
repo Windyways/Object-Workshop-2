@@ -28,7 +28,7 @@ public class Barricade(IntPtr ptr) : MonoBehaviour(ptr)
         PolygonCollider2D polygonCollider2D = gameObject.GetComponent<PolygonCollider2D>();
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
-            if (player.onLadder || Sabotages.AnyActive() || player.Is(CalculatedFaction.Infiltrator) || /*player.IsUnderground() ||*/ player.HasDied())
+            if (player.onLadder || Sabotages.AnyActive() || player.Is(CalculatedFaction.Infiltrator) || !player.IsTargetable() || player.HasDied())
             {
                 ObjectExtentions.IgnoreCollision(polygonCollider2D, player.GetComponent<CircleCollider2D>());
             }

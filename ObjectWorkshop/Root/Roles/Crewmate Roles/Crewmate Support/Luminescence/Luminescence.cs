@@ -18,7 +18,7 @@ public sealed class Luminescence(IntPtr cppPtr)
     public Alignment Alignment => Alignment.CrewmateSupport;
 
     public string RevealText => "is scared of the dark.";
-    public string Description => "Eject and dispose of all prime evildoers.";
+    public string Description => "Radiate an area to increase the vision and speed of players within.";
     public string Intro => "You are a character with nyctophobia that has a sufficient supply of lightbulbs.";
     public string VictoryCondition => "Dispose of all evil. You will win with other Crewmate members.";
 
@@ -60,7 +60,7 @@ public sealed class Luminescence(IntPtr cppPtr)
             OWAssets.KillSprite),
     ];
 
-    public void Role_OnRoundStart()
+    public void Role_OnRoundStart(bool intro)
     {
         Brightness = 100;
     }

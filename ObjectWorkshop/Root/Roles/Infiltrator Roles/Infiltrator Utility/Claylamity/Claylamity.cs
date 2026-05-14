@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 using Random = UnityEngine.Random;
 
 namespace ObjectWorkshop.Roles;
@@ -116,21 +117,6 @@ public sealed class Claylamity(IntPtr cppPtr)
         Moon.CleanUp();
         Lightbulb.CleanUp();
     }
-
-    // TOTEMIST
-    /*[MethodRpc((uint)OWRpc.RpcInstall, SendImmediately = true)]
-    public static void RpcInstall(PlayerControl player)
-    {
-        if (player.Data.Role is not Claylamity)
-        {
-            Logger<OWPlugin>.Error("RpcInstall - Invalid Claylamity");
-            return;
-        }
-
-        var claylamity = player.GetRole<Claylamity>();
-
-        Totem.Begin(claylamity.Player);
-    }*/
 
     // DUELIST
     public int RandomNumber;
@@ -308,6 +294,7 @@ public sealed class Claylamity(IntPtr cppPtr)
             else if (metamorphosisRole is UFO) RpcDestination(Player);
             else if (metamorphosisRole is Luminescence) RpcRadiate(Player);
             else if (metamorphosisRole is Oasis) Oasis.RpcStartSandstorm(Player);
+            else if (metamorphosisRole is Totemist) Totemist.RpcInstall(Player);
         }
         else if (Button == 3) MetamorphosisMenu();
     }
@@ -356,36 +343,21 @@ public sealed class Claylamity_Options : AbstractOptionGroup<Claylamity>
 }
 
 // ROLE ABILITIES
-/*public sealed class Claylamity_Install : ObjectWorkshopRoleButton<Claylamity>
+public sealed class Claylamity_Install : ObjectWorkshopRoleButton<Claylamity>
 {
     public override string Name => "Install";
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
-    public override Color TextOutlineColor => OWColors.Crewmate;
+    public override Color TextOutlineColor => RoleColors.Crewmate;
     public override float Cooldown => OptionGroupSingleton<Totemist_Options>.Instance.Cooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => OWAssets.KillSprite;
     public override int MaxUses => (int)OptionGroupSingleton<Totemist_Options>.Instance.MaxInstalls;
 
-    public override void ClickHandler()
-    {
-        if (Timer <= 0)
-        {
-            if (MiscUtils.SuccessfulVisit(Player, Player, isAttacking: false, isVisiting: false))
-            {
-                base.ClickHandler();
-            }
-        }
-    }
-
-    protected override void OnClick()
-    {
-        Claylamity.RpcInstall(Role.Player);
-    }
-
+    protected override void OnClick() => VisitingMechanic.CheckVisit(Player, Player, 2, false, false);
     public override bool Enabled(RoleBehaviour? role)
     {
         return base.Enabled(role) && Role.metamorphosisRole is Totemist;
     }
-}*/
+}
 
 public sealed class Claylamity_Duel : ObjectWorkshopRoleButton<Claylamity, PlayerControl>
 {
@@ -416,7 +388,7 @@ public sealed class Claylamity_Duel : ObjectWorkshopRoleButton<Claylamity, Playe
     public override PlayerControl? GetTarget()
     {
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(false, Distance, predicate: x => 
-            !x.Is(Faction.Infiltrator) && x.IsTargetable() && !x.HasModifier<DuelingModifier>());
+            !x.Is(Faction.Infiltrator) && x.IsTargetable() && !DuelController.IsDueling(x));
     }
 
     protected override void OnClick() => VisitingMechanic.CheckVisit(Player, Target, 2, false, true);

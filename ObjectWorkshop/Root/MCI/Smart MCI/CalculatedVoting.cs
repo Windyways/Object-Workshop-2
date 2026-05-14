@@ -61,10 +61,8 @@ public static class CalculatedVoting
                 if (player.Is(Faction.Infiltrator)) voted = InfiltratorVoting(player, __instance, validPlayersInfiltrator);
                 else if (player.Is(Faction.Crewmate)) voted = CrewmateVoting(player, __instance, validPlayersCrewmate);
                 else if (player.Data.Role is Shikari shikari) voted = ShikariVoting(shikari, __instance);
-                else if (player.Data.Role is Peacock peacock) voted = PeacockVoting(peacock, __instance);
-                else if (player.Is(Alignment.NeutralPredator)) voted = RandomVote(player, __instance, alivePlayers, alivePlayers.Count > GlobalSkipThreshold);
-                else if (player.Is(Alignment.NeutralEvil)) voted = RandomVote(player, __instance, alivePlayers, alivePlayers.Count > GlobalSkipThreshold);
-                else if (player.Is(Alignment.NeutralBenign)) voted = RandomVote(player, __instance, alivePlayers, alivePlayers.Count > GlobalSkipThreshold);
+                else if (player.Is(Alignment.NeutralAssociative)) voted = AssociativeVoting(player, __instance);
+                else voted = RandomVote(player, __instance, alivePlayers, alivePlayers.Count > GlobalSkipThreshold);
 
                 if (voted == MeetingHud.Instance.SkipVoteButton.TargetPlayerId) AUS_AfterVoteEvent.RoleFunctionOnSkip(player);
                 else AUS_AfterVoteEvent.RoleFunctionOnVote(player, MiscUtils.PlayerById(voted));
@@ -158,9 +156,8 @@ public static class CalculatedVoting
         else return SkipVote(player, __instance);
     }
 
-    public static byte PeacockVoting(Peacock peacock, MeetingHud __instance)
+    public static byte AssociativeVoting(PlayerControl player, MeetingHud __instance)
     {
-        var player = peacock.Player;
         var validPlayersCrewmate = PlayerControl.AllPlayerControls.ToArray().Where(x =>
             !x.HasDied() && x != player && !x.HasModifier<TI>(x => !x.Player.HasModifier<Suspicion>()) &&
             !(x.TryGetModifier<Confirmed>(out var confirmed) && confirmed.IsConfirmed()) && !x.HasModifier<SoftCleared>() &&

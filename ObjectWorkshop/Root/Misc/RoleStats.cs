@@ -44,6 +44,7 @@ namespace ObjectWorkshop.Misc
             // --- CREWMATE ---
             // -- CI --
             roleStats.Add("Alarum", new RoleStats("Alarum", RoleColors.Crewmate));
+            roleStats.Add("Totemist", new RoleStats("Totemist", RoleColors.Crewmate));
 
             // -- CK --
             roleStats.Add("Duelist", new RoleStats("Duelist", RoleColors.Crewmate));
@@ -61,18 +62,23 @@ namespace ObjectWorkshop.Misc
             // --- NEUTRAL ---
             // -- NA --
             roleStats.Add("Peacock", new RoleStats("Peacock", RoleColors.Peacock));
+            roleStats.Add("Ambiguator", new RoleStats("Ambiguator", RoleColors.Ambiguator));
 
             // -- NB --
             roleStats.Add("Book Collector", new RoleStats("Book Collector", RoleColors.BookCollector));
 
             // -- NC --
             roleStats.Add("Shikari", new RoleStats("Shikari", RoleColors.Shikari));
+            roleStats.Add("Gravekeeper", new RoleStats("Gravekeeper", RoleColors.Gravekeeper));
 
             // -- NE --
             roleStats.Add("Enticer", new RoleStats("Enticer", RoleColors.Enticer));
+            roleStats.Add("Settler", new RoleStats("Settler", RoleColors.Settler));
 
             // -- NP --
             roleStats.Add("Pyre", new RoleStats("Pyre", RoleColors.Pyre));
+            roleStats.Add("Reaper", new RoleStats("Reaper", RoleColors.Reaper));
+            roleStats.Add("Undead Reaper", new RoleStats("Undead Reaper", RoleColors.UndeadReaper));
 
             // --- INFILTRATOR ---
             // -- ID --
@@ -83,6 +89,7 @@ namespace ObjectWorkshop.Misc
 
             // -- IK --
             roleStats.Add("Aimsman", new RoleStats("Aimsman", RoleColors.Infiltrator));
+            roleStats.Add("Culverin", new RoleStats("Culverin", RoleColors.Infiltrator));
 
             // -- IU --
             roleStats.Add("Marauder", new RoleStats("Marauder", RoleColors.Infiltrator));

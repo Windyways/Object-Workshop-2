@@ -129,7 +129,7 @@ public interface ICustomAURole : ICustomRole
     {
     }
 
-    void Role_OnRoundStart()
+    void Role_OnRoundStart(bool intro)
     {
     }
 

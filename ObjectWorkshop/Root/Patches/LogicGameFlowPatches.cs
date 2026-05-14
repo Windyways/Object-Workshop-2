@@ -154,7 +154,9 @@ public static class LogicGameFlowPatches
 
         var aliveNP = PlayerControl.AllPlayerControls.ToArray().Count(x => x.Is(Alignment.NeutralPredator) && !x.HasDied());
         var aliveInfiltrator = PlayerControl.AllPlayerControls.ToArray().Count(x => x.Is(Faction.Infiltrator) && !x.HasDied());
-        var anyNC = PlayerControl.AllPlayerControls.ToArray().Any(x => x.Data.Role is Shikari shikari && shikari.ExecutionPhase() && !x.HasDied());
+        var anyNC = PlayerControl.AllPlayerControls.ToArray().Any(x => 
+            ((x.Data.Role is Shikari shikari && shikari.ExecutionPhase()) ||
+            (x.Data.Role is Gravekeeper gravekeeper && gravekeeper.GravekeeperSeason())) && !x.HasDied());
         if (aliveInfiltrator > 0 || aliveNP > 0 || anyNC)
             return false;
 

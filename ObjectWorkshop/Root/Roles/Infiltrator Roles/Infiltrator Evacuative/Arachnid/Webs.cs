@@ -68,21 +68,22 @@ public class Webs(IntPtr ptr) : MonoBehaviour(ptr)
 
         foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (!player.HasDied()) // and not underground.
+            if (!player.HasDied() && player.IsTargetable()) // and not underground.
             {
                 if (IsInWebs(player))
                 {
-                    var arachnid = Owner.GetRole<Arachnid>();
                     if (Owner.AmOwner() && player != Owner)
                     {
                         isTriggered = true;
-                        arachnid.WebsToClear.Add(this);
-
-                        if (_arrow == null)
+                        if (!Owner.HasDied() && Owner.Data.Role is Arachnid arachnid)
                         {
-                            Owner.Notify("A player has entered one of your Webs!", NotifyMode.Instantly);
-                            AddArrow();
-                            Coroutines.Start(MiscUtils.CoFlash(Color.yellow, 1f, 0.3f));
+                            arachnid.WebsToClear.Add(this);
+                            if (_arrow == null)
+                            {
+                                Owner.Notify("A player has entered one of your Webs!", NotifyMode.Instantly);
+                                AddArrow();
+                                Coroutines.Start(MiscUtils.CoFlash(Color.yellow, 1f, 0.3f));
+                            }
                         }
                     }
                 }

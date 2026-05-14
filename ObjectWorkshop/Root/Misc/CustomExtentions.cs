@@ -1,9 +1,49 @@
+using System.Collections;
 using UnityEngine;
 
 namespace ObjectWorkshop.Misc;
 
 public static class CustomExtentions
 {
+    public static IEnumerator CoClean(this DeadBody body, float d) // d = duration
+    {
+        var renderer = body.bodyRenderers[^1];
+        yield return MiscUtils.PerformTimedAction(d, t => renderer.color = renderer.color.SetAlpha(1 - t));
+        body.gameObject.Destroy();
+    }
+
+    public static bool IsGravekeeperVent(this Vent vent)
+    {
+        bool isGKV = false;
+        foreach (var role in CustomRoleUtils.GetActiveRolesOfType<Gravekeeper>())
+        {
+            if (role.GravekeeperVents.Contains(vent))
+            {
+                isGKV = true;
+                break;
+            }
+        }
+
+        return isGKV;
+    }
+
+    public static OWObject? GetNearestObject(this PlayerControl player)
+    {
+        float minDistance = float.MaxValue;
+        OWObject? closestObj = null;
+        foreach (OWObject obj in OWObject.OWObjects)
+        {
+            float distance = Vector2.Distance(player.transform.position, obj.transform.position);
+            if (distance < 1f && distance < minDistance && obj.isTombstone)
+            {
+                minDistance = distance;
+                closestObj = obj;
+            }
+        }
+
+        return closestObj;
+    }
+
     public static string GetRoleInColor(this PlayerControl player)
     {         
         if (player.GetTrueRole() is ICustomAURole customRole)
@@ -230,12 +270,6 @@ public static class CustomExtentions
         return Alignment.None;
     }
 
-    public static DeathReasonShow GetDeathReason(this PlayerControl player, DeathReasonShow newDR = DeathReasonShow.None)
-    {
-        if (newDR != DeathReasonShow.None) return newDR; // For roles that can apply multiple death reasons, like Toaster.
-        return DeathReasonShow.Killed;
-    }
-
     public static RoleBehaviour GetRoleFromRoleBehaviour(this RoleBehaviour role)
     {
         var ushortRole = RoleId.Get(role.GetType());
@@ -299,14 +333,17 @@ public static class CustomExtentions
 
     public static bool IsTargetable(this PlayerControl player)
     {
-        return true;//!player.IsUnderground();
+        return 
+            !(player.Data.Role is Settler settler && settler.LayedEggsThisRound) &&
+            !SturdyEgg.IsWithinEgg(player);//!player.IsUnderground();
     }
 
     public static bool AbilityUsable(this PlayerControl player)
     {
         return
-            !player.HasModifier<DuelingModifier>()// &&
-            //!PeacockVisual.IsPlayerAnyParalyzed(player) &&
+            !SturdyEgg.IsWithinEgg(player) &&
+            !DuelController.IsDueling(player) &&
+            !(PeacockVisual.IsPlayerAnyParalyzed(player) && OptionGroupSingleton<Peacock_Options>.Instance.BlockParalyzed) //&&
             //!ZapBox.IsInAnyRange(player)
             ;
     }
@@ -427,6 +464,8 @@ public static class CustomExtentions
             list.Add(SystemTypes.MiningPit);
             list.Add(SystemTypes.Lookout);
             list.Add(SystemTypes.Dropship);
+            list.Add(SystemTypes.RecRoom);
+            list.Add(SystemTypes.SleepingQuarters);
         }
     }
 

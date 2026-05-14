@@ -27,31 +27,31 @@ public class Moon(IntPtr ptr) : MonoBehaviour(ptr)
         if (player == null || target == null)
             yield break;
 
-        if ((target.Data.Role is Enticer enticer && enticer.Player.inVent) || /*target.IsUnderground() || */target.HasModifier<DuelingModifier>())
+        if ((target.Data.Role is Enticer enticer && enticer.Player.inVent) || !target.IsTargetable() || DuelController.IsDueling(target))
         {
             player.Notify(UFO_Feedback.AbductImmune(target), NotifyMode.InstantlyAndMeeting);
             yield break;
         } // Abduct immune because these may cause issues...
-        /*else if (target.Data.Role is Totemist totemist && totemist.isWatching)
+        else if (target.Data.Role is Totemist totemist && totemist.isWatching)
         {
             totemist.isWatching = false;
 
             LightSource light = target.lightSource;
             light.transform.SetParent(target.transform);
             light.transform.localPosition = target.Collider.offset;
-        }*/
+        }
         else if (target.Data.Role is Aimsman aimsman && aimsman.isAiming)
         {
             Aimsman.RpcAim(target);
         }
-        /*else if (target.Data.Role is Culverin culverin && culverin.isAiming)
+        else if (target.Data.Role is Culverin culverin && culverin.isAiming)
         {
             var cannonballBase = CannonballBase.GetObjectByPlayer(target);
 
             Object.Destroy(cannonballBase.gameObject);
             Object.Destroy(cannonballBase.directionLine);
         }
-        else if (target.Data.Role is Specter specter && specter.isInvisible)
+        /*else if (target.Data.Role is Specter specter && specter.isInvisible)
         {
             specter.isInvisible = false;
             target.RpcRemoveModifier<InvisibleTogglable>();
@@ -136,7 +136,7 @@ public class Moon(IntPtr ptr) : MonoBehaviour(ptr)
         }
 
         GameObject newBeam = new GameObject("AbductionBeam");
-        newBeam.transform.position = target.position;
+        if (target != null) newBeam.transform.position = target.position;
 
         LineRenderer lr = newBeam.AddComponent<LineRenderer>();
         newBeam.AddComponent<SpriteRenderer>();
@@ -155,9 +155,12 @@ public class Moon(IntPtr ptr) : MonoBehaviour(ptr)
         lr.material = mat;
 
         // Top point above player, bottom at player
-        Vector3 topPos = target.position + Vector3.up * 4f;
-        lr.SetPosition(0, topPos);
-        lr.SetPosition(1, target.position);
+        if (target != null)
+        {
+            Vector3 topPos = target.position + Vector3.up * 4f;
+            lr.SetPosition(0, topPos);
+            lr.SetPosition(1, target.position);
+        }
 
         return newBeam;
     }
@@ -167,7 +170,7 @@ public class Moon(IntPtr ptr) : MonoBehaviour(ptr)
         UpdateColor();
     }
 
-    private bool Visibility() => true;
+    private static bool Visibility() => true;
     public void UpdateColor()
     {
         if (Visibility()) myRend.Show();
@@ -200,7 +203,7 @@ public class Moon(IntPtr ptr) : MonoBehaviour(ptr)
         if (moon != null)
         {
             Destroy(moon.beam);
-            Destroy(moon.gameObject); // This prevents UFO from working in the future. why? i dunno.
+            Destroy(moon.gameObject);
         }
         AllMoons.Clear();
     }

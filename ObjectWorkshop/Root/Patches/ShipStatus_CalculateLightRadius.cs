@@ -43,7 +43,7 @@ public static class ShipStatus_CalculateLightRadius
                 OptionGroupSingleton<Luminescence_Options>.Instance.VisionCrew : OptionGroupSingleton<Luminescence_Options>.Instance.VisionEvil;
         }
 
-        if (playerControl.HasModifier<DuelingModifier>())
+        if (DuelController.IsDueling(playerControl))
         {
             __result = __instance.MaxLightRadius * 0.25f;
         }

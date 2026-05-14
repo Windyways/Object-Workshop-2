@@ -24,7 +24,7 @@ public abstract class ObjectWorkshopButton : CustomActionButton
 
     public virtual bool DecreaseCharge => true;
 
-    private PassiveButton PassiveComp { get; set; }
+    public PassiveButton PassiveComp { get; set; }
 
     public virtual int ConsoleBind()
     {
@@ -438,6 +438,10 @@ public abstract class ObjectWorkshopRoleButton<TRole, TTarget> : ObjectWorkshopT
             else if (Target is Vent vent)
             {
                 vent.SetOutline(active, true, Role.TeamColor);
+            }
+            else if (Target is OWObject obj)
+            {
+                obj.SetOutline(active, true, Role.TeamColor);
             }
         }
     }

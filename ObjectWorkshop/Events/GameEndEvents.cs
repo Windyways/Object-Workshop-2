@@ -1,5 +1,4 @@
 using MiraAPI.GameEnd;
-using MiraAPI.Roles;
 using TownOfUs.GameOver;
 using TownOfUs.Patches;
 

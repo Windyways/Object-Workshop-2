@@ -45,7 +45,7 @@ public class Sanctuary(IntPtr ptr) : MonoBehaviour(ptr)
     public static void Begin(PlayerControl player)
     {
         GameObject gameObject = new GameObject("Sanctuary");
-        gameObject.AddSpriteRenderer(OWAssets.Bubble.LoadAsset(), 30, 100, player.transform.position, ObjectExtentions.One3rdColor(), Vector3.one * OptionGroupSingleton<Oasis_Options>.Instance.Radius);
+        gameObject.AddSpriteRenderer(OWAssets.Bubble.LoadAsset(), 30, 100, player.transform.position, ObjectExtentions.noColor(), Vector3.one * OptionGroupSingleton<Oasis_Options>.Instance.Radius);
 
         Sanctuary sanctuary = gameObject.AddComponent<Sanctuary>();
         sanctuary.Owner = player;

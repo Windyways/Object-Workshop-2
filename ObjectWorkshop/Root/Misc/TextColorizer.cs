@@ -91,7 +91,7 @@ public static class TextColorizer
         { "Devour", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
 
         // --- Pyre ---
-        { "Pyre", () => $"#{RoleColors.Pyre.ToHtmlStringRGBA()}" },
+        { "Pyre", () => $"#{RoleColors.Pyre.ToHtmlStringRGBA()}" }, { "Pyres", () => $"#{RoleColors.Pyre.ToHtmlStringRGBA()}" },
         { "Ignite", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
 
         // --- Peacock ---
@@ -104,6 +104,39 @@ public static class TextColorizer
         { "Oasis", () => $"#{RoleColors.Crewmate.ToHtmlStringRGBA()}" },
         { "Sanctify", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
         { "Sandstorm", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Settler ---
+        { "Settler", () => $"#{RoleColors.Settler.ToHtmlStringRGBA()}" },
+        { "Lay", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Ambiguator ---
+        { "Ambiguator", () => $"#{RoleColors.Ambiguator.ToHtmlStringRGBA()}" },
+        { "Determine", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Encapsulate", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Locate", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Reaper ---
+        { "Reaper", () => $"#{RoleColors.Reaper.ToHtmlStringRGBA()}" },
+        { "Catastrophe", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Undead Reaper ---
+        { "Undead Reaper", () => $"#{RoleColors.UndeadReaper.ToHtmlStringRGBA()}" },
+
+        // --- Gravekeeper ---
+        { "Gravekeeper", () => $"#{RoleColors.Gravekeeper.ToHtmlStringRGBA()}" },
+        { "Tombstone", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Dig Up", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Gravekeeper Season", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Totemist ---
+        { "Totemist", () => $"#{RoleColors.Crewmate.ToHtmlStringRGBA()}" },
+        { "Totem", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Watch", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+        { "Cycle", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
+
+        // --- Culverin ---
+        { "Culverin", () => $"#{RoleColors.Infiltrator.ToHtmlStringRGBA()}" },
+        { "Load", () => $"#{RoleColors.Keyword.ToHtmlStringRGBA()}" },
     };
 
     // Build a single regex that matches any keyword. Longer keys are listed first to prefer them when overlapping.

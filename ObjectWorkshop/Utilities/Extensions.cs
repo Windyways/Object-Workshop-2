@@ -693,6 +693,7 @@ public static class Extensions
                                  ((playerInfo.TryGetModifier<DisabledModifier>(out var mod) && mod.IsConsideredAlive) ||
                                   !playerInfo.HasModifier<DisabledModifier>()) &&
                                  !playerInfo.Data.IsDead &&
+                                 playerInfo.IsTargetable() &&
                                  (includeImpostors || !playerInfo.Data.Role.IsImpostor))
             .ToList();
 

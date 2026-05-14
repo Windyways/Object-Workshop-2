@@ -6,7 +6,6 @@ namespace ObjectWorkshop.Objects;
 [RegisterInIl2Cpp]
 public class Flames : MonoBehaviour
 {
-    public byte id;
     public PlayerControl PyreOwner;
     public PlayerControl PlayerOnFire;
     public SpriteRenderer myRend;

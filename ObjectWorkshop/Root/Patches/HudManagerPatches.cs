@@ -2,7 +2,6 @@
 using System.Text;
 using TMPro;
 using TownOfUs.Modifiers;
-using TownOfUs.Options;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -20,6 +19,14 @@ public static class HudManagerPatches
         {
             if (!localPlayer.Is(Faction.None) && revealed.Player == player && revealed.Visitor == localPlayer) return true;
         }
+
+        // Undead Reaper cannot see alive player's roles regardless.
+        if (localPlayer.GetTrueRole() is UndeadReaper) return
+                (!localPlayer.Is(Faction.None) && player.HasModifier<GlobalReveal>()) ||
+            (localPlayer == player);
+
+        // Dead see alive roles if allowed.
+        if (localPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow) return true;
 
         return
             // Infiltrator
@@ -289,7 +296,7 @@ public static class HudManagerPatches
                 var roleName = "";
 
                 if (player.AmOwner ||
-                    (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
+                    //(PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                     VisibilityFlag(player) ||
                     revealMods.Any(x => x.Visible && x.RevealRole))
                 {
@@ -367,7 +374,7 @@ public static class HudManagerPatches
                 if (player?.Data?.Disconnected == true)
                 {
                     if (!(!TutorialManager.InstanceExists &&
-                          ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
+                          (//(PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                             VisibilityFlag(player) ||
                            revealMods.Any(x => x.Visible && x.RevealRole))))
                     {

@@ -22,8 +22,11 @@ public static class Shikari_ClickPlayer
             var nearHost = !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.GetTruePosition(), host.GetTruePosition(), Constants.ShipAndObjectsMask, false);
             if (PlayerControl.LocalPlayer.Data.Role is Shikari shikari2 && nearHost && host != shikari2.Player)
             {
-                if (shikari2.ExecutionPhase()) shikari2.Execute(host);
-                else if (CustomButtonSingleton<Shikari_Mark>.Instance.Timer <= 0 && !shikari2.MarkedPlayers.Contains(host)) shikari2.Mark(host);
+                if (host.IsTargetable())
+                {
+                    if (shikari2.ExecutionPhase()) shikari2.Execute(host);
+                    else if (CustomButtonSingleton<Shikari_Mark>.Instance.Timer <= 0 && !shikari2.MarkedPlayers.Contains(host)) shikari2.Mark(host);
+                }
             }
 
             return;
@@ -32,8 +35,11 @@ public static class Shikari_ClickPlayer
         var nearPlayer = !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.GetTruePosition(), __instance.GetTruePosition(), Constants.ShipAndObjectsMask, false);
         if (PlayerControl.LocalPlayer.Data.Role is Shikari shikari && nearPlayer && __instance != shikari.Player)
         {
-            if (shikari.ExecutionPhase()) shikari.Execute(__instance);
-            else if (CustomButtonSingleton<Shikari_Mark>.Instance.Timer <= 0 && !shikari.MarkedPlayers.Contains(__instance)) shikari.Mark(__instance);
+            if (__instance.IsTargetable())
+            {
+                if (shikari.ExecutionPhase()) shikari.Execute(__instance);
+                else if (CustomButtonSingleton<Shikari_Mark>.Instance.Timer <= 0 && !shikari.MarkedPlayers.Contains(__instance)) shikari.Mark(__instance);
+            }
         }
     }
 }

@@ -58,7 +58,8 @@ public class Crosshair(IntPtr ptr) : MonoBehaviour(ptr)
         float killRadius = 0.5f;
         foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (!player.HasDied()/* || player.IsInvincible() || player.IsUnderground()*/ && !ConditionalTargeting(player) && !player.Is(Faction.Infiltrator))
+            if (!player.HasDied()/* || player.IsInvincible() || player.IsUnderground()*/ && !ConditionalTargeting(player) && !player.Is(Faction.Infiltrator) &&
+                player.IsTargetable())
             {
                 float dist = Vector2.Distance(transform.position, player.transform.position);
                 if (dist <= killRadius) return player;

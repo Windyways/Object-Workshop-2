@@ -8,11 +8,10 @@ public static class PlayerSpeedPatch
     {
         __result *= pc.GetAppearance().Speed;
 
-        /*if (pc.Data.Role is Totemist totemist && totemist.isWatching)
-        {
-            __result *= 0f;
-        }
-        else */if (pc.Data.Role is Aimsman aimsman && aimsman.isAiming)
+        if ((pc.Data.Role is Aimsman aimsman && aimsman.isAiming) ||
+             (pc.Data.Role is Totemist totemist && totemist.isWatching) ||
+              (pc.Data.Role is Culverin culverin && culverin.isAiming) ||
+            (SturdyEgg.IsWithinEgg(pc)) || (PeacockVisual.IsPlayerAnyParalyzed(pc)))
         {
             __result *= 0f;
         }
@@ -20,33 +19,22 @@ public static class PlayerSpeedPatch
         {
             __result *= 0f;
         }
-        else if (pc.Data.Role is Culverin culverin && culverin.isAiming)
-        {
-            __result *= 0f;
-        }
         else if (pc.IsUnderground())
         {
             __result *= OptionGroupSingleton<Excavator_Options>.Instance.Speed;
         }*/
-        else if (PeacockVisual.IsPlayerAnyParalyzed(pc))
-        {
-            __result *= 0f;
-        }
-        /*else if (pc.IsRole<UndeadReaper>() && UndeadReaper.ReapersAlive())
+        else if (pc.IsRole<UndeadReaper>() && UndeadReaper.ReapersAlive())
         {
             __result *= OptionGroupSingleton<UndeadReaper_Options>.Instance.Speed;
-        }*/
+        }
         else if (pc.HasModifier<Submerged>())
         {
             __result *= OptionGroupSingleton<Claylamity_Options>.Instance.Speed;
         }
-        else if (Webs.IsInWebs(pc) && pc.IsSpider())
-        {
-            __result *= OptionGroupSingleton<Arachnid_Options>.Instance.Speed;
-        }
         else if (Webs.IsInWebs(pc))
         {
-            __result *= OptionGroupSingleton<Arachnid_Options>.Instance.PreySpeed;
+            if (pc.IsSpider()) __result *= OptionGroupSingleton<Arachnid_Options>.Instance.Speed;
+            else __result *= OptionGroupSingleton<Arachnid_Options>.Instance.PreySpeed;
         }
         else if (Lightbulb.IsPlayerInAnyRange(pc))
         {

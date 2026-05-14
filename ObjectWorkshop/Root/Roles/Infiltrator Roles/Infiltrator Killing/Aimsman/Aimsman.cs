@@ -1,11 +1,10 @@
 ﻿using System.Text;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace ObjectWorkshop.Roles;
 
 public sealed class Aimsman(IntPtr cppPtr)
-    : ImpostorRole(cppPtr), ICustomAURole, IWikiDiscoverable
+    : NeutralRole(cppPtr), ICustomAURole, IWikiDiscoverable
 {
     public string RoleName { get; set; } = "Aimsman";
     public string RoleDescription => "Shoot players down remotely.";
@@ -27,6 +26,7 @@ public sealed class Aimsman(IntPtr cppPtr)
         CanUseSabotage = OptionGroupSingleton<InfiltratorOptions>.Instance.CanSabotage,
         CanUseVent = OptionGroupSingleton<InfiltratorOptions>.Instance.CanVent,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
+        Icon = OWAssets.Aimsman
     };
 
     [HideFromIl2Cpp]
@@ -95,8 +95,7 @@ public sealed class Aimsman(IntPtr cppPtr)
             return;
         }
 
-        var aimsman = player.GetRole<Aimsman>();
-        if (aimsman.isAiming)
+        if (player.GetTrueRole() is Aimsman aimsman && aimsman.isAiming)
         {
             var crosshair = Crosshair.GetObjectByPlayer(aimsman.Player);
             crosshair.TryShoot(aimsman, null);
@@ -112,24 +111,25 @@ public sealed class Aimsman(IntPtr cppPtr)
             return;
         }
 
-        var aimsman = player.GetRole<Aimsman>();
-
-        if (!aimsman.isAiming)
+        if (player.GetTrueRole() is Aimsman aimsman)
         {
-            aimsman.isAiming = true;
-            Crosshair.Begin(aimsman.Player);
-        }
-        else
-        {
-            var crosshair = Crosshair.GetObjectByPlayer(aimsman.Player);
-            crosshair.DestroyGameObject();
-            aimsman.isAiming = false;
-
-            if (player.AmOwner)
+            if (!aimsman.isAiming)
             {
-                var button = CustomButtonSingleton<Aimsman_Aim>.Instance;
-                button.EffectActive = false;
-                button.Timer = OptionGroupSingleton<Aimsman_Options>.Instance.Cooldown;
+                aimsman.isAiming = true;
+                Crosshair.Begin(aimsman.Player);
+            }
+            else
+            {
+                var crosshair = Crosshair.GetObjectByPlayer(player);
+                crosshair.DestroyGameObject();
+                aimsman.isAiming = false;
+
+                if (player.AmOwner)
+                {
+                    var button = CustomButtonSingleton<Aimsman_Aim>.Instance;
+                    button.EffectActive = false;
+                    button.Timer = OptionGroupSingleton<Aimsman_Options>.Instance.Cooldown;
+                }
             }
         }
     }
@@ -158,7 +158,6 @@ public sealed class Aimsman(IntPtr cppPtr)
             return;
         }
 
-        var aimsman = player.GetRole<Aimsman>();
         var crosshair = Crosshair.GetObjectByPlayer(player);
         crosshair.DestroyGameObject();
     }

@@ -164,7 +164,8 @@ public sealed class Duelist_Duel : ObjectWorkshopRoleButton<Duelist, PlayerContr
 
     public override PlayerControl? GetTarget()
     {
-        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: x => x.IsTargetable() && !x.HasModifier<DuelingModifier>());
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: x =>
+            !DuelController.IsDueling(x));
     }
 
     protected override void OnClick() => VisitingMechanic.CheckVisit(Player, Target, 2, false, true);

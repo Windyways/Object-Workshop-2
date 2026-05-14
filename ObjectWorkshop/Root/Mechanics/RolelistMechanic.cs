@@ -14,14 +14,14 @@ public static class RolelistMechanic
         var rolesAssigned = new List<ushort>();
 
         var buckets = GetBuckets();
-        int guaranteedCovenCount = buckets.Count(x => x is RoleListOption.RandomInfiltrator or /*RoleListOption.InfiltratorDeception or RoleListOption.InfiltratorKilling or RoleListOption.InfiltratorSupport or*/ RoleListOption.InfiltratorUtility);
+        int guaranteedCovenCount = buckets.Count(x => x is RoleListOption.RandomInfiltrator or RoleListOption.InfiltratorDisruption or RoleListOption.InfiltratorEvacuative or RoleListOption.InfiltratorKilling or RoleListOption.InfiltratorUtility);
 
         InfiltratorCount += guaranteedCovenCount;
         foreach (var bucket in buckets.OrderBy(x => x is RoleListOption.Any))
         {
             if (bucket is RoleListOption.CrewmateInvestigative) AssignCrewmateRole(rolesAssigned, Alignment.CrewmateInvestigative);
             if (bucket is RoleListOption.CrewmateKilling) AssignCrewmateRole(rolesAssigned, Alignment.CrewmateKilling);
-            //if (bucket is RoleListOption.CrewmateProtective) AssignCrewmateRole(rolesAssigned, Alignment.CrewmateProtective);
+            if (bucket is RoleListOption.CrewmateProtective) AssignCrewmateRole(rolesAssigned, Alignment.CrewmateProtective);
             if (bucket is RoleListOption.CrewmateSupport) AssignCrewmateRole(rolesAssigned, Alignment.CrewmateSupport);
             if (bucket is RoleListOption.CrewmateUtility) AssignCrewmateRole(rolesAssigned, Alignment.CrewmateUtility);
             if (bucket is RoleListOption.RandomCrewmate) AssignCrewmateRole(rolesAssigned, Alignment.None, bucket);

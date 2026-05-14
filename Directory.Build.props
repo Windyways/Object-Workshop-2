@@ -10,9 +10,9 @@
 
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
-        <Version>1.1.0</Version>
+        <Version>1.2.0</Version>
 
-        <Authors>Windyways, Le Killer, whichtwix, wanderingPix</Authors>
+        <Authors>Windyways, WanderingPix</Authors>
         <RepositoryType>git</RepositoryType>
 
         <!-- SourceLink -->

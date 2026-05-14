@@ -23,7 +23,7 @@ namespace ObjectWorkshop;
 [ReactorModFlags(ModFlags.RequireOnAllClients)]
 public partial class OWPlugin : BasePlugin, IMiraPlugin
 {
-    public static string BetaVersion = "Build 3";
+    public static string BetaVersion = "";
 
     /// <summary>
     ///     Gets the specified Culture for string manipulations.

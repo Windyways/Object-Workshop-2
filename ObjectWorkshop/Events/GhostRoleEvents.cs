@@ -1,14 +1,4 @@
 ﻿using System.Collections;
-using AmongUs.GameOptions;
-using MiraAPI.Events;
-using MiraAPI.Events.Vanilla.Gameplay;
-using MiraAPI.Events.Vanilla.Usables;
-using MiraAPI.Modifiers;
-using MiraAPI.Roles;
-using Reactor.Utilities;
-using TownOfUs.Roles;
-using TownOfUs.Roles.Neutral;
-using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Events;

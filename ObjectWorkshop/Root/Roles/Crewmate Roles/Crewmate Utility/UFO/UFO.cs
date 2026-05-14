@@ -25,7 +25,7 @@ public sealed class UFO(IntPtr cppPtr)
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-
+        Icon = OWAssets.UFO,
     };
 
     [HideFromIl2Cpp]

@@ -27,6 +27,7 @@ public sealed class Arachnid(IntPtr cppPtr)
         CanUseSabotage = OptionGroupSingleton<InfiltratorOptions>.Instance.CanSabotage,
         CanUseVent = false,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
+        Icon = OWAssets.Arachnid
     };
 
     [HideFromIl2Cpp]

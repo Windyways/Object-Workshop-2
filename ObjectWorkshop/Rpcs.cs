@@ -32,6 +32,32 @@ public enum Rpcs : uint
     RpcSanctifyNotif,
     RpcSandstormMissNotif,
 
+    // Settler
+    RpcSpawnNest,
+
+    // Ambiguator
+    RpcDetermine,
+    RpcEncapsulate,
+    RpcPlayJumpAnim,
+
+    // Reaper
+    RpcReaperAttack,
+    RpcCatastrophe,
+
+    // Undead Reaper
+    RpcFlipReaperVisual,
+
+    // Gravekeeper
+    RpcTombstone,
+    RpcDigUp,
+
+    // Totemist
+    RpcInstall,
+
+    // Culverin
+    RpcLoadAndShoot,
+    RpcMoveCannonball,
+
     // Mechanics
     RpcAddVote,
 
@@ -39,6 +65,7 @@ public enum Rpcs : uint
     RpcAddDeathReason,
     RpcNotifyAll,
     RpcPerformInteraction,
+    RpcSpawnVent,
 
     // Chat
     RpcSendCustomChat,

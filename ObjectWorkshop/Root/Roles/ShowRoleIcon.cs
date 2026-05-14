@@ -1,4 +1,3 @@
-using Reactor.Utilities.Attributes;
 using UnityEngine;
 
 namespace ObjectWorkshop.Roles;
@@ -19,7 +18,7 @@ public class ShowRoleIcon(IntPtr ptr) : MonoBehaviour(ptr)
 
     private void Update()
     {
-        if (OWPlugin.RoleIconSpot.Value == 2 || Owner.HasDied() || Owner.inVent || Owner.HasModifier<InvisibleStatus>() || Owner.HasModifier<Anonymous>()) myRend.Hide();
+        if (OWPlugin.RoleIconSpot.Value == 2 || Owner.HasDied() || Owner.inVent || Owner.HasModifier<InvisibleTogglable>() || Owner.HasModifier<Anonymous>()) myRend.Hide();
         else if (!Owner.HasDied() && (HudManagerPatches.LocalVisibilityFlag(PlayerControl.LocalPlayer, Owner) || Owner.AmOwner))
         {
             if (Owner.TryGetModifier<DeepfakeRole>(out var fakeRole) && fakeRole.foolingPlayer == PlayerControl.LocalPlayer)
@@ -79,6 +78,11 @@ public class ShowRoleIcon(IntPtr ptr) : MonoBehaviour(ptr)
     public void UpdateIcon()
     {
         if (Owner.Data.Role is ICustomAURole role)
+        {
+            if (role.Configuration.Icon == null)
+                return;
+
             myRend.sprite = role.Configuration.Icon.LoadAsset();
+        }
     }
 }

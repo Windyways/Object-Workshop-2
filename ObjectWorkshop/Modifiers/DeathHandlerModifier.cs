@@ -52,6 +52,9 @@ public sealed class DeathHandlerModifier : BaseModifier
         if (causeOfDeath == DeathReasonShow.Incinerated) return RoleColors.Pyre;
         if (causeOfDeath == DeathReasonShow.Submerged) return RoleColors.Claylamity;
         if (causeOfDeath == DeathReasonShow.Shot) return RoleColors.Infiltrator;
+        if (causeOfDeath == DeathReasonShow.Crushed) return RoleColors.Ambiguator;
+        if (causeOfDeath == DeathReasonShow.Suicide) return RoleColors.Infiltrator;
+        if (causeOfDeath == DeathReasonShow.Haunted) return RoleColors.Gravekeeper;
 
         return RoleColors.Crewmate;
     }

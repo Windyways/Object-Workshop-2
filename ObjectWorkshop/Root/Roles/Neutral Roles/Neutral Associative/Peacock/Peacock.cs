@@ -19,12 +19,12 @@ public sealed class Peacock(IntPtr cppPtr)
     public string RevealText => "is a beautiful bird.";
     public string Description => $"Declare an Associate, and Bloom to paralyze nearby opponents. Ensure your Associate’s victory.";
     public string Intro => "You are a beautiful bird that uses their appearance to immobilize potential enemies.";
-    public string VictoryCondition => $"Guess {OptionGroupSingleton<BookCollector_Options>.Instance.Required} players and exit in victory. You will win with the winning team.";
+    public string VictoryCondition => $"Make sure your Associate is victorious. You will win with your Associate.";
 
     public CustomRoleConfiguration Configuration => new(this)
     {
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
-        //Icon = OWAssets.BookCollectorRoleCard,
+        Icon = OWAssets.Peacock,
     };
 
     [HideFromIl2Cpp]
@@ -56,7 +56,7 @@ public sealed class Peacock(IntPtr cppPtr)
         new("Bloom",
             "You can Bloom your feathers during the round.\n" +
             "You will become anonymous and you will grow colorful feathers.\n" +
-            "Players that see you will become pale, immobilizing them. They may still use their abilities however.\n" +
+            "Players that see you will become pale, immobilizing them. Your Associate is notified whenever a player is immobilized. Arachnids are immune.\n" +
             "If you have 3 Paled players at once, they will all gain confidence and become Pale Immune until the next round.\n" +
             "Using this ability while transformed will return yourself to normal. You cannot Bloom without an Associate.",
             OWAssets.KillSprite),
@@ -64,7 +64,10 @@ public sealed class Peacock(IntPtr cppPtr)
 
     public string GetPassives()
     {
-        return "- You have a Shield to protect you from the first attack you receive. The Shield is removed upon Declaring an Associate.";
+        return
+            "- At the start of the game, you are assigned an Associate.\n" +
+            "- If your Associate dies before you find them, you are assigned a new one.\n" +
+            "- You have a Shield to protect you from the first attack you receive. The Shield is removed upon Determining an Associate.";
     }
 
     [MethodRpc((uint)Rpcs.RpcDeclare)]
@@ -86,7 +89,7 @@ public sealed class Peacock(IntPtr cppPtr)
             player.RpcAddModifier<RoleLearn>(target, false);
 
             if (target.AmOwner()) target.Notify(Peacock_Feedback.NotifyAssociate(player), NotifyMode.InstantlyAndMeeting);
-            if (player.AmOwner()) target.Notify(Peacock_Feedback.SetAssociate(target), NotifyMode.InstantlyAndMeeting);
+            if (player.AmOwner()) player.Notify(Peacock_Feedback.SetAssociate(target), NotifyMode.InstantlyAndMeeting);
         }
     }
 
@@ -114,8 +117,11 @@ public sealed class Peacock(IntPtr cppPtr)
                 player.RpcRemoveModifier<Anonymous>();
                 
                 var peacockVisual = PeacockVisual.GetObjectByOwner(player);
-                peacockVisual.ForceMobilePlayers();
-                Destroy(peacockVisual.gameObject);
+                if (peacockVisual != null)
+                {
+                    peacockVisual.ForceMobilePlayers();
+                    Destroy(peacockVisual.gameObject);
+                }
             }
             else
             {
@@ -188,14 +194,15 @@ public sealed class Peacock(IntPtr cppPtr)
         {
             if (Associate == player && Associate.HasDied())
             {
-                //if (Associate.IsRole<UndeadReaper>())
-                //{
-                //    if (!UndeadReaper.ReapersAlive()) Player.RpcCustomMurder(Player);
-                //}
-                //else
-                //{
+                if (Associate.IsRole<UndeadReaper>())
+                {
+                    if (!UndeadReaper.ReapersAlive()) Player.RpcCustomMurder(Player);
+                }
+                else
+                {
                     Player.RpcCustomMurder(Player);
-                //}
+                    VisitingMechanic.RpcAddDeathReason(Player, (int)DeathReasonShow.Suicide);
+                }
             }
         }
         else if (player == Player && isBloomed)
@@ -204,8 +211,11 @@ public sealed class Peacock(IntPtr cppPtr)
             player.RpcRemoveModifier<Anonymous>();
 
             var peacockVisual = PeacockVisual.GetObjectByOwner(player);
-            peacockVisual.ForceMobilePlayers();
-            Destroy(peacockVisual.gameObject);
+            if (peacockVisual != null)
+            {
+                peacockVisual.ForceMobilePlayers();
+                Destroy(peacockVisual.gameObject);
+            }
         }
     }
 
@@ -287,6 +297,9 @@ public sealed class Peacock_Options : AbstractOptionGroup<Peacock>
 
     [ModdedNumberOption("<color=#d8a0ff>Peacock</color> <color=#4a86e8>Bloom</color> Cooldown", 0, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float Cooldown { get; set; } = 25;
+
+    [ModdedToggleOption("<color=#4a86e8>Paled</color> Players Are <color=#4a86e8>Blocked</color>")]
+    public bool BlockParalyzed { get; set; } = false;
 
     [ModdedToggleOption("Enable <color=#d8a0ff>Peacock</color> <color=#0000ff>Shield</color>")]
     public bool EnableShield { get; set; } = true;

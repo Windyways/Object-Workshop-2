@@ -1,0 +1,46 @@
+Alarum,28,63,1
+Duelist,28,65,52
+Oasis,27,66,0
+Luminescence,23,62,0
+Cadet,72,152,3
+UFO,25,66,1
+Peacock,11,40,0
+Ambiguator,8,13,10
+Book Collector,24,42,0
+Bubblemaker,0,1,0
+Shikari,7,37,34
+Gravekeeper,0,10,0
+Enticer,3,33,18
+Settler,3,24,1
+Pyre,1,39,88
+Reaper,2,14,22
+Undead Reaper,6,16,16
+Obstructor,6,24,40
+Arachnid,8,32,54
+Aimsman,5,17,50
+Marauder,0,1,1
+Claylamity,6,26,43
+Cop,0,0,0
+Sniper,0,0,0
+Granny,0,0,0
+Doctor,0,0,0
+Traveler,0,0,0
+Fairy,0,0,0
+Deputy,0,0,0
+Gravedigger,0,0,0
+Villager,0,0,0
+Bulletproof,0,0,0
+Fool,0,0,0
+Mad Scientist,0,0,0
+Framer,0,0,0
+Maid,0,0,0
+Mafia,0,0,0
+Godfather,0,0,0
+Kamikaze,0,0,0
+Toaster,0,0,0
+Interrogator,0,0,0
+Operator,0,0,0
+Lawyer,0,0,0
+Robber,0,0,0
+Henchman,0,0,0
+Shakari,0,0,0

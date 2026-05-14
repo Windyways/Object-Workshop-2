@@ -29,6 +29,7 @@ public class SpiderVisual(IntPtr ptr) : MonoBehaviour(ptr)
     {
         UpdateColor();
 
+        // Kinda laggy though... But good enough i guess.
         Vector3 currentPos = Owner.transform.position;
         Vector3 moveDir = currentPos - lastPos;
 
@@ -64,7 +65,7 @@ public class SpiderVisual(IntPtr ptr) : MonoBehaviour(ptr)
         gameObject.AddOWObject();
     }
 
-    public static SpiderVisual GetObjectByPlayer(PlayerControl player)
+    public static SpiderVisual? GetObjectByPlayer(PlayerControl player)
     {
         foreach (SpiderVisual spiderVisual in AllSpiders)
         {

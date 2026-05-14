@@ -5,6 +5,7 @@ public enum DeathReasonShow
     None,
     Alive,
     Ejected,
+    Suicide,
 
     // Not role specific, i guess we can do death reasons here like TOH does? Won't be used tho because this mod is already quite Crew-sided.
     Killed, // Duelist, Reaper/Undead Reaper, Infiltrator Standard kill
@@ -18,4 +19,5 @@ public enum DeathReasonShow
     Skewered, // Weapon Master
     Executed, // Shakari
     ExitedInVictory, // Book Collector
+    Crushed, // Ambiguator
 }

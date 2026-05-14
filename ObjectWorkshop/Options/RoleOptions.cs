@@ -7,7 +7,7 @@ public sealed class RoleOptions : AbstractOptionGroup
     [
         "<color=#b3ffff>Crewmate</color> <color=#4a86e8>Investigative</color>",
         "<color=#b3ffff>Crewmate</color> <color=#4a86e8>Killing</color>",
-        //"<color=#b3ffff>Crewmate</color> <color=#4a86e8>Protective</color>",
+        "<color=#b3ffff>Crewmate</color> <color=#4a86e8>Protective</color>",
         "<color=#b3ffff>Crewmate</color> <color=#4a86e8>Support</color>",
         "<color=#b3ffff>Crewmate</color> <color=#4a86e8>Utility</color>",
         "<color=#4a86e8>Random</color> <color=#b3ffff>Crewmate</color>",
@@ -127,7 +127,7 @@ public enum RoleListOption
 {
     CrewmateInvestigative,
     CrewmateKilling,
-    //CrewmateProtective,
+    CrewmateProtective,
     CrewmateSupport,
     CrewmateUtility,
     RandomCrewmate,

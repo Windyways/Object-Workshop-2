@@ -47,6 +47,24 @@ public static class WitnessKill
         {
             if (witness != target && witness != killer && !witness.HasDied())
             {
+                if (witness.Data.Role is Totemist totemist)
+                {
+                    foreach (var totem in totemist.TotemOrder)
+                    {
+                        if (!IgnoreKill(killer, witness) && BotCanSee(killer, witness, target.transform.position, source: totem.gameObject) && witness != target)
+                        {
+                            OWPlugin.DebugLogMessage($"{witness.Name()} has witnessed {killer.Name()} do something bad via Totem!");
+
+                            // Add murder see modifier here.
+                            var modifier = witness.AddModifier<SeenKill>();
+                            if (modifier != null) modifier.killer = killer;
+
+                            var modifier2 = killer.AddModifier<SeenKill>();
+                            if (modifier2 != null) modifier2.killer = witness;
+                        }
+                    }
+                }
+
                 if (!IgnoreKill(killer, witness) && BotCanSee(killer, witness, target.transform.position) && witness != target)
                 {
                     OWPlugin.DebugLogMessage($"{witness.Name()} has witnessed {killer.Name()} do something bad!");
@@ -64,16 +82,24 @@ public static class WitnessKill
 
     public static bool IgnoreKill(PlayerControl killer, PlayerControl witness)
     {
+        if (killer == witness) return true;
         if (killer.IsRole<Duelist>()) return true; // this duel stuff is PMO.
-        if (killer.IsSpider() || witness.HasModifier<DuelingModifier>() || killer.HasModifier<DuelingModifier>()) return true;
+        if (killer.IsPeacock() || killer.IsSpider() || DuelController.IsDueling(witness) || DuelController.IsDueling(killer)) return true;
+
         if (killer.Is(Faction.Infiltrator) && witness.Is(Faction.Infiltrator)) return true;
+
+        if (killer.GetAssociate() == witness) return true;
+        if (witness.GetAssociate() == killer) return true;
         return false;
     }
 
-    public static bool BotCanSee(PlayerControl killer, PlayerControl witness, Vector3 killPos, bool ignoreInvis = false)
+    public static bool BotCanSee(PlayerControl killer, PlayerControl witness, Vector3 killPos, bool ignoreInvis = false, GameObject source = null)
     {
+        var sourcePos = source == null ? witness.transform.position : source.transform.position;
+        Vector2 sourcePosGTP = source == null ? witness.GetTruePosition() : source.transform.position;
+
         // 1) distance
-        float dist = Vector3.Distance(witness.transform.position, killPos);
+        float dist = Vector3.Distance(sourcePos, killPos);
         float baseVision = GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod * 2;
 
         // impostor bots maybe get impostor mod — you decide:
@@ -86,13 +112,13 @@ public static class WitnessKill
         if (dist > vision)
             return false;
 
-        var vector = witness.GetTruePosition() - killer.GetTruePosition();
+        var vector = sourcePosGTP - killer.GetTruePosition();
         var magnitude = vector.magnitude;
 
         if (PhysicsHelpers.AnyNonTriggersBetween(killer.GetTruePosition(), vector.normalized, magnitude, Constants.ShipAndObjectsMask))
             return false;
         
-        if (killer.HasModifier<InvisibleTogglable>() && !ignoreInvis)
+        if ((killer.HasModifier<Anonymous>() || killer.HasModifier<InvisibleTogglable>()) && !ignoreInvis)
             return false;
 
         return true;

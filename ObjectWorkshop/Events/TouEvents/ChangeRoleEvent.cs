@@ -1,5 +1,3 @@
-using MiraAPI.Events;
-
 namespace TownOfUs.Events.TouEvents;
 
 /// <summary>

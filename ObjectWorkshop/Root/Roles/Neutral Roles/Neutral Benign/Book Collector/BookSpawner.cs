@@ -90,6 +90,39 @@ public static class BookSpawner
         { (SystemTypes.Laboratory, CurrentMap.Polus), new Vector2(34.92f, -06.50f) },
         { (SystemTypes.Specimens, CurrentMap.Polus), new Vector2(36.41f, -21.29f) },
 
-        // Add Compat for Airship and Fungle later.
+        { (SystemTypes.MainHall, CurrentMap.Airship), new Vector2(09.77f, -00.10f) },
+        { (SystemTypes.Engine, CurrentMap.Airship), new Vector2(-02.60f, -00.94f) },
+        { (SystemTypes.Comms, CurrentMap.Airship), new Vector2(-13.28f, 01.40f) },
+        { (SystemTypes.Cockpit, CurrentMap.Airship), new Vector2(-20.99f, -00.99f) },
+        { (SystemTypes.Armory, CurrentMap.Airship), new Vector2(-10.17f, -06.07f) },
+        { (SystemTypes.Kitchen, CurrentMap.Airship), new Vector2(-04.29f, -11.03f) },
+        { (SystemTypes.ViewingDeck, CurrentMap.Airship), new Vector2(-13.46f, -12.29f) },
+        { (SystemTypes.Security, CurrentMap.Airship), new Vector2(07.10f, -11.39f) },
+        { (SystemTypes.Electrical, CurrentMap.Airship), new Vector2(16.53f, -08.71f) },
+        { (SystemTypes.Medical, CurrentMap.Airship), new Vector2(26.35f, -05.80f) },
+        { (SystemTypes.CargoBay, CurrentMap.Airship), new Vector2(38.15f, 00.21f) },
+        { (SystemTypes.Lounge, CurrentMap.Airship), new Vector2(27.13f, 05.61f) },
+        { (SystemTypes.Records, CurrentMap.Airship), new Vector2(19.96f, 08.35f) },
+        { (SystemTypes.Showers, CurrentMap.Airship), new Vector2(21.44f, -00.47f) },
+        { (SystemTypes.GapRoom, CurrentMap.Airship), new Vector2(12.02f, 09.13f) },
+        { (SystemTypes.Brig, CurrentMap.Airship), new Vector2(01.31f, 08.83f) },
+        { (SystemTypes.VaultRoom, CurrentMap.Airship), new Vector2(-07.55f, 08.83f) },
+        { (SystemTypes.MeetingRoom, CurrentMap.Airship), new Vector2(06.90f, 15.15f) },
+
+        { (SystemTypes.Cafeteria, CurrentMap.Fungle), new Vector2(-16.68f, 07.14f) },
+        { (SystemTypes.RecRoom, CurrentMap.Fungle), new Vector2(-16.10f, -00.06f) }, // WHY IS SPLASH ZONE 'REC ROOM' ??????
+        { (SystemTypes.Kitchen, CurrentMap.Fungle), new Vector2(-15.45f, -07.42f) },
+        { (SystemTypes.FishingDock, CurrentMap.Fungle), new Vector2(-22.27f, -07.06f) },
+        { (SystemTypes.Laboratory, CurrentMap.Fungle), new Vector2(-05.10f, -08.91f) },
+        { (SystemTypes.Greenhouse, CurrentMap.Fungle), new Vector2(09.02f, -10.19f) },
+        { (SystemTypes.Reactor, CurrentMap.Fungle), new Vector2(21.02f, -07.28f) },
+        { (SystemTypes.UpperEngine, CurrentMap.Fungle), new Vector2(22.14f, 03.21f) },
+        { (SystemTypes.MiningPit, CurrentMap.Fungle), new Vector2(12.22f, 09.9f) },
+        { (SystemTypes.Lookout, CurrentMap.Fungle), new Vector2(07.38f, 02.20f) },
+        { (SystemTypes.Comms, CurrentMap.Fungle), new Vector2(22.40f, 13.62f) },
+        { (SystemTypes.Storage, CurrentMap.Fungle), new Vector2(-00.25f, 06.33f) },
+        { (SystemTypes.Dropship, CurrentMap.Fungle), new Vector2(-07.85f, 10.92f) },
+        { (SystemTypes.MeetingRoom, CurrentMap.Fungle), new Vector2(-02.88f, -03.16f) },
+        { (SystemTypes.SleepingQuarters, CurrentMap.Fungle), new Vector2(01.94f, -01.47f) }, // BRUH 'SLEEPING QUARTERS' IS THE DORM?!!? INNER SLOTH WHYYYYYYYY
     };
 }

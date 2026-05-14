@@ -5,7 +5,6 @@ namespace ObjectWorkshop.Objects;
 [RegisterInIl2Cpp]
 public class PeacockVisual(IntPtr ptr) : MonoBehaviour(ptr)
 {
-    public byte id;
     public PlayerControl Owner;
     public PlayerControl associate;
     public List<GameObject> feathers = new List<GameObject>();
@@ -30,7 +29,6 @@ public class PeacockVisual(IntPtr ptr) : MonoBehaviour(ptr)
     private void Update()
     {
         UpdateColor();
-        //if (myRend != null) myRend.flipX = Owner.cosmetics?.FlipX ?? false;
 
         if (Owner.HasDied())
         {
@@ -85,8 +83,8 @@ public class PeacockVisual(IntPtr ptr) : MonoBehaviour(ptr)
         if (player == associate)
             return;
 
-        //if (player.IsRole<UndeadReaper>() && !UndeadReaper.ReapersAlive())
-        //    return;
+        if (player.IsRole<UndeadReaper>() && !UndeadReaper.ReapersAlive())
+            return;
 
         player.Immobilize();
         if (!ParalyzedPlayers.Contains(player))
@@ -113,7 +111,7 @@ public class PeacockVisual(IntPtr ptr) : MonoBehaviour(ptr)
     {
         if (!ParalyzedPlayers.Contains(player))
             return;
-
+        
         player.Mobilize();
         player.RpcRemoveModifier<Anonymous>();
         player?.ResetAppearance(); // Might patch mobilized players (past paralyzed) being gray.
@@ -122,7 +120,7 @@ public class PeacockVisual(IntPtr ptr) : MonoBehaviour(ptr)
 
         if (grownConfidence)
         {
-            player.RpcAddModifier<PaleImmunityModifier>();
+            player?.RpcAddModifier<PaleImmunityModifier>();
         }
     }
 
@@ -231,14 +229,13 @@ public class PeacockVisual(IntPtr ptr) : MonoBehaviour(ptr)
         AllPeacockVisuals.Clear();
     }
 
-    public bool SeesPeacock(PlayerControl peacock, PlayerControl target, Vector3 killPos)
+    public static bool SeesPeacock(PlayerControl peacock, PlayerControl target, Vector3 killPos)
     {
         if (MeetingHud.Instance) return false;
         if (target.HasDied()) return false;
-        if (target.IsPeacock()) return false;
+        if (target.IsPeacock() || target.IsSpider() || target.HasModifier<InvisibleTogglable>()) return false;
         if (target.inVent || peacock.inVent/* || target.IsUnderground()*/) return false;
         if (target.HasModifier<PaleImmunityModifier>()) return false;
-        //if (target.HasModifier<PaleModifier>()) return false;
 
         return WitnessKill.BotCanSee(peacock, target, killPos, true);
     }

@@ -24,6 +24,16 @@ public static class ObjectExtentions
         return sr;
     }
 
+    public static void AddCircleCollider2D(this GameObject gameObject, bool isTrigger, bool ignoreCollision)
+    {
+        CircleCollider2D circleCollider2D = gameObject.AddComponent<CircleCollider2D>();
+        circleCollider2D.isTrigger = isTrigger;
+        if (ignoreCollision)
+        {
+            IgnorePlayerCollisions(circleCollider2D);
+        }
+    }
+
     public static void AddBoxCollider2D(this GameObject gameObject, bool isTrigger, bool ignoreCollision)
     {
         BoxCollider2D boxCollider2D = gameObject.AddComponent<BoxCollider2D>();

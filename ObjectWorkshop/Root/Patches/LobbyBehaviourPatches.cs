@@ -28,7 +28,7 @@ public static class LobbyBehaviourPatches
         // --- MECHANICS ---
         DayNightMechanic.DayCount = 0;
         DayNightMechanic.NightCount = 1;
-        HuntMechanic.StopHunt();
+        HuntMechanic.StopAllHunts();
 
         RolelistMechanic.InfiltratorCount = 0;
         InfiltratorGameOver.SabotageWin = false;

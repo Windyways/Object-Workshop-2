@@ -94,6 +94,13 @@ public static class LocalSettings
         },
         new()
         {
+            Title = "ArachnophobiaMode Mode",
+            ObjName = "ArachnophobiaMode",
+            OnClick = () => { return OWPlugin.ArachnophobiaMode.Value = !OWPlugin.ArachnophobiaMode.Value; },
+            DefaultValue = OWPlugin.ArachnophobiaMode.Value
+        },
+        new()
+        {
             Title = "Hide AI Icons",
             ObjName = "HideAIIcons",
             OnClick = () => { return OWPlugin.HideAIIcons.Value = !OWPlugin.HideAIIcons.Value; },
@@ -246,7 +253,7 @@ public static class LocalSettings
         title.GetComponent<RectTransform>().localPosition = Vector3.up * 2.3f;
         title.gameObject.SetActive(true);
         title.gameObject.layer = LayerMask.NameToLayer("UI");
-        title.text = "<size=80%>Object Workshop\n</size><size=60%>Client Options</size>\n";
+        title.text = "<size=80%>Object Workshop 2\n</size><size=60%>Client Options</size>\n";
         title.name = "TitleText";
     }
 
@@ -301,63 +308,6 @@ public static class LocalSettings
             {
                 spr.size = new Vector2(2.2f, .7f);
             }
-        }
-    }
-
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-    [HarmonyPostfix]
-    public static void HideGhosts()
-    {
-        if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
-        {
-            return;
-        }
-
-        if (!PlayerControl.LocalPlayer.Data.IsDead)
-        {
-            return;
-        }
-
-        if (MeetingHud.Instance)
-        {
-            return;
-        }
-
-        if (!OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow)
-        {
-            return;
-        }
-
-        foreach (var player in PlayerControl.AllPlayerControls)
-        {
-            if (player.AmOwner)
-            {
-                continue;
-            }
-
-            if (!player.Data.IsDead)
-            {
-                continue;
-            }
-
-            var show = true;
-            var bodyForms = player.gameObject.transform.GetChild(1).gameObject;
-
-            foreach (var form in bodyForms.GetAllChildren())
-            {
-                if (form.activeSelf)
-                {
-                    form.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, show ? 1f : 0f);
-                }
-            }
-
-            if (player.cosmetics.HasPetEquipped())
-            {
-                player.cosmetics.CurrentPet.Visible = show;
-            }
-
-            player.cosmetics.gameObject.SetActive(show);
-            player.gameObject.transform.GetChild(3).gameObject.SetActive(show);
         }
     }
 

@@ -14,6 +14,7 @@ public static class Enticer_Vent_SetButtons
             return true;
 
         if (PlayerControl.LocalPlayer.Data.Role is Enticer) return false;
+        if (PlayerControl.LocalPlayer.Data.Role is Gravekeeper) return false;
         return true;
     }
 }

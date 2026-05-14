@@ -1,6 +1,7 @@
-﻿using ObjectWorkshop.Roles;
-using MiraAPI.Modifiers.Types;
+﻿using MiraAPI.Modifiers.Types;
+using ObjectWorkshop.Roles;
 using System.Collections;
+using TownOfUs.Modules;
 using UnityEngine;
 using RCoroutines = Reactor.Utilities.Coroutines;
 
@@ -83,6 +84,10 @@ public static class InstanceControlPatches
 
         var modsTab = MiraAPI.Modifiers.ModifierDisplay.ModifierDisplayComponent.Instance;
         if (modsTab != null && !modsTab.IsOpen && PlayerControl.LocalPlayer.GetModifiers<GameModifier>().Any(x => !x.HideOnUi && x.GetDescription() != string.Empty))
+        {
+            modsTab.ToggleTab();
+        }
+        if (modsTab != null && !modsTab.IsOpen && PlayerControl.LocalPlayer.GetModifiers<BaseModifier>().Any(x => !x.HideOnUi && x.GetDescription() != string.Empty))
         {
             modsTab.ToggleTab();
         }
@@ -309,18 +314,18 @@ public static class InstanceControlPatches
 
     public static void ApplyDayButtons(PlayerControl player)
     {
-        //if (player.Data.Role is Gunner gunner) Coroutines.Start(gunner.GenButtons(0.1f));
+        if (player.Data.Role is BookCollector bookCollector) bookCollector.meetingMenu.GenButtons(MeetingHud.Instance, player.AmOwner && !player.HasDied());
     }
 
     public static void ClearDayButtons(PlayerControl player, bool includeNecroPassing = true)
     {
-        // --- GUNNER ---
-        /*if (player.Data.Role is Gunner gunner)
+        // --- BOOK COLLECTOR ---
+        if (player.Data.Role is BookCollector bookCollector)
         {
             if (player.AmOwner)
             {
-                gunner.meetingMenu.HideButtons();
+                bookCollector.meetingMenu.HideButtons();
             }
-        }*/
+        }
     }
 }

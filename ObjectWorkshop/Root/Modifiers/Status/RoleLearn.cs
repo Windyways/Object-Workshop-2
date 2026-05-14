@@ -15,7 +15,7 @@ public sealed class RoleLearn(PlayerControl visitor, bool revealText) : BaseModi
 
         if (Visitor.Is(Faction.Crewmate))
         {
-            if (Player.Is(Faction.Crewmate) || Player.IsRole<Peacock>()) Player.AddModifier<Confirmed>(Visitor, ConfirmType.Instantly, $"Revealed By {Visitor.Data.Role.NiceName}");
+            if (Player.Is(Faction.Crewmate) || Player.Is(Alignment.NeutralAssociative)) Player.AddModifier<Confirmed>(Visitor, ConfirmType.Instantly, $"Revealed By {Visitor.Data.Role.NiceName}");
             else Player.AddModifier<ConfirmedEvil>($"Revealed By {Visitor.Data.Role.NiceName}");
         }
     }
